@@ -1,0 +1,7 @@
+*.pyc
+settings_local.py
+__pycache__
+.DS_Store
+media
+Thumbs.db
+/static/
