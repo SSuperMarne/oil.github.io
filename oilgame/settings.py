@@ -112,7 +112,7 @@ if not os.path.exists(MEDIA_ROOT):
 # Some settings
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
-#LOGIN_REDIRECT_URL = 'main'
+LOGIN_REDIRECT_URL = 'landing_main'
 RECAPTCHA_PUBLIC_KEY = '6LcEYTwUAAAAAJwSwnk0nyZCv7Dc44mjXHzgFbcg'
 RECAPTCHA_PRIVATE_KEY = '6LcEYTwUAAAAAKGt32zNCaQ3RFlWtrCmWAlKnAav'
 NOCAPTCHA = True
