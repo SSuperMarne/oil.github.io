@@ -1,0 +1,26 @@
+{% extends 'registration/base.html' %}{% load staticfiles %}{% block headers %}<title>Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам</title>
+        <meta name="description" content="Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам">
+        <meta property="og:title" content="Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам">
+        <meta property="og:description" content="Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам">
+        <meta property="og:image" content="">{% endblock %}{% block content %}
+                <!-- Page Content -->
+                <div class="bg-gd-lake">
+                    <div class="hero-static content content-full bg-white invisible" data-toggle="appear">
+                        <div class="py-30 px-5 text-center">
+                            <a class="link-effect font-w700" href="{% url 'landing_main' %}">
+                                <i class="si si-drop"></i>
+                                <span class="font-size-xl text-primary-dark">OIL</span><span class="font-size-xl">GAME</span>
+                            </a>
+                            <h1 class="h2 font-w700 mt-50 mb-10">Письмо отправлено</h1>
+                            <h2 class="h4 font-w400 text-muted mb-0"><a href="https://mail.yandex.ru" target="_blank">Яндекс.Почта</a> | <a href="https://mail.ru" target="_blank">Mail.Ru</a> | <a href="https://gmail.com" target="_blank">Gmail</a></h2>
+                        </div>
+                        <div class="row justify-content-center px-5">
+                            <div class="col-sm-8 col-md-6 col-xl-4">
+                                <div class="alert alert-success">Мы отправим вам по электронной почте ссылку для сброса пароля, если учетная запись существует с введенным вами электронным адресом.</div>
+                                <div class="alert alert-warning">Если вы не получили электронное письмо, убедитесь, что вы ввели адрес, который вы зарегистрировали, и проверьте папку со спамом.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Page Content -->
+{% endblock content %}

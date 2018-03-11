@@ -1,0 +1,28 @@
+{% load staticfiles %}<!DOCTYPE html>
+<!--[if lte IE 9]>     <html lang="ru" class="no-focus lt-ie10 lt-ie10-msg"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="ru" class="no-focus"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        {% block headers %}{% endblock %}
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://oil-game.win{{ request.path }}">
+        <meta property="og:site_name" content="OilGAME">
+        <link rel="shortcut icon" href="{% static '/favicon.ico' %}">
+        <link rel="stylesheet" id="css-main" href="{% static 'css/account.min.css' %}">
+    </head>
+    <body>
+        <!-- Page Container -->
+        <div id="page-container" class="main-content-boxed">
+            <!-- Main Container -->
+            <main id="main-container">
+                {% block content %}{% endblock %}
+            </main>
+            <!-- END Main Container -->
+        </div>
+        <!-- END Page Container -->
+        <script src="{% static 'js/account.min.js' %}"></script>
+        <script src="{% static 'js/plugins/account/jquery.validate.min.js' %}"></script>
+        {% block jsplugins %}{% endblock %}
+    </body>
+</html>

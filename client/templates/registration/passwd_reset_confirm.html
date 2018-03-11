@@ -1,0 +1,56 @@
+{% extends 'registration/base.html' %}{% load staticfiles %}{% block headers %}<title>Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам</title>
+        <meta name="description" content="Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам">
+        <meta property="og:title" content="Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам">
+        <meta property="og:description" content="Восстановление пароля - OIL-GAME.WIN - Экономическая игра с выводом средств по никам">
+        <meta property="og:image" content="">{% endblock %}{% block content %}
+                <!-- Page Content -->
+                <div class="bg-gd-lake">
+                    <div class="hero-static content content-full bg-white invisible" data-toggle="appear">
+                        <div class="py-30 px-5 text-center">
+                            <a class="link-effect font-w700" href="{% url 'landing_main' %}">
+                                <i class="si si-drop"></i>
+                                <span class="font-size-xl text-primary-dark">OIL</span><span class="font-size-xl">GAME</span>
+                            </a>
+                            <h1 class="h2 font-w700 mt-50 mb-10">Новый пароль</h1>
+                            <h2 class="h4 font-w400 text-muted mb-0">Пожалуйста, придумайте новый пароль</h2>
+                        </div>
+                        <div class="row justify-content-center px-5">
+                            <div class="col-sm-8 col-md-6 col-xl-4">
+                            {% if validlink %}
+                                {% if form.errors %}<p class="alert alert-danger">Ваш пароль должен содержать как минимум 6 символов. Ваш пароль не может быть одним из широко распространённых паролей.</p>{% endif %}
+                                <form class="js-validation-signin" method="post">
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <div class="form-material floating">
+                                                <input type="password" class="form-control" id="login-password1" name="new_password1">
+                                                <label for="login-password">Новый пароль</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <div class="form-material floating">
+                                                <input type="password" class="form-control" id="login-password2" name="new_password2">
+                                                <label for="login-password">Повторите пароль</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row gutters-tiny">
+                                        <div class="col-12 mb-10">
+                                            <button type="submit" class="btn btn-block btn-hero btn-noborder btn-rounded btn-alt-primary">
+                                                <i class="si si-login mr-10"></i> Сбросить пароль
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% csrf_token %}
+                                </form>
+                            {% else %}
+                                <div class="alert alert-danger">Ссылка на сброс пароля недействительна, возможно, потому, что она уже использовалась. Пожалуйста, запросите новый сброс пароля.</div>
+                            {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Page Content -->
+{% endblock content %}
