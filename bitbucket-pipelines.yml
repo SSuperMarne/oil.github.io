@@ -1,0 +1,27 @@
+# This is a sample build configuration for Python.
+# Check our guides at https://confluence.atlassian.com/x/x4UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: python:3.5.3
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - pip
+        services:
+          - mysql
+        script:
+          - pip install -r requirements.txt
+          - wget https://dmitry.win/ridys/oilgame/settings_local.py
+          - python manage.py test --failfast --keepdb
+definitions: 
+  services: 
+    mysql: 
+      image: mysql
+      environment: 
+        MYSQL_DATABASE: 'test_pipelines' 
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes' 
+        MYSQL_USER: 'test_user' 
+        MYSQL_PASSWORD: 'test_user_password'
