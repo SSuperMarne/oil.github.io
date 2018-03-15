@@ -4,10 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Order
-from .forms import ExchangeForm, ReplenishForm
+from .forms import ReplenishForm
 from client.models import Profile
 from game.models import Statistic
-import math
 import base64
 import hashlib
 

@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Игровой обменник - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Обмен нефти на рубли</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p class="alert alert-info">Текущий запас нефти: <b>{{ user.profile.oil }} ед.</b> | Сейчас возможно получить: <b>{{ made }}</b> руб.<br>Обмен производится по следующему курсу:<br><b>100 единиц</b> нефти = <b>1 рубль</b></p>
+                            {% if messages %}{% for message in messages %}
+                            <p class="alert alert-success">{{ message }}</p>
+                            {% endfor %}{% endif %}
+                            {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
+                            <div class="row">
+                                <div class="col-md-6 col-lg-4">
+                                    <form class="form-inline" role="form" method="POST">
+                                      <p><i class="fa fa-exclamation-circle"></i> Укажите количество <b>рублей</b> для обмена. По умолчанию указано максимально возможное значение для обмена.</p>
+                                      {% csrf_token %}
+                                      <div class="form-group">
+                                        <label class="sr-only" for="change">Сумма для обмена</label>
+                                        <input name="rubs" type="number" class="form-control" id="change" min="0" placeholder="Максимум: {{ made }} руб." required autofocus>
+                                      </div>
+                                      <button type="submit" class="btn btn-default">Обменять</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}

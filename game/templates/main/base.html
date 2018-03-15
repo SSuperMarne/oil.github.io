@@ -58,7 +58,7 @@
                         <li><a href="{% url 'withdraw' %}"{% if "/withdraw/" == request.path %} class="active"{% endif %}><i class="fa fa-credit-card"></i> <span>Вывод средств</span></a></li>
                         <li><a href="charts.html" class=""><i class="lnr lnr-briefcase"></i> <span>Мой инвентарь</span></a></li>
                         <li><a href="elements.html" class=""><i class="lnr lnr-store"></i> <span>Игровой магазин</span></a></li>
-                        <li><a href="#"><i class="fa fa-refresh"></i> <span>Игровой обменник</span></a></li>
+                        <li><a href="{% url 'exchange' %}"{% if "/exchange/" == request.path %} class="active"{% endif %}><i class="fa fa-refresh"></i> <span>Игровой обменник</span></a></li>
                         <li><a href="{% url 'support' %}"{% if "/support/" == request.path %} class="active"{% endif %}><i class="lnr lnr-pencil"></i> <span>Техническая поддержка</span></a></li>
                         <li><a href="{% url 'statistic' %}"{% if "/statistic/" == request.path %} class="active"{% endif %}><i class="lnr lnr-chart-bars"></i> <span>Статистика</span></a></li>
                     </ul>

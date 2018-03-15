@@ -13,7 +13,6 @@
                             {% if messages %}{% for message in messages %}
                             <p class="alert alert-success">{{ message }}</p>
                             {% endfor %}{% endif %}
-                            {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
                             <div class="row">
                                 <div class="col-md-6 col-lg-4">
                                     <form role="form" method="POST">
