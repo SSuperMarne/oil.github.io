@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .models import Order, Transfer
-from .forms import ExchangeForm, ReplenishForm, TransferForm
+from .models import Order
+from .forms import ExchangeForm, ReplenishForm
 from client.models import Profile
 from game.models import Statistic
 import math
@@ -71,11 +71,6 @@ def payeer_status(request):
             return HttpResponse(str(fail))
     else:
         return redirect('landing_main')
-
-@login_required
-def payment_history(request):
-    payments = Order.objects.order_by('-id').filter(user_id=request.user.id)
-    return render(request, 'payment/history.html', {'payments': payments})
 
 def payment_status(request, status):
     if status == "success":

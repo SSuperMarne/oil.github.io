@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Вывод средств - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Вывод средств</h3>
+                        </div>
+                        <div class="panel-body">
+                            {% if messages %}{% for message in messages %}
+                            <p class="alert alert-success">{{ message }}</p>
+                            {% endfor %}{% endif %}
+                            {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
+                            <div class="row">
+                                <div class="col-md-6 col-lg-4">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name="title" placeholder="Тема обращения" minlength="3" maxlength="128" required>
+                                        <br>
+                                        <textarea class="form-control" name="text" placeholder="Пожалуйста, расскажите нам о возникшей проблеме." rows="6" required></textarea>
+                                        <br>
+                                        {{ form.captcha }}
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Отправить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}
