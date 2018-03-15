@@ -1,0 +1,57 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Ваш инвентарь - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <!-- OVERVIEW -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Ваш инвентарь</h3>
+                            <p class="panel-subtitle">Управляйте вашей недвижимостью</p>
+                        </div>
+                        <div class="panel-body">
+                        <p class="alert alert-info">Текущее количество нефти у вас - <b>{{ user.profile.oil }}</b> единиц<br><a href="{% url 'exchange' %}">Нажмите здесь</a>, чтобы обменять нефть на рубли.</p>
+                        {% if messages %}{% for message in messages %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                        {% endfor %}{% endif %}
+                        <h3>Ваши башни <a style="font-size: 0.8em;" onClick="window.location.reload()" title="Обновить таблицу"><i class="fa fa-refresh"></i></a></h3>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                   <tr><th><i class="fa fa-list"></i> Название башни</th><th><i class="fa fa-money"></i> Нефти в час</th><th><i class="fa fa-clock-o"></i> Добудет нефть через</th><th><i class="fa fa-check-circle"></i> Действия</th></tr>
+                                    {% if towers %}
+                                    {% for t in towers %}
+                                    <tr><td>{{ t.tower_name }}</td><td>{{ t.tower_oil }} ед.</td><td name="wtime">{{ t.work }}</td><td><a href="/inventory/get/{{ t.id }}/" class="btn btn-success" style="padding: 4px 12px;" name="gets">Забрать нефть</a></td></tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr><td><em>Башен нет</em> <i class="fa fa-frown-o"></i></td><td><em>Башен нет</em> <i class="fa fa-frown-o"></i></td><td><em>Башен нет</em> <i class="fa fa-frown-o"></i></td><td><a href="{% url 'shop' %}" class="btn btn-success" style="padding: 4px 12px;">Купить сейчас?</a></td><tr>
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END OVERVIEW -->
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+    <script type="text/javascript">
+    var w = document.getElementsByName("wtime");
+    var b = document.getElementsByName("gets");
+    var d = new Date();
+    for (var i = 0; i < w.length; i++) {
+      var r = w[i].innerHTML - Math.round(d.valueOf() / 1000);
+      var g = Math.round(r / 60);
+      if (g <= 0) {
+        w[i].innerHTML = "<em>Ожидает сбора</em>";
+      } else {
+        w[i].innerHTML = g + " минут(ы)";
+        b[i].className += " disabled";
+      }
+    }
+    Array.from(document.querySelectorAll('tr')).forEach(e => 
+    e.innerHTML.toLowerCase().includes('ожидает сбора') ? e.classList.add('success') : null
+    );
+    </script>
+{% endblock %}

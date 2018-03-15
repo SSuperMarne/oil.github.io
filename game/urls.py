@@ -8,4 +8,6 @@ urlpatterns = [
     url(r'^exchange/$', views.exchange, name='exchange'),
     url(r'^shop/$', views.shop, name='shop'),
     url(r'^shop/(?P<category>\d+)/(?P<goods>\d+)/$', views.buy, name='buy'),
+    url(r'^inventory/$', views.inventory, name='inventory'),
+    url(r'^inventory/get/(?P<pk>\d+)/$', views.get_oil, name='get_oil'),
 ]

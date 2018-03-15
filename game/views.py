@@ -102,3 +102,32 @@ def buy(request, category, goods):
                 client.save()
                 messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
     return redirect('shop')
+
+@login_required
+def inventory(request):
+    towers = ClientTower.objects.filter(user_id=request.user.id)
+    return render(request, 'main/inventory.html', {'towers': towers})
+
+@login_required
+def get_oil(request, pk):
+    timed = lambda: int(round(time.time()))
+    try:
+        a = ClientTower.objects.get(user_id=request.user.id, id=pk)
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.ERROR, "Запрос выполнен неверно. Свяжитесь с администрацией магазина.")
+        return redirect('inventory')
+    client = Profile.objects.get(user_id=request.user.id)
+    if timed() - a.work >= 0:
+        client.oil = client.oil + a.tower_oil
+        client.stat_produced = client.stat_produced + a.tower_oil # stats
+        client.save()
+        a.work = timed() + 3600
+        a.save()
+        # Statistic global
+        stat = Statistic.objects.get(id=1)
+        stat.oil = stat.oil + a.tower_oil
+        stat.save()
+        messages.add_message(request, messages.INFO, "Нефть успешно собрана.")
+    else:
+        messages.add_message(request, messages.ERROR, "Прошло недостаточно времени для выдачи нефти.")
+    return redirect('inventory')
