@@ -1,0 +1,125 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Ваш игровой аккаунт - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <div class="panel panel-headline">
+                        <div class="panel-body">
+                            <h2>Добро пожаловать, <small>{{ user.username }}</small>! Мы рады видеть вас в игре.</h2>
+                            <hr>
+                            <p class="text-info">Это ваш личный интерфейс для выполнения основных действий в игре.<br>Здесь вы можете общаться в онлайн-чате, пополнять баланс, выводить средства и выполнять другие необходимые для игры действия.<br>Желаем вам приятной игры!</p>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- RECENT PURCHASES -->
+                        <div class="col-md-6">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Последние пополнения счета</h3>
+                                    <div class="right">
+                                        <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                                        <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+                                    </div>
+                                </div>
+                                <div class="panel-body no-padding">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th><i class="fa fa-cog" aria-hidden="true"></i> Система</th>
+                                                <th><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
+                                                <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата платежа</th>
+                                                <th><i class="fa fa-clock-o" aria-hidden="true"></i> Статус</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><a href="#">763648</a></td>
+                                                <td>Steve</td>
+                                                <td>$122</td>
+                                                <td>Oct 21, 2016</td>
+                                                <td><span class="label label-success">COMPLETED</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">763649</a></td>
+                                                <td>Amber</td>
+                                                <td>$62</td>
+                                                <td>Oct 21, 2016</td>
+                                                <td><span class="label label-warning">PENDING</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">763650</a></td>
+                                                <td>Michael</td>
+                                                <td>$34</td>
+                                                <td>Oct 18, 2016</td>
+                                                <td><span class="label label-danger">FAILED</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">763651</a></td>
+                                                <td>Roger</td>
+                                                <td>$186</td>
+                                                <td>Oct 17, 2016</td>
+                                                <td><span class="label label-success">SUCCESS</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">763652</a></td>
+                                                <td>Smith</td>
+                                                <td>$362</td>
+                                                <td>Oct 16, 2016</td>
+                                                <td><span class="label label-success">SUCCESS</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-12"><a href="#" class="btn btn-primary">Посмотреть все платежи</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END RECENT PURCHASES -->
+                        <!-- TASKS -->
+                        <div class="col-md-6">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Моя статистика</h3>
+                                    <div class="right">
+                                        <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                                        <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td><i class="fa fa-bar-chart" aria-hidden="true"></i> Куплено нефтяных вышек:</td>
+                                                <td>0 шт.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fa fa-certificate" aria-hidden="true"></i> Добыто нефти:</td>
+                                                <td>0 ед.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Вложено денежных средств:</td>
+                                                <td>0 руб.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fa fa-rub" aria-hidden="true"></i> Выведено денежных средств:</td>
+                                                <td>0 руб.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END TASKS -->
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}

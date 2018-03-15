@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'landing',
     'client',
     'captcha',
+    'game',
 ]
 
 MIDDLEWARE = [
