@@ -39,7 +39,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{% url 'profile' %}"><i class="fa fa-user"></i> <span>Мой профиль</span></a></li>
                                 <li><a href="{% url 'payment' %}"><i class="fa fa-money"></i> <span>Пополнить баланс</span></a></li>
-                                <li><a href="#"><i class="fa fa-credit-card"></i> <span>Вывод средств</span></a></li>
+                                <li><a href="{% url 'withdraw' %}"><i class="fa fa-credit-card"></i> <span>Вывод средств</span></a></li>
                                 <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>Выход</span></a></li>
                             </ul>
                         </li>
@@ -55,7 +55,7 @@
                     <ul class="nav">
                         <li><a href="{% url 'panel_main' %}"{% if "/account/" == request.path %} class="active"{% endif %}><i class="lnr lnr-home"></i> <span>Главная страница</span></a></li>
                         <li><a href="{% url 'payment' %}"{% if "/payment/" == request.path %} class="active"{% endif %}><i class="lnr lnr-inbox"></i> <span>Пополнить баланс</span></a></li>
-                        <li><a href="#"><i class="fa fa-credit-card"></i> <span>Вывод средств</span></a></li>
+                        <li><a href="{% url 'withdraw' %}"{% if "/withdraw/" == request.path %} class="active"{% endif %}><i class="fa fa-credit-card"></i> <span>Вывод средств</span></a></li>
                         <li><a href="charts.html" class=""><i class="lnr lnr-briefcase"></i> <span>Мой инвентарь</span></a></li>
                         <li><a href="elements.html" class=""><i class="lnr lnr-store"></i> <span>Игровой магазин</span></a></li>
                         <li><a href="#"><i class="fa fa-refresh"></i> <span>Игровой обменник</span></a></li>

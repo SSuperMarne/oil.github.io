@@ -18,4 +18,5 @@ urlpatterns = [
 # other client urls
     url(r'^profile/$', views.u_profile, name='profile'),
     url(r'^payment/history/$', views.payment_history, name='payment_history'),
+    url(r'^withdraw/$', views.transfer, name='withdraw'),
 ]
