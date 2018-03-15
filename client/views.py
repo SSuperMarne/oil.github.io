@@ -18,3 +18,6 @@ def register(request):
     else:
         form = SignUpForm()
     return render(request, 'registration/registration.html', {'form': form})
+
+def u_profile(request):
+    return render(request, 'main/profile.html')

@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Мой профиль - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <!-- OVERVIEW -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Ваш профиль</h3>
+                        </div>
+                        <div class="panel-body no-padding">
+                            <div class="col-md-8 col-xl-4">
+                                <ul style="list-style-type: none; margin-left: -30px;">
+                                    <li><b><i class="fa fa-user"></i> Логин аккаунта:</b> {{ user.username }}</li>
+                                    <li><b><i class="fa fa-calendar"></i> Дата регистрации:</b> {{ user.date_joined }}</li>
+                                    <li><b><i class="fa fa-envelope"></i> Ваш E-mail:</b> {{ user.email }}</li>
+                                    <li><b><i class="fa fa-rub"></i> Ваш текущий баланс:</b> {{ user.profile.balance }} руб.</li>
+                                    <li><b><i class="fa fa-free-code-camp"></i> Количество вашей нефти:</b> {{ user.profile.oil }} ед.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END OVERVIEW -->
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}

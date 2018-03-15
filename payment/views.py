@@ -75,7 +75,7 @@ def payeer_status(request):
 @login_required
 def payment_history(request):
     payments = Order.objects.order_by('-id').filter(user_id=request.user.id)
-    return render(request, 'user/history.html', {'payments': payments})
+    return render(request, 'payment/history.html', {'payments': payments})
 
 def payment_status(request, status):
     if status == "success":
