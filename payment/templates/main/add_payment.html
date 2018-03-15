@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Пополнить баланс - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Пополнение баланса аккаунта</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p class="alert alert-success">Мы принимаем к оплате платежную систему <b>Payeer</b><br>Ваш текущий баланс - <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i></b> руб.</p>
+                            {% if messages %}{% for message in messages %}
+                            <p class="alert alert-danger">{{ message }}</li>
+                            {% endfor %}{% endif %}
+                            <form class="form-inline" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="m_desc" value="Пополнение баланса пользователя {{ user.username }}">
+                              <div class="form-group">
+                                <label class="sr-only" for="change">Сумма для обмена</label>
+                                <input name="m_amount" type="number" class="form-control" id="change" min="0" placeholder="Сумма (в руб.)">
+                              </div>
+                              <button name="m_process" type="submit" class="btn btn-default">Пополнить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}
