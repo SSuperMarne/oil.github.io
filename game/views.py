@@ -1,11 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from payment.models import Order
 from client.models import Profile
-from .models import Statistic, Support
+from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower
 from .forms import SupportForm, ExchangeForm
 import math
+import time
 
 @login_required
 def panel_main(request):
@@ -53,3 +55,50 @@ def exchange(request):
         else:
             messages.add_message(request, messages.ERROR, "Введено неверное значение. Действие отменено.")
     return render(request, 'main/exchanger.html', {'made': client_rubs()})
+
+@login_required
+def shop(request):
+    factories = Factory.objects.order_by('id')[:5]
+    towers = Tower.objects.order_by('id')[:5]
+    return render(request, 'main/shop.html', {'factories': factories, 'towers': towers})
+
+@login_required
+def buy(request, category, goods):
+    client = Profile.objects.get(user_id=request.user.id)
+    timed = lambda: int(round(time.time() + 3600))
+    if category == "0":
+        # if category - Towers
+        good = get_object_or_404(Tower, id=goods)
+        if client.balance < good.price:
+            messages.add_message(request, messages.ERROR, "У вас нет необходимой суммы для оплаты товара.")
+        else:
+            try:
+                check = ClientFactory.objects.get(user_id=client.id, tower_id=good.id)
+                data = ClientTower(tower_id_id=good.id, user_id=client.id, work=timed(), tower_name=good.name, tower_oil=good.oil)
+                data.save()
+                client.balance = client.balance - good.price
+                client.stat_tower = client.stat_tower + 1 # user stat
+                client.save()
+                # Statistic global
+                stat = Statistic.objects.get(id=1)
+                stat.tower = stat.tower + 1
+                stat.save()
+                messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
+            except ObjectDoesNotExist:
+                messages.add_message(request, messages.ERROR, "Для покупки этой башни необходимо купить завод этого же типа.")
+    elif category == "1":
+        # if category - Factory
+        good = get_object_or_404(Factory, id=goods)
+        if client.balance < good.price:
+            messages.add_message(request, messages.ERROR, "У вас нет необходимой суммы для оплаты товара.")
+        else:
+            try:
+                check = ClientFactory.objects.get(user_id=client.id, factory_id=good.id)
+                messages.add_message(request, messages.ERROR, "Этот завод у вас уже приобретен.")
+            except ObjectDoesNotExist:
+                data = ClientFactory(factory_id=good.id, name=good.name, user_id=client.id, tower_id=good.tower_id)
+                data.save()
+                client.balance = client.balance - good.price
+                client.save()
+                messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
+    return redirect('shop')
