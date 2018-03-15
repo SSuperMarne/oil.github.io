@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+class Statistic(models.Model):
+    tower = models.IntegerField()
+    oil = models.IntegerField()
+    donated = models.IntegerField()
+    exchanged = models.IntegerField()
