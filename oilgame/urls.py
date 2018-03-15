@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'', include('client.urls')),
     url(r'', include('game.urls')),
     url(r'', include('payment.urls')),
+    url(r'', include('moderation.urls')),
 ]

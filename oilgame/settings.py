@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'captcha',
     'game',
     'payment',
+    'moderation',
 ]
 
 MIDDLEWARE = [
