@@ -24,6 +24,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body no-padding">
+                                    {% if payments %}
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
@@ -49,12 +50,17 @@
                                         {% endfor %}
                                         </tbody>
                                     </table>
+                                    {% else %}
+                                    <p class="alert alert-warning">Вы еще не пополняли свой счет. История платежей отсутствует.</p>
+                                    {% endif %}
                                 </div>
+                                {% if payments %}
                                 <div class="panel-footer">
                                     <div class="row">
                                         <div class="col-md-12"><a href="{% url 'payment_history' %}" class="btn btn-primary">Посмотреть все платежи</a></div>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                         <!-- END RECENT PURCHASES -->
