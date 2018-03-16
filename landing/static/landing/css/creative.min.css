@@ -9,7 +9,7 @@
     width: 80px;
     height: 80px;
     border-radius: 6px;
-    background: rgba(0, 0, 0, 0) linear-gradient(to top, rgba(29, 128, 150, 1) 0%, #fdd96c 100%) repeat scroll 0 0;
+    background: rgba(0, 0, 0, 0) linear-gradient(to top, rgba(29, 128, 150, 1) 0%, #e0e0e0 100%) repeat scroll 0 0;
 }
 .countdown-amount {
     display: inline-block;
@@ -29,7 +29,7 @@
     letter-spacing:1px;
     display: block;
     font-size: 13px;
-    text-shadow: 1px 1px #a86628;
+    text-shadow: 1px 1px #000;
     font-weight: 900;
     line-height: normal;
     margin: 0;
