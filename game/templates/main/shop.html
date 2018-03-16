@@ -11,7 +11,7 @@
                             <p class="panel-subtitle">Основное место для покупки недвижимости в игре</p>
                         </div>
                         <div class="panel-body">
-                        <p class="alert alert-info">Ваш текущий баланс - <b>{{ user.profile.balance }}</b> руб.<br><a href="{% url 'payment' %}">Нажмите здесь</a>, чтобы пополнить баланс.</p>
+                        <p class="alert alert-info">Ваш текущий баланс - <b>{{ user.profile.balance }}</b> руб.<br><a href="{% url 'payment' %}">Нажмите здесь</a>, чтобы пополнить баланс.<br>Вышки необходимы для добычи нефти, а заводы для строительства вышек. На каждый тип вышек необходим один завод этого же типа.</p>
                         {% if messages %}{% for message in messages %}
                         <p class="alert alert-danger">{{ message }}</p>
                         {% endfor %}{% endif %}
