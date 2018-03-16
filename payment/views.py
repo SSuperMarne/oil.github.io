@@ -17,10 +17,10 @@ def add_payment(request):
         if form.is_valid():
             m_amount = form.cleaned_data.get('m_amount')
             description = form.cleaned_data.get('m_desc')
-            m_shop = "0000000" # ID магазина
+            m_shop = "518803834" # ID магазина
             m_curr = "RUB" # валюта
             m_desc = base64.b64encode(description.encode('utf-8')).decode('utf-8')
-            m_key = "secret_key" # секретный ключ
+            m_key = "Qt8rv6hCT379QQduzSJnCVBC3WePv3pT" # секретный ключ
             order = Order(amount=m_amount, user_id=request.user.id, status=False)
             order.save()
             m_orderid = order.id
@@ -43,7 +43,7 @@ def add_payment(request):
 @csrf_exempt
 def payeer_status(request):
     if request.method == 'POST' and 'm_operation_id' in request.POST and 'm_sign' in request.POST:
-        m_key = "secret_key" # секретный ключ
+        m_key = "Qt8rv6hCT379QQduzSJnCVBC3WePv3pT" # секретный ключ
         list_of_value_for_sign = map(str, [request.POST['m_operation_id'], request.POST['m_operation_ps'], 
         request.POST['m_operation_date'], request.POST['m_operation_pay_date'], request.POST['m_shop'], 
         request.POST['m_orderid'], request.POST['m_amount'], request.POST['m_curr'], 
