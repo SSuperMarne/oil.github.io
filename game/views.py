@@ -17,7 +17,8 @@ def panel_main(request):
 @login_required
 def panel_stats(request):
     stats = Statistic.objects.get(id=1)
-    return render(request, 'main/statistic.html', {"stats": stats})
+    users_count = Profile.objects.latest('id')
+    return render(request, 'main/statistic.html', {"stats": stats, "user_c": users_count})
 
 @login_required
 def new_support(request):
