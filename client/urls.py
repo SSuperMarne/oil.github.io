@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login/'}, name='logout'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^reg/(?P<referrer>\d+)/$', views.referral, name='refreg'),
     url(r'^password_reset/$', auth_views.password_reset, {'template_name': 'registration/passwd_reset_form.html', 
         'email_template_name': 'registration/passwd_reset_email.html', 'password_reset_form': LPasswordForm}, name='password_reset'),
     url(r'^password_reset/done/$', auth_views.password_reset_done, {'template_name': 'registration/passwd_reset_done.html'}, 

@@ -28,3 +28,9 @@ class Transfer(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     user_id = models.IntegerField()
     status = models.IntegerField()
+
+class ReferralSys(models.Model):
+    id_referral = models.IntegerField()
+    id_referrer = models.IntegerField()
+    profit = models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True)

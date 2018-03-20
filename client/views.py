@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from .forms import SignUpForm, TransferForm
-from .models import Profile, Transfer
+from .models import Profile, Transfer, ReferralSys
 from payment.models import Order
 
 def register(request):
@@ -13,14 +14,29 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
+            ref = int(form.cleaned_data.get('ref'))
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            # ReferralSys
+            if ref != 0:
+                try:
+                    referrer_check = Profile.objects.get(user_id=ref)
+                except ObjectDoesNotExist:
+                    return redirect('panel_main')
+                ref_create = ReferralSys(id_referral=user.id, id_referrer=ref, profit=0)
+                ref_create.save()
             return redirect('panel_main')
-        else:
-            return render(request, 'registration/registration.html', {'form': form})
     else:
         form = SignUpForm()
-    return render(request, 'registration/registration.html', {'form': form})
+    try:
+        referrer = request.session['ref']
+    except KeyError:
+        referrer = 0
+    return render(request, 'registration/registration.html', {'form': form, 'ref': referrer})
+
+def referral(request, referrer):
+    request.session['ref'] = referrer
+    return redirect('register')
 
 @login_required
 def u_profile(request):
