@@ -8,7 +8,7 @@
                         <div class="panel-body">
                             <h2>Добро пожаловать, <small>{{ user.username }}</small>! Мы рады видеть вас в игре.</h2>
                             <hr>
-                            <p class="text-info">Это ваш личный интерфейс для выполнения основных действий в игре.<br>Здесь вы можете общаться в онлайн-чате, пополнять баланс, выводить средства и выполнять другие необходимые для игры действия.<br>Желаем вам приятной игры!</p>
+                            <p class="text-info">Это ваш личный интерфейс для выполнения основных действий в игре.<br>Здесь вы можете общаться в онлайн-чате, пополнять баланс, выводить средства и выполнять другие необходимые для игры действия.<br>Также вы можете приглашать новых игроков на проект и получать 10% прибыль от их пополнений на сайте. Для приглашений используйте специальную ссылку, которую вы можете посмотреть в своем профиле.<br>Желаем вам приятной игры!</p>
                             <hr>
                         </div>
                     </div>
@@ -100,9 +100,96 @@
                         </div>
                         <!-- END TASKS -->
                     </div>
+                    <div class="row">
+                        <!-- REFERALLS -->
+                        <div class="col-md-6">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Мои рефералы на проекте</h3>
+                                    <div class="right">
+                                        <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                                        <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+                                    </div>
+                                </div>
+                                <div class="panel-body no-padding">
+                                    {% if payments %}
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th><i class="fa fa-user" aria-hidden="true"></i> Логин пользователя</th>
+                                                <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата регистрации</th>
+                                                <th><i class="fa fa-percent" aria-hidden="true"></i> Доход</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for p in payments %}
+                                            <tr>
+                                                <td>{{ p.id }}</td>
+                                                <td>{{ p.amount}} руб.</td>
+                                                <td>{{ p.date }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                    <p class="alert alert-warning">Вы еще не пополняли свой счет. История платежей отсутствует.</p>
+                                    {% endif %}
+                                </div>
+                                {% if payments %}
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-12"><p>Приглашайте новых игроков на проект по персональной ссылке и получайте 10% от их пополнений!<br><b><i class="fa fa-link" aria-hidden="true"></i> Ваша ссылка:</b> <span id="reflink" class="text-primary" onclick="SelectText('reflink');">https:////////////////////// <i class="fa fa-clone" aria-hidden="true"></i></span> </p></div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- END REFERALLS -->
+                        <!-- BANNERS -->
+                        <div class="col-md-6 hidden-xs hidden-sm">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Рекламные материалы</h3>
+                                    <div class="right">
+                                        <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                                        <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <a href=""><img class="img-center" src="https://pp.userapi.com/c840522/v840522678/69a5b/j2QVMgSOhbo.jpg" alt="Banner #1"></a>
+                                    <p class="sponsor-code" onclick="SelectText('sp-code');">
+                                        <code id="sp-code">&lt;a href="" target="_blank"&gt;&lt;img src=""&gt;&lt;/a&gt;</code>
+                                        <br><span class="text-primary"><i class="fa fa-clone" aria-hidden="true"></i> выделить код баннера</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END BANNERS -->
+                    </div>
                 </div>
             </div>
             <!-- END MAIN CONTENT -->
         </div>
         <!-- END MAIN -->
+{% endblock %}
+{% block jsscript %}
+<script>
+function SelectText(element) {
+    var doc = document
+        , text = doc.getElementById(element)
+        , range, selection
+    ;    
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();        
+        range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+</script>
 {% endblock %}

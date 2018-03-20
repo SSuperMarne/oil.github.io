@@ -1763,3 +1763,14 @@ ul.activity-timeline > li {
     border: 1px solid #CCC; }
 
 /*# sourceMappingURL=main.css.map */
+
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sponsor-code {
+    text-align: center;
+    margin: 10px;
+}
