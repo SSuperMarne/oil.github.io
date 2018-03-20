@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from payment.models import Order
 from client.models import Profile
-from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower
+from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower, Advertisement
 from .forms import SupportForm, ExchangeForm
 import math
 import time
@@ -12,7 +12,9 @@ import time
 @login_required
 def panel_main(request):
     payments = Order.objects.filter(user_id=request.user.id).order_by('-id')[:5]
-    return render(request, 'main/main_page.html', {"payments": payments})
+    ads = Advertisement.objects.order_by('id')
+    d = {'payments': payments, 'ads': ads}
+    return render(request, 'main/main_page.html', {"d": d})
 
 @login_required
 def panel_stats(request):

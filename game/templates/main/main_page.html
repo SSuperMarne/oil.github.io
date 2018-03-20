@@ -24,7 +24,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body no-padding">
-                                    {% if payments %}
+                                    {% if d.payments %}
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
@@ -36,7 +36,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {% for p in payments %}
+                                        {% for p in d.payments %}
                                             <tr>
                                                 <td>{{ p.id }}</td>
                                                 <td>{{ p.amount}} руб.</td>
@@ -54,7 +54,7 @@
                                     <p class="alert alert-warning">Вы еще не пополняли свой счет. История платежей отсутствует.</p>
                                     {% endif %}
                                 </div>
-                                {% if payments %}
+                                {% if d.payments %}
                                 <div class="panel-footer">
                                     <div class="row">
                                         <div class="col-md-12"><a href="{% url 'payment_history' %}" class="btn btn-primary">Посмотреть все платежи</a></div>
@@ -101,7 +101,7 @@
                         <!-- END TASKS -->
                     </div>
                     <div class="row">
-                        <!-- REFERALLS -->
+                        <!-- REFERALS -->
                         <div class="col-md-6">
                             <div class="panel">
                                 <div class="panel-heading">
@@ -132,19 +132,17 @@
                                         </tbody>
                                     </table>
                                     {% else %}
-                                    <p class="alert alert-warning">Вы еще не пополняли свой счет. История платежей отсутствует.</p>
+                                    <p class="alert alert-info">У вас еще нет рефералов. Приглашайте новых игроков с помощью ссылки ниже!</p>
                                     {% endif %}
                                 </div>
-                                {% if payments %}
                                 <div class="panel-footer">
                                     <div class="row">
                                         <div class="col-md-12"><p>Приглашайте новых игроков на проект по персональной ссылке и получайте 10% от их пополнений!<br><b><i class="fa fa-link" aria-hidden="true"></i> Ваша ссылка:</b> <span id="reflink" class="text-primary" onclick="SelectText('reflink');">https:////////////////////// <i class="fa fa-clone" aria-hidden="true"></i></span> </p></div>
                                     </div>
                                 </div>
-                                {% endif %}
                             </div>
                         </div>
-                        <!-- END REFERALLS -->
+                        <!-- END REFERALS -->
                         <!-- BANNERS -->
                         <div class="col-md-6 hidden-xs hidden-sm">
                             <div class="panel">
@@ -156,11 +154,13 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <a href=""><img class="img-center" src="https://pp.userapi.com/c840522/v840522678/69a5b/j2QVMgSOhbo.jpg" alt="Banner #1"></a>
-                                    <p class="sponsor-code" onclick="SelectText('sp-code');">
-                                        <code id="sp-code">&lt;a href="" target="_blank"&gt;&lt;img src=""&gt;&lt;/a&gt;</code>
+                                    {% for a in d.ads %}
+                                    <a href="{{ a.url }}" target="_blank"><img class="img-center" src="{{ a.img.url }}" alt="Banner #{{ forloop.counter }}"></a>
+                                    <p class="sponsor-code" onclick="SelectText('sp-code-{{ forloop.counter }}');">
+                                        <code id="sp-code-{{ forloop.counter }}">&lt;a href="{{ a.url }}" target="_blank"&gt;&lt;img src="https://oil-game.win{{ a.img.url }}"&gt;&lt;/a&gt;</code>
                                         <br><span class="text-primary"><i class="fa fa-clone" aria-hidden="true"></i> выделить код баннера</span>
                                     </p>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
