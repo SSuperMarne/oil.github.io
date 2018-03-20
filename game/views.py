@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from payment.models import Order
-from client.models import Profile
+from client.models import Profile, ReferralSys
 from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower, Advertisement
 from .forms import SupportForm, ExchangeForm
 import math
@@ -13,7 +13,8 @@ import time
 def panel_main(request):
     payments = Order.objects.filter(user_id=request.user.id).order_by('-id')[:5]
     ads = Advertisement.objects.order_by('id')
-    d = {'payments': payments, 'ads': ads}
+    refs = ReferralSys.objects.filter(id_referrer=request.user.id).order_by('-id')
+    d = {'payments': payments, 'ads': ads, 'refs': refs}
     return render(request, 'main/main_page.html', {"d": d})
 
 @login_required

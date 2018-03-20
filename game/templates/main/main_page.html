@@ -112,21 +112,21 @@
                                     </div>
                                 </div>
                                 <div class="panel-body no-padding">
-                                    {% if payments %}
+                                    {% if d.refs %}
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th><i class="fa fa-user" aria-hidden="true"></i> Логин пользователя</th>
+                                                <th><i class="fa fa-user" aria-hidden="true"></i> ID реферала</th>
                                                 <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата регистрации</th>
                                                 <th><i class="fa fa-percent" aria-hidden="true"></i> Доход</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {% for p in payments %}
+                                        {% for r in d.refs %}
                                             <tr>
-                                                <td>{{ p.id }}</td>
-                                                <td>{{ p.amount}} руб.</td>
-                                                <td>{{ p.date }}</td>
+                                                <td>#{{ r.id_referral }}</td>
+                                                <td>{{ r.date }}</td>
+                                                <td>{{ r.profit }} руб.</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="panel-footer">
                                     <div class="row">
-                                        <div class="col-md-12"><p>Приглашайте новых игроков на проект по персональной ссылке и получайте 10% от их пополнений!<br><b><i class="fa fa-link" aria-hidden="true"></i> Ваша ссылка:</b> <span id="reflink" class="text-primary" onclick="SelectText('reflink');">https:////////////////////// <i class="fa fa-clone" aria-hidden="true"></i></span> </p></div>
+                                        <div class="col-md-12"><p>Приглашайте новых игроков на проект по персональной ссылке и получайте 10% от их пополнений!<br><b><i class="fa fa-link" aria-hidden="true"></i> Ваша ссылка:</b> <span id="reflink" class="text-primary" onclick="SelectText('reflink');">https://oil-game.win{% url 'refreg' referrer=user.id %} <i class="fa fa-clone" aria-hidden="true"></i></span> </p></div>
                                     </div>
                                 </div>
                             </div>
