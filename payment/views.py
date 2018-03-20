@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Order
 from .forms import ReplenishForm
-from client.models import Profile
+from client.models import Profile, ReferralSys
 from game.models import Statistic
 import base64
 import hashlib
@@ -64,6 +65,16 @@ def payeer_status(request):
             s = Statistic.objects.get(id=1)
             s.donated = s.donated + order.amount
             s.save()
+            # ReferralSys
+            try:
+                r = ReferralSys.objects.get(id_referral=order.user_id)
+            except ObjectDoesNotExist:
+                return HttpResponse(str(success))
+            r.profit = r.profit + order.amount
+            r.save()
+            r_referrer = Profile.objects.get(user_id=r.id_referrer)
+            r_referrer.balance = r_referrer.balance + order.amount / 10
+            r_referrer.save()
             return HttpResponse(str(success))
         if request.POST['m_sign'] == sign and request.POST['m_status'] == "fail":
             fail = request.POST['m_orderid'] + ".|fail"
