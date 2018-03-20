@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    balance = models.IntegerField(default=0, blank=False)
+    balance = models.IntegerField(default=50, blank=False)
     oil = models.IntegerField(default=0, blank=False)
     stat_tower = models.IntegerField(default=0, blank=False)
     stat_produced = models.IntegerField(default=0, blank=False)
