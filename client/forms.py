@@ -10,7 +10,7 @@ STATUS_CHOICES = (
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Пожалуйста, укажите верный E-mail адрес.')
-    #captcha = ReCaptchaField()
+    captcha = ReCaptchaField()
     ref = forms.IntegerField(min_value=0)
 
     class Meta:
