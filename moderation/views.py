@@ -47,6 +47,7 @@ def support_del(request, pk):
 def transfer_change(request, status, pk):
     if request.user.is_staff:
         transfer = get_object_or_404(Transfer, pk=pk)
+        client = User.objects.get(id=transfer.user_id)
         if status == "accept":
             transfer.status = 1
             transfer.save()
@@ -55,7 +56,6 @@ def transfer_change(request, status, pk):
             stat.exchanged = stat.exchanged + transfer.amount
             stat.save()
             # Statistic user
-            client = User.objects.get(id=transfer.user_id)
             client.profile.stat_payout = client.profile.stat_payout + transfer.amount
             client.save()
             messages.add_message(request, messages.INFO, "Статус заявки успешно изменен")
@@ -63,7 +63,6 @@ def transfer_change(request, status, pk):
             transfer.status = 2
             transfer.save()
             # Back to client balance
-            client = User.objects.get(id=transfer.user_id)
             client.profile.balance = client.profile.balance + transfer.amount
             client.save()
             messages.add_message(request, messages.INFO, "Статус заявки успешно изменен. Деньги возвращены на баланс клиента.")
