@@ -21,16 +21,17 @@ def panel_main(request):
 def panel_stats(request):
     try:
         main_stats = Statistic.objects.get(id=1)
-        last_order = Order.objects.filter(status=False).latest('id')
+        last_order = Order.objects.filter(status=True).latest('id')
         last_withdraw = Transfer.objects.filter(status=1).latest('id')
     except ObjectDoesNotExist:
-        main_stats = last_order = last_withdraw = 0
-    finally:
+        main_stats = users_count = last_order = last_withdraw = order_login = wd_login = 0
+    else:
         users_count = Profile.objects.latest('id')
         order_login = Profile.objects.get(user_id=last_order.user_id)
         wd_login = Profile.objects.get(user_id=last_withdraw.user_id)
-    d = {'stats': main_stats, 'u_count': users_count, 'last_o': last_order, 'last_wd': last_withdraw, 'last_o_login': order_login, 'last_wd_login': wd_login}
-    return render(request, 'main/statistic.html', {"d": d})
+    finally:
+        d = {'stats': main_stats, 'u_count': users_count, 'last_o': last_order, 'last_wd': last_withdraw, 'last_o_login': order_login, 'last_wd_login': wd_login}
+        return render(request, 'main/statistic.html', {"d": d})
 
 @login_required
 def new_support(request):
