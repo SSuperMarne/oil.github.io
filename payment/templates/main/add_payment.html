@@ -9,7 +9,7 @@
                             <h3 class="panel-title">Пополнение баланса аккаунта</h3>
                         </div>
                         <div class="panel-body">
-                            <p class="alert alert-success">Мы принимаем к оплате платежную систему <b>Payeer</b><br>Ваш текущий баланс - <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i></b> руб.</p>
+                            <p class="alert alert-success">Мы принимаем к оплате платежную систему <b>Payeer</b><br>Ваш текущий баланс: <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i></b> руб.</p>
                             {% if messages %}{% for message in messages %}
                             <p class="alert alert-danger">{{ message }}</p>
                             {% endfor %}{% endif %}
