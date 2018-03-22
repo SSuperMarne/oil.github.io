@@ -14,7 +14,7 @@ class Support(models.Model):
 
 class Tower(models.Model):
     name = models.CharField(max_length=30, unique=True, help_text="Укажите название вышки")
-    oil = models.IntegerField(help_text="Производительность нефти в час (укажите число)")
+    oil = models.IntegerField(help_text="Производительность нефти в 24 часа (укажите число)")
     price = models.IntegerField(help_text="Цена за 1 шт. (укажите число)")
     img = models.ImageField(upload_to='towers', help_text="Изображение вышки")
 

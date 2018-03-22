@@ -18,7 +18,7 @@
                         <h3>Ваши башни <a style="font-size: 0.8em;" onClick="window.location.reload()" title="Обновить таблицу"><i class="fa fa-refresh"></i></a></h3>
                             <div class="table-responsive">
                                 <table class="table table-hover">
-                                   <tr><th><i class="fa fa-list"></i> Название башни</th><th><i class="fa fa-money"></i> Нефти в час</th><th><i class="fa fa-clock-o"></i> Добудет нефть через</th><th><i class="fa fa-check-circle"></i> Действия</th></tr>
+                                   <tr><th><i class="fa fa-list"></i> Название башни</th><th><i class="fa fa-money"></i> Нефти в день</th><th><i class="fa fa-clock-o"></i> Добудет нефть через</th><th><i class="fa fa-check-circle"></i> Действия</th></tr>
                                     {% if towers %}
                                     {% for t in towers %}
                                     <tr><td>{{ t.tower_name }}</td><td>{{ t.tower_oil }} ед.</td><td name="wtime">{{ t.work }}</td><td><a href="/inventory/get/{{ t.id }}/" class="btn btn-success" style="padding: 4px 12px;" name="gets">Забрать нефть</a></td></tr>
@@ -42,11 +42,11 @@
     var d = new Date();
     for (var i = 0; i < w.length; i++) {
       var r = w[i].innerHTML - Math.round(d.valueOf() / 1000);
-      var g = Math.round(r / 60);
+      var g = Math.round(r / 60 / 60);
       if (g <= 0) {
         w[i].innerHTML = "<em>Ожидает сбора</em>";
       } else {
-        w[i].innerHTML = g + " минут(ы)";
+        w[i].innerHTML = g + " час(а)";
         b[i].className += " disabled";
       }
     }

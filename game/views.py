@@ -69,7 +69,7 @@ def shop(request):
 @login_required
 def buy(request, category, goods):
     client = Profile.objects.get(user_id=request.user.id)
-    timed = lambda: int(round(time.time() + 3600))
+    timed = lambda: int(round(time.time() + 86400)) # 86400 sec. - 1 day
     if category == "0":
         # if category - Towers
         good = get_object_or_404(Tower, id=goods)
@@ -125,7 +125,7 @@ def get_oil(request, pk):
         client.oil = client.oil + a.tower_oil
         client.stat_produced = client.stat_produced + a.tower_oil # stats
         client.save()
-        a.work = timed() + 3600
+        a.work = timed() + 86400
         a.save()
         # Statistic global
         stat = Statistic.objects.get(id=1)
