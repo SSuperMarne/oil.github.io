@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from payment.models import Order
-from client.models import Profile, ReferralSys
+from client.models import Profile, ReferralSys, Transfer
 from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower, Advertisement
 from .forms import SupportForm, ExchangeForm
 import math
@@ -19,9 +20,18 @@ def panel_main(request):
 
 @login_required
 def panel_stats(request):
-    stats = Statistic.objects.get(id=1)
-    users_count = Profile.objects.latest('id')
-    return render(request, 'main/statistic.html', {"stats": stats, "user_c": users_count})
+    try:
+        main_stats = Statistic.objects.get(id=1)
+        last_order = Order.objects.filter(status=False).latest('id')
+        last_withdraw = Transfer.objects.filter(status=1).latest('id')
+    except ObjectDoesNotExist:
+        main_stats = last_order = last_withdraw = 0
+    finally:
+        users_count = Profile.objects.latest('id')
+        order_login = Profile.objects.get(user_id=last_order.user_id)
+        wd_login = Profile.objects.get(user_id=last_withdraw.user_id)
+    d = {'stats': main_stats, 'u_count': users_count, 'last_o': last_order, 'last_wd': last_withdraw, 'last_o_login': order_login, 'last_wd_login': wd_login}
+    return render(request, 'main/statistic.html', {"d": d})
 
 @login_required
 def new_support(request):
