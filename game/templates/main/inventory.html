@@ -11,7 +11,7 @@
                             <p class="panel-subtitle">Управляйте вашей недвижимостью</p>
                         </div>
                         <div class="panel-body">
-                        <p class="alert alert-info">Текущее количество нефти у вас - <b>{{ user.profile.oil }}</b> единиц<br><a href="{% url 'exchange' %}">Нажмите здесь</a>, чтобы обменять нефть на рубли.</p>
+                        <p class="alert alert-info">Текущее количество нефти у вас: <b>{{ user.profile.oil }} единиц</b><br><a href="{% url 'exchange' %}">Нажмите здесь</a>, чтобы обменять нефть на рубли.</p>
                         {% if messages %}{% for message in messages %}
                         <p class="alert alert-danger">{{ message }}</p>
                         {% endfor %}{% endif %}
