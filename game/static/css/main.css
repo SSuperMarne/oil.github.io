@@ -1774,3 +1774,7 @@ ul.activity-timeline > li {
     text-align: center;
     margin: 10px;
 }
+
+.pay-form div {
+    margin: 10px 0;
+}

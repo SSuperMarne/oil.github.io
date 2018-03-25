@@ -37,9 +37,7 @@ def add_payment(request):
             return render(request, 'payment/process.html', {'context': context})
         else:
             messages.add_message(request, messages.ERROR, "Введено неверное значение. Действие отменено.")
-            return redirect('payment')
-    else:
-        return render(request, 'main/add_payment.html')
+    return render(request, 'main/add_payment.html')
 
 @csrf_exempt
 def payeer_status(request):

@@ -9,19 +9,30 @@
                             <h3 class="panel-title">Пополнение баланса аккаунта</h3>
                         </div>
                         <div class="panel-body">
-                            <p class="alert alert-success">Мы принимаем к оплате платежную систему <b>Payeer</b><br>Ваш текущий баланс: <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i> руб.</b></p>
+                            <p class="alert alert-success">Пожалуйста, выберите удобную вам платежную систему.<br>Ваш текущий баланс: <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i> руб.</b></p>
                             {% if messages %}{% for message in messages %}
                             <p class="alert alert-danger">{{ message }}</p>
                             {% endfor %}{% endif %}
-                            <form class="form-inline" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="m_desc" value="Пополнение баланса пользователя {{ user.username }}">
-                              <div class="form-group">
-                                <label class="sr-only" for="change">Сумма для обмена</label>
-                                <input name="m_amount" type="number" class="form-control" id="change" min="0" placeholder="Сумма (в руб.)">
-                              </div>
-                              <button name="m_process" type="submit" class="btn btn-default">Пополнить</button>
-                            </form>
+                            <div class="row">
+                                <div class="col-md-5 col-lg-3 pay-form">
+                                    <form method="POST">
+                                      {% csrf_token %}
+                                      <input type="hidden" name="desc" value="Пополнение баланса пользователя {{ user.username }}">
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-rub" aria-hidden="true"></i></span>
+                                        <input name="amount" type="number" class="form-control" id="change" min="0" placeholder="Сумма пополнения (в руб.)" autofocus>
+                                      </div>
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-cog" aria-hidden="true"></i></span>
+                                        <select name="system" id="system" class="form-control">
+                                          <option value="1">Free-Kassa (большинство способов оплаты)</option>
+                                          <option value="2">Payeer</option>
+                                        </select>
+                                      </div>
+                                      <button type="submit" class="btn btn-default">Пополнить счет</button>
+                                    </form>
+                                </div>         
+                            </div>
                         </div>
                     </div>
                 </div>
