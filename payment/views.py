@@ -26,30 +26,23 @@ def add_payment(request):
             amount = form.cleaned_data.get('amount')
             system = form.cleaned_data.get('system')
             description = "Пополнение баланса пользователя %s" % request.user.username
+            # Создание платежа
+            order = Order(amount=amount, user_id=request.user.id, status=False)
+            order.save()
+            m_orderid = order.id
             # Free-Kassa
             if system == "1":
-                m_desc = base64.b64encode(description.encode('utf-8')).decode('utf-8')
-                order = Order(amount=amount, user_id=request.user.id, status=False)
-                order.save()
-                m_orderid = order.id
-                # требование Payeer добавлять .00 у суммы
-                m_amount = str(amount) + ".00"
                 # создание подписи #
-                list_of_value_for_sign = map(str, [FREEKASSA_SHOP_ID, m_orderid, m_amount, PAYEER_CURR, m_desc, FREEKASSA_SECRET])
-                result_string = ":".join(list_of_value_for_sign).encode()
-                sign_hash = hashlib.sha256(result_string)
-                sign = sign_hash.hexdigest().upper()
+                list_for_sign = map(str, [FREEKASSA_SHOP_ID, amount, FREEKASSA_SECRET, m_orderid])
+                result_string = ":".join(list_for_sign).encode()
+                sign_hash = hashlib.md5(result_string)
+                sign = sign_hash.hexdigest()
                 # конец создания подписи #
-                context = [{'m_shop': FREEKASSA_SHOP_ID, 'm_orderid': m_orderid, 'm_amount': m_amount, 'm_curr': PAYEER_CURR, 'm_desc': m_desc, 'm_sign': sign}]
-                return render(request, 'payment/process_freekassa.html', {'context': context})
+                return redirect("https://www.free-kassa.ru/merchant/cash.php?m={0}&oa={1}&o={2}&s={3}".format(FREEKASSA_SHOP_ID, amount, m_orderid, sign))
             # Payeer
             elif system == "2":
                 m_desc = base64.b64encode(description.encode('utf-8')).decode('utf-8')
-                order = Order(amount=amount, user_id=request.user.id, status=False)
-                order.save()
-                m_orderid = order.id
-                # требование Payeer добавлять .00 у суммы
-                m_amount = str(amount) + ".00"
+                m_amount = str(amount) + ".00" # требование Payeer
                 # создание подписи #
                 list_of_value_for_sign = map(str, [PAYEER_SHOP_ID, m_orderid, m_amount, PAYEER_CURR, m_desc, PAYEER_SECRET])
                 result_string = ":".join(list_of_value_for_sign).encode()
