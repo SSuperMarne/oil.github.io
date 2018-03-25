@@ -95,6 +95,39 @@ def payeer_status(request):
     else:
         return redirect('landing_main')
 
+@csrf_exempt
+def fk_status(request):
+    if request.method == 'POST' and 'MERCHANT_ORDER_ID' in request.POST:
+        list_for_sign = map(str, [FREEKASSA_SHOP_ID, request.POST['AMOUNT'], FREEKASSA_SECRET, request.POST['MERCHANT_ORDER_ID']])
+        result_string = ":".join(list_for_sign).encode()
+        sign_hash = hashlib.md5(result_string)
+        sign = sign_hash.hexdigest()
+        if request.POST['SIGN'] == sign:
+            order = Order.objects.get(id=request.POST['MERCHANT_ORDER_ID'])
+            client = Profile.objects.get(user_id=order.user_id)
+            client.balance += order.amount  # add balance
+            client.stat_pay += order.amount  # add stat
+            client.save()
+            order.status = True
+            order.save()
+            # statistics
+            s = Statistic.objects.get(id=1)
+            s.donated += order.amount
+            s.save()
+            # ReferralSys
+            try:
+                r = ReferralSys.objects.get(id_referral=order.user_id)
+            except ObjectDoesNotExist:
+                return HttpResponse(str(success))
+            r.profit += order.amount
+            r.save()
+            r_referrer = Profile.objects.get(user_id=r.id_referrer)
+            r_referrer.balance = r_referrer.balance + order.amount / 10
+            r_referrer.save()
+            return HttpResponse("YES")
+    else:
+        return redirect('landing_main')
+
 def payment_status(request, status):
     if status == "success":
         messages.add_message(request, messages.INFO, "Оплата была успешно завершена. Спасибо за покупку.")
