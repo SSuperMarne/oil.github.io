@@ -38,7 +38,7 @@ def add_payment(request):
                 sign_hash = hashlib.md5(result_string)
                 sign = sign_hash.hexdigest()
                 # конец создания подписи #
-                return redirect("https://www.free-kassa.ru/merchant/cash.php?m={0}&oa={1}&o={2}&s={3}".format(FREEKASSA_SHOP_ID, amount, m_orderid, sign))
+                return redirect("https://www.free-kassa.ru/merchant/cash.php?m={0}&oa={1}&o={2}&s={3}&em={4}".format(FREEKASSA_SHOP_ID, amount, m_orderid, sign, request.user.email))
             # Payeer
             elif system == "2":
                 m_desc = base64.b64encode(description.encode('utf-8')).decode('utf-8')
