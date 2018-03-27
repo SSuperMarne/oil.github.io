@@ -118,7 +118,7 @@ def fk_status(request):
             try:
                 r = ReferralSys.objects.get(id_referral=order.user_id)
             except ObjectDoesNotExist:
-                return HttpResponse(str(success))
+                return HttpResponse("YES")
             r.profit += order.amount
             r.save()
             r_referrer = Profile.objects.get(user_id=r.id_referrer)
