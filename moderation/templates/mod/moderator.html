@@ -73,7 +73,7 @@
                                             {% for d in draws %}
                                             <tr>
                                                 <td>{{ d.id }}</td>
-                                                <td>{{ d.user_id }} (ID)</td>
+                                                <td>{{ d.user.username }}</td>
                                                 <td>{{ d.amount }} руб.</td>
                                                 <td>{% if d.system == "1" %}Payeer{% elif d.system == "2" %}QIWI{% elif d.system == "3" %}WebMoney{% endif %}</td>
                                                 <td>{{ d.vault }}</td>

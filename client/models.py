@@ -33,6 +33,9 @@ class Transfer(models.Model):
     status = models.IntegerField()
 
 class ReferralSys(models.Model):
+    @property
+    def user(self):
+        return User.objects.get(pk=self.id_referral)
     id_referral = models.IntegerField()
     id_referrer = models.IntegerField()
     profit = models.IntegerField()

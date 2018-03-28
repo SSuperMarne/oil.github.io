@@ -116,7 +116,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th><i class="fa fa-user" aria-hidden="true"></i> ID реферала</th>
+                                                <th><i class="fa fa-user" aria-hidden="true"></i> Логин реферала</th>
                                                 <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата регистрации</th>
                                                 <th><i class="fa fa-percent" aria-hidden="true"></i> Доход</th>
                                             </tr>
@@ -124,7 +124,7 @@
                                         <tbody>
                                         {% for r in d.refs %}
                                             <tr>
-                                                <td>#{{ r.id_referral }}</td>
+                                                <td>{{ r.user.username }}</td>
                                                 <td>{{ r.date }}</td>
                                                 <td>{{ r.profit }} руб.</td>
                                             </tr>
