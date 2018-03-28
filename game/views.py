@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Max
 from payment.models import Order
 from client.models import Profile, ReferralSys, Transfer
 from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower, Advertisement
@@ -23,14 +24,17 @@ def panel_stats(request):
         main_stats = Statistic.objects.get(id=1)
         last_order = Order.objects.filter(status=True).latest('id')
         last_withdraw = Transfer.objects.filter(status=1).latest('id')
+        top5_orders = Order.objects.filter(status=True).order_by('-amount')[:5]
+        top5_wds = Transfer.objects.filter(status=1).order_by('-amount')[:5]
     except ObjectDoesNotExist:
-        main_stats = users_count = last_order = last_withdraw = order_login = wd_login = 0
+        top5_orders = top5_wds = main_stats = users_count = last_order = last_withdraw = order_login = wd_login = 0
     else:
         users_count = Profile.objects.latest('id')
         order_login = Profile.objects.get(user_id=last_order.user_id)
         wd_login = Profile.objects.get(user_id=last_withdraw.user_id)
     finally:
-        d = {'stats': main_stats, 'u_count': users_count, 'last_o': last_order, 'last_wd': last_withdraw, 'last_o_login': order_login, 'last_wd_login': wd_login}
+        d = {'stats': main_stats, 'u_count': users_count, 'last_o': last_order, 'last_wd': last_withdraw, 
+        'last_o_login': order_login, 'last_wd_login': wd_login, 'top5_ords': top5_orders, 'top5_wds': top5_wds}
         return render(request, 'main/statistic.html', {"d": d})
 
 @login_required
