@@ -1,4 +1,4 @@
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['oil-game.win', 'www.oil-game.win']
 ADMINS = [('Dmitry', 'd@dmitry.win')]
 MANAGERS = ADMINS
