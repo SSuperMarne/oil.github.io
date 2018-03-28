@@ -104,7 +104,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center"><i class="fa fa-star" aria-hidden="true"></i> Место в рейтинге</th>
-                                                <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Идентификатор пользователя</th>
+                                                <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Логин пользователя</th>
                                                 <th class="text-center"><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
                                                 <th class="text-center"><i class="fa fa-calendar" aria-hidden="true"></i> Дата операции</th>
                                             </tr>
@@ -113,7 +113,7 @@
                                             {% for t1 in d.top5_ords %}
                                             <tr {% if forloop.counter == 1 %}class="danger"{% elif forloop.counter == 2 %}class="warning"{% elif forloop.counter == 3 %}class="success"{% else %}class="info"{% endif %}>
                                                 <td class="text-center">#{{ forloop.counter }}</td>
-                                                <td class="text-center">#{{ t1.user_id }} (логин скрыт)</td>
+                                                <td class="text-center">{{ t1.user.username }}</td>
                                                 <td class="text-center">{{ t1.amount }} руб.</td>
                                                 <td class="text-center">{{ t1.date }}</td>
                                             </tr>
@@ -127,7 +127,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center"><i class="fa fa-star" aria-hidden="true"></i> Место в рейтинге</th>
-                                                <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Идентификатор пользователя</th>
+                                                <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Логин пользователя</th>
                                                 <th class="text-center"><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
                                                 <th class="text-center"><i class="fa fa-calendar" aria-hidden="true"></i> Дата операции</th>
                                             </tr>
@@ -136,7 +136,7 @@
                                             {% for t1 in d.top5_wds %}
                                             <tr {% if forloop.counter == 1 %}class="danger"{% elif forloop.counter == 2 %}class="warning"{% elif forloop.counter == 3 %}class="success"{% else %}class="info"{% endif %}>
                                                 <td class="text-center">#{{ forloop.counter }}</td>
-                                                <td class="text-center">#{{ t1.user_id }} (логин скрыт)</td>
+                                                <td class="text-center">{{ t1.user.username }}</td>
                                                 <td class="text-center">{{ t1.amount }} руб.</td>
                                                 <td class="text-center">{{ t1.date }}</td>
                                             </tr>

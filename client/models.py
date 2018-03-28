@@ -22,6 +22,9 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 class Transfer(models.Model):
+    @property
+    def user(self):
+        return User.objects.get(pk=self.user_id)
     amount = models.IntegerField()
     system = models.CharField(max_length=16)
     vault = models.CharField(max_length=64)
