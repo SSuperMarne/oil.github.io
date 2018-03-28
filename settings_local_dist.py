@@ -1,22 +1,28 @@
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['oil-game.win', 'www.oil-game.win']
 ADMINS = [('Dmitry', 'd@dmitry.win')]
 MANAGERS = ADMINS
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = 'example_secret_key'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'base',
-        'USER': 'user',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': 'test_pipelines',
+        'USER': 'test_user',
+        'PASSWORD': 'test_user_password',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
             'sql_mode': 'traditional',
         },
+        # ONLY TEST MODE #
+        'TEST': {
+            'NAME': 'test_pipelines',
+            'CHARSET': 'UTF8',
+        },
+        # END ONLY TEST MODE #
     }
 }
 

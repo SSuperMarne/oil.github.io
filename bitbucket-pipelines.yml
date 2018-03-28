@@ -14,7 +14,7 @@ pipelines:
           - mysql
         script:
           - pip install -r requirements.txt
-          - wget https://dmitry.win/ridys/oilgame/settings_local.py
+          - mv settings_local_dist.py settings_local.py
           - python manage.py test --failfast --keepdb
 definitions: 
   services: 
