@@ -1778,3 +1778,20 @@ ul.activity-timeline > li {
 .pay-form div {
     margin: 10px 0;
 }
+
+.uprofile {
+    text-align: center;
+    color: #aeb7c2;
+    margin: 15px 0px;
+}
+
+.uprofile img {
+    width: 180px;
+    height: 180px;
+    border: 2px solid #a5a5a5;
+    border-radius: 250px;
+}
+
+.uprofile img:hover {
+    opacity: 0.8;
+}
