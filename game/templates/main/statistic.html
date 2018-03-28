@@ -65,7 +65,7 @@
                                         <span class="icon"><i class="fa fa-clock-o"></i></span>
                                         <p>
                                             <span class="number">{{ d.last_o.amount }} руб.</span>
-                                            <span class="title">Последний платеж был совершен <b>{{ d.last_o_login.user }}</b></span>
+                                            <span class="title">Последний платеж был совершен <b>{{ d.last_o.user.username }}</b></span>
                                         </p>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                         <span class="icon"><i class="fa fa-undo"></i></span>
                                         <p>
                                             <span class="number">{{ d.last_wd.amount }} руб.</span>
-                                            <span class="title">Последний вывод был совершен <b>{{ d.last_wd_login.user }}</b></span>
+                                            <span class="title">Последний вывод был совершен <b>{{ d.last_wd.user.username }}</b></span>
                                         </p>
                                     </div>
                                 </div>
