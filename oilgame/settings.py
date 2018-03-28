@@ -16,12 +16,8 @@ from settings_local import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'a5o@=0ven@2at^jo*ob*!+0(86si@86-d6hugabavwdac#=$py'
 
 # Application definition
 
@@ -116,6 +112,3 @@ if not os.path.exists(MEDIA_ROOT):
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = 'landing_main'
-RECAPTCHA_PUBLIC_KEY = '6LcEYTwUAAAAAJwSwnk0nyZCv7Dc44mjXHzgFbcg'
-RECAPTCHA_PRIVATE_KEY = '6LcEYTwUAAAAAKGt32zNCaQ3RFlWtrCmWAlKnAav'
-NOCAPTCHA = True
