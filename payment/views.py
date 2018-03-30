@@ -18,6 +18,29 @@ PAYEER_SHOP_ID = "518803834"
 PAYEER_CURR = "RUB"
 PAYEER_SECRET = "Qt8rv6hCT379QQduzSJnCVBC3WePv3pT"
 
+def add_balance(order, success):
+    client = Profile.objects.get(user_id=order.user_id)
+    client.balance += order.amount  # add balance
+    client.stat_pay += order.amount  # add stat
+    client.save()
+    order.status = True
+    order.save()
+    # statistics
+    s = Statistic.objects.get(id=1)
+    s.donated += order.amount
+    s.save()
+    # ReferralSys
+    try:
+        r = ReferralSys.objects.get(id_referral=order.user_id)
+    except ObjectDoesNotExist:
+        return HttpResponse(str(success))
+    r.profit += order.amount
+    r.save()
+    r_referrer = Profile.objects.get(user_id=r.id_referrer)
+    r_referrer.balance += order.amount / 10
+    r_referrer.save()
+    return HttpResponse(str(success))
+
 @login_required
 def add_payment(request):
     if request.method == 'POST':
@@ -54,29 +77,6 @@ def add_payment(request):
         else:
             messages.add_message(request, messages.ERROR, "Введено неверное значение. Действие отменено.")
     return render(request, 'main/add_payment.html')
-
-def add_balance(order, success):
-    client = Profile.objects.get(user_id=order.user_id)
-    client.balance += order.amount  # add balance
-    client.stat_pay += order.amount  # add stat
-    client.save()
-    order.status = True
-    order.save()
-    # statistics
-    s = Statistic.objects.get(id=1)
-    s.donated += order.amount
-    s.save()
-    # ReferralSys
-    try:
-        r = ReferralSys.objects.get(id_referral=order.user_id)
-    except ObjectDoesNotExist:
-        return HttpResponse(str(success))
-    r.profit += order.amount
-    r.save()
-    r_referrer = Profile.objects.get(user_id=r.id_referrer)
-    r_referrer.balance += order.amount / 10
-    r_referrer.save()
-    return HttpResponse(str(success))
 
 @csrf_exempt
 def payeer_status(request):
