@@ -91,7 +91,7 @@
                                 <div class="col-md-9">
                                     <h4>Список заявок на вывод средств</h4>
                                     <p class="text-info">Здесь мы отображаем все заявки на вывод средств. Вам необходимо произвести выплату средств и нажать кнопку одобрения платежа.</p>
-                                    <div class="table-responsive">
+                                    <div class="table-responsive" id="draws">
                                         <table class="table table-hover">
                                            <tr><th>ID</th><th>Клиент</th><th><i class="fa fa-credit-card"></i> Сумма</th><th><i class="fa fa-cog"></i> Система</th><th><i class="fa fa-money"></i> Номер кошелька</th><th><i class="fa fa-calendar"></i> Дата создания</th><th><i class="fa fa-hourglass-start"></i> Статус платежа</th></tr>
                                             {% for d in draws %}
@@ -108,6 +108,18 @@
                                             {% endfor %}
                                         </table>
                                     </div>
+                                    <ul class="pagination paginator-center">
+                                        {% if draws.has_previous %}
+                                            <li><a href="?draws={{ draws.previous_page_number }}#draws">Назад</a></li>
+                                        {% endif %}
+                                        {% for page in draws.paginator.page_range %}
+                                            <li class="{% if draws.number == page  %}active{% endif %}"><a href="?draws={{ page }}#draws">{{ page }}</a></li>
+                                        {% endfor %}
+
+                                        {% if draws.has_next %}
+                                            <li> <a href="?draws={{ draws.next_page_number }}#draws">Далее</a></li>
+                                        {% endif %}
+                                    </ul>
                                 </div>
                             </div>
                         </div>

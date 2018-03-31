@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
 from game.models import Support, Statistic
@@ -12,8 +13,11 @@ from .forms import ModifyForm, NicknameForm
 def moderation(request):
     # Статусы платежей: 1 - выплачено, 2 - отклонено, 3 - обработка
     if request.user.is_staff:
-        draws = Transfer.objects.all().order_by('-id')
+        total_draws = Transfer.objects.all().order_by('-id')
         tickets = Support.objects.all().order_by('-id')
+        paginator = Paginator(total_draws, 10)
+        page = request.GET.get('draws')
+        draws = paginator.get_page(page)
         return render(request, 'mod/moderator.html', {'draws': draws, 'tickets': tickets})
     else:
         raise PermissionDenied
