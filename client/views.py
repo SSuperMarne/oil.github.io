@@ -8,6 +8,9 @@ from .models import Profile, Transfer, ReferralSys
 from payment.views import create_pay_sign
 from payment.models import Order
 
+"""
+Registration
+"""
 def register(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -18,7 +21,7 @@ def register(request):
             ref = int(form.cleaned_data.get('ref'))
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            # ReferralSys
+            # ReferralSystem
             if ref != 0:
                 try:
                     referrer_check = Profile.objects.get(user_id=ref)
@@ -39,15 +42,16 @@ def referral(request, referrer):
     request.session['ref'] = referrer
     return redirect('register')
 
+"""
+User profiles
+"""
 @login_required
 def u_profile(request):
     return render(request, 'main/profile.html')
 
-@login_required
-def payment_history(request):
-    payments = Order.objects.order_by('-id').filter(user_id=request.user.id)
-    return render(request, 'main/history.html', {'payments': payments})
-
+"""
+The function of the exchanger
+"""
 @login_required
 def transfer(request):
     if request.method == 'POST':
@@ -69,6 +73,9 @@ def transfer(request):
     history = Transfer.objects.order_by('-id').filter(user_id=request.user.id)[:10]
     return render(request, 'main/transfer.html', {'history': history})
 
+"""
+Management of customers payments
+"""
 @login_required
 def supplement(request, order):
     try:
@@ -78,3 +85,8 @@ def supplement(request, order):
         return redirect('payment_history')
     else:
         return create_pay_sign(request, check_payment.amount, "1", check_payment.id)
+
+@login_required
+def payment_history(request):
+    payments = Order.objects.order_by('-id').filter(user_id=request.user.id)
+    return render(request, 'main/history.html', {'payments': payments})
