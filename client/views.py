@@ -50,7 +50,7 @@ def u_profile(request):
     return render(request, 'main/profile.html')
 
 """
-The function of the exchanger
+The function for withdraw
 """
 @login_required
 def transfer(request):

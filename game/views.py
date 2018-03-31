@@ -35,6 +35,17 @@ def panel_stats(request):
         return render(request, 'main/statistic.html', {"d": d})
 
 @login_required
+def shop(request):
+    factories = Factory.objects.order_by('id')[:5]
+    towers = Tower.objects.order_by('id')[:5]
+    return render(request, 'main/shop.html', {'factories': factories, 'towers': towers})
+
+@login_required
+def inventory(request):
+    towers = ClientTower.objects.filter(user_id=request.user.id)
+    return render(request, 'main/inventory.html', {'towers': towers})
+
+@login_required
 def new_support(request):
     if request.method == 'POST':
         form = SupportForm(request.POST)
@@ -70,12 +81,6 @@ def exchange(request):
         else:
             messages.add_message(request, messages.ERROR, "Введено неверное значение. Действие отменено.")
     return render(request, 'main/exchanger.html', {'made': client_rubs()})
-
-@login_required
-def shop(request):
-    factories = Factory.objects.order_by('id')[:5]
-    towers = Tower.objects.order_by('id')[:5]
-    return render(request, 'main/shop.html', {'factories': factories, 'towers': towers})
 
 @login_required
 def buy(request, category, goods):
@@ -117,11 +122,6 @@ def buy(request, category, goods):
                 client.save()
                 messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
     return redirect('shop')
-
-@login_required
-def inventory(request):
-    towers = ClientTower.objects.filter(user_id=request.user.id)
-    return render(request, 'main/inventory.html', {'towers': towers})
 
 @login_required
 def get_oil(request, pk):
