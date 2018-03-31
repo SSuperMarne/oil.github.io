@@ -12,3 +12,11 @@ class Order(models.Model):
 
     def __str__(self):
         return self.id
+
+class Promotion(models.Model):
+    name = models.CharField(max_length=64, unique=True, help_text="Укажите название акции. Оно будет видно только вам.")
+    description = models.TextField(help_text="Система будет отображать этот текст пользователям при пополнении счёта. HTML-коды разрешены.")
+    promo = models.PositiveSmallIntegerField(help_text="Бонус при пополнении в процентах")
+
+    def __str__(self):
+        return self.name
