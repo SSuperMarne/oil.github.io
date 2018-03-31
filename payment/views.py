@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Order
+from .models import Order, Promotion
 from .forms import ReplenishForm
 from client.models import Profile, ReferralSys
 from game.models import Statistic
@@ -71,18 +71,26 @@ Other payments function
 """
 @login_required
 def add_payment(request):
+    try:
+        promotion = Promotion.objects.latest('id')
+    except ObjectDoesNotExist:
+        promotion = 0
     if request.method == 'POST':
         form = ReplenishForm(request.POST)
         if form.is_valid():
             amount = form.cleaned_data.get('amount')
             system = form.cleaned_data.get('system')
+            if promotion:
+                promo = amount * promotion.promo / 100
+                amount += promo
+                amount = round(amount)
             # Создание платежа
             order = Order(amount=amount, user_id=request.user.id, status=False)
             order.save()
             return create_pay_sign(request, amount, system, order.id)
         else:
             messages.add_message(request, messages.ERROR, "Введено неверное значение. Действие отменено.")
-    return render(request, 'main/add_payment.html')
+    return render(request, 'main/add_payment.html', {'promo': promotion})
 
 @csrf_exempt
 def payeer_status(request):
