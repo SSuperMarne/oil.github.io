@@ -47,7 +47,7 @@
                                                 <td><span class="label label-warning">НЕ ОПЛАЧЕНО</span></td>                                                
                                                 {% endif %}
                                                 <td>
-                                                    {% if not p.status %}<a href="#"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></a>{% endif %}
+                                                    {% if not p.status %}<a href="{% url 'supplement' order=p.id %}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></a>{% endif %}
                                                     <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                 </td>
                                             </tr>

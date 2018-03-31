@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import SignUpForm, TransferForm
 from .models import Profile, Transfer, ReferralSys
+from payment.views import create_pay_sign
 from payment.models import Order
 
 def register(request):
@@ -67,3 +68,13 @@ def transfer(request):
             messages.add_message(request, messages.ERROR, "Для вывода средств необходимо пополнить баланс минимум на 10 рублей, а также добыть 50 ед. нефти.")
     history = Transfer.objects.order_by('-id').filter(user_id=request.user.id)[:10]
     return render(request, 'main/transfer.html', {'history': history})
+
+@login_required
+def supplement(request, order):
+    try:
+        check_payment = Order.objects.get(pk=order, user_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.ERROR, "Платеж не найден.")
+        return redirect('payment_history')
+    else:
+        return create_pay_sign(request, check_payment.amount, "1", check_payment.id)
