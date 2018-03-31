@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 from settings_local import *
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -112,3 +113,11 @@ if not os.path.exists(MEDIA_ROOT):
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = 'landing_main'
+
+# Messages compatibility with Bootstrap
+MESSAGE_TAGS = {
+    messages.INFO: 'info',
+    messages.WARNING: 'warning',
+    messages.SUCCESS: 'success',
+    messages.ERROR: 'danger',
+}
