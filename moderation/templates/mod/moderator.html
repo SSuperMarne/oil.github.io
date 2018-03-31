@@ -6,31 +6,55 @@
                 <div class="container-fluid">
                     <div class="panel">
                         <div class="panel-heading">
+                            <h3 class="panel-title">Панель управления игроками</h3>
+                        </div>
+                        <div class="panel-body">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4>Информация о рефералах игрока</h4>
+                                    <p class="text-info">Мы отобразим здесь подробную информацию о рефералах пользователя. Вам необходимо указать логин.</p>
+                                    <form method="POST" action="{% url 'mod_act' action='referrals' %}">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Проверить рефералов</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-4">
+                                    <h4>Управление средствами игроков</h4>
+                                    <p class="text-info">Здесь вы можете изменить значение валют у игрока. Для того чтобы вычесть валюту у игрока напишите отрицательное значение числа.</p>
+                                    <form method="POST" action="{% url 'mod_act' action='modify' %}">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                        <br>
+                                        <input type="number" class="form-control" name="oil" placeholder="Изменить нефть">
+                                        <br>
+                                        <input type="number" class="form-control" name="rub" placeholder="Изменить валюту (рубль)">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Выполнить расчет</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-4">
+                                    <h4>Проверить статистику пользователя</h4>
+                                    <p class="text-info">Система ведет личную статистику каждого пользователя. Вы можете посмотреть статистику нужного вам аккаунта, указав логин в поле.</p>
+                                    <form method="POST" action="{% url 'mod_act' action='statistic' %}">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Узнать статистику</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-heading">
                             <h3 class="panel-title">Панель управления игрой</h3>
                         </div>
                         <div class="panel-body">
-                            <p class="alert alert-warning">Здравствуйте, администратор сайта. Мы рады приветствовать вас в панели управления. Пожалуйста, выполняйте все действия в этой панели с умом. Сделанное невозможно отменить.</p>
-                            {% if messages %}{% for message in messages %}
-                            <p class="alert alert-success">{{ message }}</p>
-                            {% endfor %}{% endif %}
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <h4>Управление средствами игроков</h4>
-                                    <p class="text-info">Здесь вы можете изменить значение валют у игрока. Для того чтобы вычесть валюту у игрока напишите отрицательное значение числа.</p>
-                                    <div class="col-md-6 col-lg-4">
-                                        <form method="POST">
-                                            {% csrf_token %}
-                                            <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
-                                            <br>
-                                            <input type="number" class="form-control" name="oil" placeholder="Изменить нефть">
-                                            <br>
-                                            <input type="number" class="form-control" name="rub" placeholder="Изменить валюту (рубль)">
-                                            <br>
-                                            <button type="submit" class="btn btn-primary">Выполнить расчет</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col-md-8">
                                     <h4>Список обращений в техническую поддержку</h4>

@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Информация о пользователе - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <!-- OVERVIEW -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Информация о пользователе</h3>
+                        </div>
+                        <div class="panel-body no-padding">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                            <div class="col-md-12">
+                                <ul style="list-style-type: none;">
+                                    <li><i class="fa fa-user" aria-hidden="true"></i> Логин пользователя: <b>{{ d.info.username }}</b></li>
+                                    <li><i class="fa fa-envelope" aria-hidden="true"></i> Email: <b>{{ d.info.email }}</b></li>
+                                    <li><i class="fa fa-calendar-plus-o" aria-hidden="true"></i> Дата регистрации: <b>{{ d.info.date_joined }}</b></li>
+                                    <li><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Последний вход: <b>{{ d.info.last_login }}</b></li>
+                                    <li><i class="fa fa-rub" aria-hidden="true"></i> Текущий баланс: <b>{{ d.statistic.balance }} руб.</b></li>
+                                    <li><i class="fa fa-certificate" aria-hidden="true"></i> Текущий запас нефти: <b>{{ d.statistic.oil }} ед.</b></li>
+                                </ul>
+                                <hr>
+                                <ul style="list-style-type: none;">
+                                    <li><i class="fa fa-bar-chart" aria-hidden="true"></i> Приобретено вышек: <b>{{ d.statistic.stat_tower }} шт.</b></li>
+                                    <li><i class="fa fa-area-chart" aria-hidden="true"></i> Добыто нефти: <b>{{ d.statistic.stat_produced }} ед.</b></li>
+                                    <li><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внесено денежных средств: <b>{{ d.statistic.stat_pay }} руб.</b></li>
+                                    <li><i class="fa fa-minus-circle" aria-hidden="true"></i> Выведено денежных средств: <b>{{ d.statistic.stat_payout }} руб.</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END OVERVIEW -->
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}

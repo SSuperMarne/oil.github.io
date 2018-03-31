@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Список рефералов - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <!-- OVERVIEW -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Список рефералов пользователя</h3>
+                        </div>
+                        <div class="panel-body no-padding">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                            {% if referrals %}
+                            <div class="col-md-12">
+                                <p class="alert alert-info">Всего реферрер получил <b>{{ total_profit.value }} руб.</b> с привлеченных партнеров.</p>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th><i class="fa fa-user" aria-hidden="true"></i> Логин реферала</th>
+                                            <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата партнерства</th>
+                                            <th><i class="fa fa-rub" aria-hidden="true"></i> Выручка реферрера</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for r in referrals %}
+                                        <tr>
+                                            <td>{{ r.user.username}}</td>
+                                            <td>{{ r.date }}</td>
+                                            <td>{{ r.profit }} руб.</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="col-md-12">
+                                <p class="alert alert-warning">Данный пользователь не имеет рефералов.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- END OVERVIEW -->
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}

@@ -1,18 +1,47 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
+from django.db.models import Sum
 from game.models import Support, Statistic
-from client.models import Transfer
-from .forms import ModForm
+from client.models import Profile, Transfer, ReferralSys
+from .forms import ModifyForm, NicknameForm
 
 @login_required
 def moderation(request):
     # Статусы платежей: 1 - выплачено, 2 - отклонено, 3 - обработка
     if request.user.is_staff:
-        if request.method == 'POST':
-            form = ModForm(request.POST)
+        draws = Transfer.objects.all().order_by('-id')
+        tickets = Support.objects.all().order_by('-id')
+        return render(request, 'mod/moderator.html', {'draws': draws, 'tickets': tickets})
+    else:
+        raise PermissionDenied
+
+@login_required
+def mod_actions(request, action):
+    form_not_valid = lambda: messages.add_message(request, messages.ERROR, "ОШИБКА: В форме допущены ошибки. Убедитесь, что заполнены все поля.")
+    if request.user.is_staff and request.method == 'POST':
+        if action == "referrals":
+            form = NicknameForm(request.POST)
+            if form.is_valid():
+                user = get_object_or_404(User, username=form.cleaned_data.get('nickname'))
+                total_profit = ReferralSys.objects.filter(id_referrer=user.id).aggregate(value=Sum('profit'))
+                referrals = ReferralSys.objects.filter(id_referrer=user.id)
+                return render(request, 'mod/mod_reflist.html', {'total_profit': total_profit, 'referrals': referrals})
+            else:
+                form_not_valid()
+        if action == "statistic":
+            form = NicknameForm(request.POST)
+            if form.is_valid():
+                user = get_object_or_404(User, username=form.cleaned_data.get('nickname'))
+                profile = Profile.objects.get(pk=user.id)
+                d = {'info': user, 'statistic': profile}
+                return render(request, 'mod/mod_userinfo.html', {'d': d})
+            else:
+                form_not_valid()
+        if action == "modify":
+            form = ModifyForm(request.POST)
             if form.is_valid():
                 nickname = form.cleaned_data.get('nickname')
                 oil = form.cleaned_data.get('oil')
@@ -20,16 +49,14 @@ def moderation(request):
                 user = get_object_or_404(User, username=nickname)
                 old_oil = user.profile.oil
                 old_rub = user.profile.balance
-                user.profile.oil = user.profile.oil + oil
-                user.profile.balance = user.profile.balance + rub
+                user.profile.oil += oil
+                user.profile.balance += rub
                 user.save()
-                messages.add_message(request, messages.INFO, "Значения успешно изменены. Нефть (было): {0}, стало: {1}. Рубль (было): {2}, стало: {3}.".format(old_oil, 
+                messages.add_message(request, messages.SUCCESS, "Значения успешно изменены. Нефть (было): {0}, стало: {1}. Рубль (было): {2}, стало: {3}.".format(old_oil, 
                     user.profile.oil, old_rub, user.profile.balance))
             else:
-                messages.add_message(request, messages.ERROR, "ОШИБКА: В форме допущены ошибки. Убедитесь, что заполнены все поля. Укажите 0, если вы не хотите менять параметр.")
-        draws = Transfer.objects.all().order_by('-id')
-        tickets = Support.objects.all().order_by('-id')
-        return render(request, 'mod/moderator.html', {'draws': draws, 'tickets': tickets})
+                form_not_valid()
+        return redirect('moderation')
     else:
         raise PermissionDenied
 
@@ -38,7 +65,7 @@ def support_del(request, pk):
     if request.user.is_staff:
         a = get_object_or_404(Support, pk=pk)
         a.delete()
-        messages.add_message(request, messages.INFO, "Действие успешно выполнено")
+        messages.add_message(request, messages.SUCCESS, "Вы успешно удалили запрос.")
         return redirect('moderation')
     else:
         raise PermissionDenied
@@ -58,14 +85,14 @@ def transfer_change(request, status, pk):
             # Statistic user
             client.profile.stat_payout = client.profile.stat_payout + transfer.amount
             client.save()
-            messages.add_message(request, messages.INFO, "Статус заявки успешно изменен")
+            messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен")
         else:
             transfer.status = 2
             transfer.save()
             # Back to client balance
             client.profile.balance = client.profile.balance + transfer.amount
             client.save()
-            messages.add_message(request, messages.INFO, "Статус заявки успешно изменен. Деньги возвращены на баланс клиента.")
+            messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен. Деньги возвращены на баланс клиента.")
         return redirect('moderation')
     else:
         raise PermissionDenied
