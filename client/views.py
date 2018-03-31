@@ -87,6 +87,17 @@ def supplement(request, order):
         return create_pay_sign(request, check_payment.amount, "1", check_payment.id)
 
 @login_required
+def payment_delete(request, order):
+    try:
+        check_payment = Order.objects.get(pk=order, user_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.ERROR, "Платеж не найден.")
+    else:
+        check_payment.delete()
+        messages.add_message(request, messages.SUCCESS, "Действие успешно выполнено.")
+    return redirect('payment_history')
+
+@login_required
 def payment_history(request):
     payments = Order.objects.order_by('-id').filter(user_id=request.user.id)
     return render(request, 'main/history.html', {'payments': payments})
