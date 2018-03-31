@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Sum
 from .forms import SignUpForm, TransferForm
 from .models import Profile, Transfer, ReferralSys
 from payment.views import create_pay_sign
@@ -47,7 +48,8 @@ User profiles
 """
 @login_required
 def u_profile(request):
-    return render(request, 'main/profile.html')
+    ref_profit = ReferralSys.objects.filter(id_referrer=request.user.id).aggregate(value=Sum('profit'))
+    return render(request, 'main/profile.html', {'ref_profit': ref_profit})
 
 """
 The function for withdraw

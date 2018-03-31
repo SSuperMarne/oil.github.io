@@ -4,26 +4,57 @@
             <!-- MAIN CONTENT -->
             <div class="main-content">
                 <div class="container-fluid">
-                    <!-- OVERVIEW -->
+                    <!-- PROFILE -->
                     <div class="panel panel-headline">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Ваш профиль</h3>
+                            <h3 class="panel-title">Основная информация профиля</h3>
                         </div>
                         <div class="panel-body no-padding">
                             <div class="col-md-8 col-xl-4">
                                 <ul style="list-style-type: none; margin-left: -30px;">
                                     <li><b><i class="fa fa-user"></i> Логин аккаунта:</b> {{ user.username }}</li>
                                     <li><b><i class="fa fa-calendar"></i> Дата регистрации:</b> {{ user.date_joined }}</li>
-                                    <li><b><i class="fa fa-envelope"></i> Ваш E-mail:</b> {{ user.email }}</li>
+                                    <li><b><i class="fa fa-envelope"></i> Ваш Email:</b> {{ user.email }}</li>
                                     <li><b><i class="fa fa-rub"></i> Ваш текущий баланс:</b> {{ user.profile.balance }} руб.</li>
-                                    <li><b><i class="fa fa-free-code-camp"></i> Количество вашей нефти:</b> {{ user.profile.oil }} ед.</li>
+                                    <li><b><i class="fa fa-certificate" aria-hidden="true"></i> Ваш запас нефти:</b> {{ user.profile.oil }} ед.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END PROFILE -->
+                    <!-- REFERRALS -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Реферальная система</h3>
+                        </div>
+                        <div class="panel-body no-padding">
+                            <div class="col-md-8 col-xl-4">
+                                <p class="alert alert-info">Зарабатывайте дополнительные деньги на приглашениях пользователей в проект! Делитесь своей реферальной ссылкой (размещена ниже) и мы будем вам выплачивать дополнительно 10% от каждого пополнения реферала. Список своих рефералов можно посмотреть на главной странице.</p>
+                                <ul style="list-style-type: none; margin-left: -30px;">
+                                    {% if ref_profit.value >= 0 %}
+                                    <li><b><i class="fa fa-money" aria-hidden="true"></i> Ваш общий доход с рефералов:</b> {{ ref_profit.value }} руб.</li>
+                                    {% else %}
+                                    <li><b><i class="fa fa-money" aria-hidden="true"></i> Ваш общий доход с рефералов:</b> рефералов нет</li>
+                                    {% endif %}
                                     <li><b><i class="fa fa-link" aria-hidden="true"></i> Ваша реферальная ссылка:</b> <span id="reflink" class="text-primary" onclick="SelectText('reflink');">https://oil-game.win{% url 'refreg' referrer=user.id %} <i class="fa fa-clone" aria-hidden="true"></i></span></li>
                                     <li>Делитесь этой ссылкой и получайте 10% от пополнений рефералов!</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <!-- END OVERVIEW -->
+                    <!-- END REFERRALS -->
+                    <!-- PASSWD -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Смена пароля</h3>
+                        </div>
+                        <div class="panel-body no-padding">
+                            <div class="col-md-8 col-xl-4">
+                                <p class="alert alert-info"><a href="{% url 'passwd' %}">Нажмите здесь</a>, чтобы перейти на страницу смены пароля.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END PASSWD -->
                 </div>
             </div>
             <!-- END MAIN CONTENT -->
