@@ -20,6 +20,5 @@ urlpatterns = [
     url(r'^profile/$', views.u_profile, name='profile'),
     url(r'^payment/history/$', views.payment_history, name='payment_history'),
     url(r'^withdraw/$', views.transfer, name='withdraw'),
-    url(r'^payment/(?P<order>\d+)/$', views.supplement, name='supplement'),
-    url(r'^payment/(?P<order>\d+)/delete/$', views.payment_delete, name='payment_delete'),
+    url(r'^payment/(?P<pk>\d+)/(?P<action>[a-z]+)/$', views.payment_manage, name='payment_manage'),
 ]

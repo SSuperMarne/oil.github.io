@@ -77,25 +77,19 @@ def transfer(request):
 Management of customers payments
 """
 @login_required
-def supplement(request, order):
+def payment_manage(request, pk, action):
     try:
-        check_payment = Order.objects.get(pk=order, user_id=request.user.id)
+        check_payment = Order.objects.get(pk=pk, user_id=request.user.id)
     except ObjectDoesNotExist:
         messages.add_message(request, messages.ERROR, "Платеж не найден.")
         return redirect('payment_history')
     else:
-        return create_pay_sign(request, check_payment.amount, "1", check_payment.id)
-
-@login_required
-def payment_delete(request, order):
-    try:
-        check_payment = Order.objects.get(pk=order, user_id=request.user.id)
-    except ObjectDoesNotExist:
-        messages.add_message(request, messages.ERROR, "Платеж не найден.")
-    else:
-        check_payment.delete()
-        messages.add_message(request, messages.SUCCESS, "Действие успешно выполнено.")
-    return redirect('payment_history')
+        if action == "pay":
+            return create_pay_sign(request, check_payment.amount, "1", check_payment.id)
+        if action == "rm":
+            messages.add_message(request, messages.SUCCESS, "Платёж #{} успешно удален из вашей истории платежей.".format(check_payment.id))
+            check_payment.delete()
+        return redirect('payment_history')
 
 @login_required
 def payment_history(request):

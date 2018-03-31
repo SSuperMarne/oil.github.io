@@ -35,8 +35,8 @@
                                         <td><span class="label label-warning">НЕ ОПЛАЧЕНО</span></td>                                                
                                         {% endif %}
                                         <td>
-                                            {% if not p.status %}<a href="{% url 'supplement' order=p.id %}" class="btn btn-success">Оплатить</a>{% endif %}
-                                            <a href="{% url 'payment_delete' order=p.id %}" class="btn btn-danger">Удалить</a>
+                                            {% if not p.status %}<a href="{% url 'payment_manage' pk=p.id action='pay' %}" class="btn btn-success">Оплатить</a>{% endif %}
+                                            <a href="{% url 'payment_manage' pk=p.id action='rm' %}" class="btn btn-danger">Удалить</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
