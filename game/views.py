@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
 from payment.models import Order
@@ -12,9 +13,14 @@ import time
 
 @login_required
 def panel_main(request):
-    payments = Order.objects.filter(user_id=request.user.id).order_by('-id')[:5]
-    ads = Advertisement.objects.order_by('id')
-    refs = ReferralSys.objects.filter(id_referrer=request.user.id).order_by('-id')
+    try:
+        payments = Order.objects.filter(user_id=request.user.id).order_by('-id')[:5]
+        ads = Advertisement.objects.order_by('id')
+        total_refs = ReferralSys.objects.filter(id_referrer=request.user.id).order_by('-id')
+    finally:
+        paginator = Paginator(total_refs, 5)
+        page = request.GET.get('referrals')
+        refs = paginator.get_page(page)
     d = {'payments': payments, 'ads': ads, 'refs': refs}
     return render(request, 'main/main_page.html', {"d": d})
 

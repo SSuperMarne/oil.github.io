@@ -109,7 +109,7 @@
                         <div class="col-md-6">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Мои рефералы на проекте</h3>
+                                    <h3 class="panel-title" id="referrals">Мои рефералы на проекте</h3>
                                     <div class="right">
                                         <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
                                         <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
@@ -135,6 +135,18 @@
                                         {% endfor %}
                                         </tbody>
                                     </table>
+                                     <ul class="pagination paginator-center">
+                                        {% if d.refs.has_previous %}
+                                                <li><a href="?referrals={{ d.refs.previous_page_number }}#referrals">Назад</a></li>
+                                        {% endif %}
+                                        {% for page in d.refs.paginator.page_range %}
+                                            <li class="{% if d.refs.number == page  %}active{% endif %}"><a href="?referrals={{page }}#referrals">{{ page }}</a></li>
+                                        {% endfor %}
+
+                                        {% if d.refs.has_next %}
+                                            <li> <a href="?referrals={{ d.refs.next_page_number }}#referrals">Далее</a></li>
+                                        {% endif %}
+                                     </ul>
                                     {% else %}
                                     <p class="alert alert-info">У вас еще нет рефералов. Приглашайте новых игроков с помощью ссылки ниже!</p>
                                     {% endif %}
