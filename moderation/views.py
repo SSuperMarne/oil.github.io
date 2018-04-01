@@ -10,6 +10,23 @@ from client.models import Profile, Transfer, ReferralSys
 from payment.views import autopay
 from .forms import ModifyForm, NicknameForm
 
+"""
+Sub-functions for moderation
+"""
+def success_withdraw(transfer, client):
+    transfer.status = 1
+    transfer.save()
+    # Statistic global
+    stat = Statistic.objects.latest('id')
+    stat.exchanged += transfer.amount
+    stat.save()
+    # Statistic user
+    client.profile.stat_payout += transfer.amount
+    client.save()
+
+"""
+Main functions
+"""
 @login_required
 def moderation(request):
     # Статусы платежей: 1 - выплачено, 2 - отклонено, 3 - обработка
@@ -81,16 +98,8 @@ def transfer_change(request, status, pk):
         transfer = get_object_or_404(Transfer, pk=pk)
         client = User.objects.get(id=transfer.user_id)
         if status == "accept":
-            transfer.status = 1
-            transfer.save()
-            # Statistic global
-            stat = Statistic.objects.get(id=1)
-            stat.exchanged += transfer.amount
-            stat.save()
-            # Statistic user
-            client.profile.stat_payout += transfer.amount
-            client.save()
-            messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен")
+            success_withdraw(transfer, client)
+            messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен.")
         else:
             transfer.status = 2
             transfer.save()
@@ -110,16 +119,8 @@ def transfer_auto(request, pk):
             client = User.objects.get(id=transfer.user_id)
             auto = autopay(transfer)
             if auto == True:
-                transfer.status = 1
-                transfer.save()
-                # Statistic global
-                stat = Statistic.objects.get(id=1)
-                stat.exchanged += transfer.amount
-                stat.save()
-                # Statistic user
-                client.profile.stat_payout += transfer.amount
-                client.save()
-                messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен")
+                success_withdraw(transfer, client)
+                messages.add_message(request, messages.SUCCESS, "Выплата средств успешно произведена, а статус заявки был изменен.")
             else:
                 messages.add_message(request, messages.ERROR, auto)
         else:
