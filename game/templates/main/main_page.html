@@ -47,8 +47,11 @@
                                                 <td><span class="label label-warning">НЕ ОПЛАЧЕНО</span></td>                                                
                                                 {% endif %}
                                                 <td class="text-center">
-                                                    {% if not p.status %}<a href="{% url 'payment_manage' pk=p.id action='pay' %}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></a>{% endif %}
+                                                    {% if not p.status %}
+                                                    <a href="{% url 'payment_manage' pk=p.id action='pay' %}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></a>
+                                                    {% else %}
                                                     <a href="{% url 'payment_manage' pk=p.id action='rm' %}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    {% endif %}
                                                 </td>
                                             </tr>
                                         {% endfor %}

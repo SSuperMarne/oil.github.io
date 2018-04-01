@@ -89,8 +89,11 @@ def payment_manage(request, pk, action):
         if action == "pay":
             return create_pay_sign(request, check_payment.amount, "1", check_payment.id)
         if action == "rm":
-            messages.add_message(request, messages.SUCCESS, "Платёж #{} успешно удален из вашей истории платежей.".format(check_payment.id))
-            check_payment.delete()
+            if check_payment.status:
+                messages.add_message(request, messages.SUCCESS, "Платёж #{} успешно удален из вашей истории платежей.".format(check_payment.id))
+                check_payment.delete()
+            else:
+                messages.add_message(request, messages.WARNING, "Мы не можем удалить этот платеж. Он ещё не был оплачен.")
         return redirect('payment_history')
 
 @login_required
