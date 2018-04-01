@@ -88,21 +88,38 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-10">
                                     <h4>Список заявок на вывод средств</h4>
                                     <p class="text-info">Здесь мы отображаем все заявки на вывод средств. Вам необходимо произвести выплату средств и нажать кнопку одобрения платежа.</p>
                                     <div class="table-responsive" id="draws">
                                         <table class="table table-hover">
-                                           <tr><th>ID</th><th>Клиент</th><th><i class="fa fa-credit-card"></i> Сумма</th><th><i class="fa fa-cog"></i> Система</th><th><i class="fa fa-money"></i> Номер кошелька</th><th><i class="fa fa-calendar"></i> Дата создания</th><th><i class="fa fa-hourglass-start"></i> Статус платежа</th></tr>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th class="text-center">Клиент</th>
+                                                <th class="text-center"><i class="fa fa-credit-card"></i> Сумма</th>
+                                                <th class="text-center"><i class="fa fa-cog"></i> Система</th>
+                                                <th class="text-center"><i class="fa fa-money"></i> Номер кошелька</th>
+                                                <th class="text-center"><i class="fa fa-calendar"></i> Дата создания</th>
+                                                <th class="text-center"><i class="fa fa-hourglass-start"></i> Статус платежа</th>
+                                            </tr>
                                             {% for d in draws %}
                                             <tr>
-                                                <td>{{ d.id }}</td>
-                                                <td>{{ d.user.username }}</td>
-                                                <td>{{ d.amount }} руб.</td>
-                                                <td>{% if d.system == "1" %}Payeer{% elif d.system == "2" %}QIWI{% elif d.system == "3" %}WebMoney{% endif %}</td>
-                                                <td>{{ d.vault }}</td>
-                                                <td>{{ d.date }}</td>
-                                                <td>{% if d.status == 1 %}<font color="green"><b><i class="fa fa-check"></i> Выплачено</b></font>{% elif d.status == 2 %}<font color="red"><b><i class="fa fa-times"></i> Отклонено</b></font>{% elif d.status == 3 %}<a href="/transfer/accept/{{ d.id }}/" class="btn btn-success"><i class="fa fa-check"></i> Выплачено</a> <a href="/transfer/deny/{{ d.id }}/" class="btn btn-danger"><i class="fa fa-times"></i> Отклонено</a>{% endif %}
+                                                <td class="text-center">{{ d.id }}</td>
+                                                <td class="text-center">{{ d.user.username }}</td>
+                                                <td class="text-center">{{ d.amount }} руб.</td>
+                                                <td class="text-center">{% if d.system == "1" %}Payeer{% elif d.system == "2" %}QIWI{% elif d.system == "3" %}WebMoney{% endif %}</td>
+                                                <td class="text-center">{{ d.vault }}</td>
+                                                <td class="text-center">{{ d.date }}</td>
+                                                <td class="text-center">
+                                                    {% if d.status == 1 %}
+                                                    <font color="green"><b><i class="fa fa-check"></i> Выплачено</b></font>
+                                                    {% elif d.status == 2 %}
+                                                    <font color="red"><b><i class="fa fa-times"></i> Отклонено</b></font>
+                                                    {% elif d.status == 3 %}
+                                                    <a href="{% url 'mod_wd' status='accept' pk=d.id %}" class="btn btn-success"><i class="fa fa-check"></i> Выплачено</a>
+                                                    <a href="{% url 'mod_wd' status='deny' pk=d.id %}" class="btn btn-danger"><i class="fa fa-times"></i> Отклонено</a>
+                                                    <a href="#" class="btn btn-warning {% if d.system != "1" %}disabled{% endif %}"><i class="fa fa-repeat"></i> Автовыплата</a>
+                                                    {% endif %}
                                                 </td>
                                             </tr>
                                             {% endfor %}
