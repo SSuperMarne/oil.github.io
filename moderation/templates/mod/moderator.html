@@ -118,7 +118,7 @@
                                                     {% elif d.status == 3 %}
                                                     <a href="{% url 'mod_wd' status='accept' pk=d.id %}" class="btn btn-success"><i class="fa fa-check"></i> Выплачено</a>
                                                     <a href="{% url 'mod_wd' status='deny' pk=d.id %}" class="btn btn-danger"><i class="fa fa-times"></i> Отклонено</a>
-                                                    <a href="#" class="btn btn-warning {% if d.system != "1" %}disabled{% endif %}"><i class="fa fa-repeat"></i> Автовыплата</a>
+                                                    <a href="{% url 'mod_wd_auto' pk=d.id %}" class="btn btn-warning {% if d.system != "1" %}disabled{% endif %}"><i class="fa fa-repeat"></i> Автовыплата</a>
                                                     {% endif %}
                                                 </td>
                                             </tr>

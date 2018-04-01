@@ -8,13 +8,14 @@ from .models import Order, Promotion
 from .forms import ReplenishForm
 from client.models import Profile, ReferralSys
 from game.models import Statistic
+from payeer_api import PayeerAPIException, PayeerAPI
 import base64
 import hashlib
 
 """
 Configuration of payment systems
 """
-from settings_local import FREEKASSA_SHOP_ID, FREEKASSA_SECRET, PAYEER_SHOP_ID, PAYEER_CURR, PAYEER_SECRET
+from settings_local import FREEKASSA_SHOP_ID, FREEKASSA_SECRET, PAYEER_SHOP_ID, PAYEER_CURR, PAYEER_SECRET, API_PAYEER_ACCOUNT, API_PAYEER_ID, API_PAYEER_SECRET
 
 """
 Sub-functions for payments
@@ -71,6 +72,27 @@ def promo_check(order):
         promo = order.amount * promotion.promo / 100
         order.amount += round(promo)
         order.save()
+
+def autopay(transfer):
+    p = PayeerAPI(API_PAYEER_ACCOUNT, API_PAYEER_ID, API_PAYEER_SECRET)
+    if p.check_user(transfer.vault) == True:
+        comment = "Вывод средств игроку %s с проекта oil-game.win" % transfer.user
+        try:
+            p.transfer(transfer.amount, transfer.vault, "RUB", "RUB", comment) == True
+        except PayeerAPIException as e:
+            error = str(e)
+            if error == "['transferHimselfForbidden']":
+                return "Переводы самому себе запрещены"
+            elif error == "['balanceError']":
+                return "На счету магазина недостаточно средств для совершения перевода"
+            elif error == "['balanceError000']":
+                return "Возможно, на счету действуют лимиты на перевод средств"
+            else:
+                return "Возникла ошибка при проведении платежа: %s" % error
+        else:
+            return True
+    else:
+        return "Кошелек Payeer, который указан в платеже не существует"
 
 """
 Other payments function

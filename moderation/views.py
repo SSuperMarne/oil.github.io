@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
 from game.models import Support, Statistic
 from client.models import Profile, Transfer, ReferralSys
+from payment.views import autopay
 from .forms import ModifyForm, NicknameForm
 
 @login_required
@@ -84,19 +85,45 @@ def transfer_change(request, status, pk):
             transfer.save()
             # Statistic global
             stat = Statistic.objects.get(id=1)
-            stat.exchanged = stat.exchanged + transfer.amount
+            stat.exchanged += transfer.amount
             stat.save()
             # Statistic user
-            client.profile.stat_payout = client.profile.stat_payout + transfer.amount
+            client.profile.stat_payout += transfer.amount
             client.save()
             messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен")
         else:
             transfer.status = 2
             transfer.save()
             # Back to client balance
-            client.profile.balance = client.profile.balance + transfer.amount
+            client.profile.balance += transfer.amount
             client.save()
             messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен. Деньги возвращены на баланс клиента.")
+        return redirect('moderation')
+    else:
+        raise PermissionDenied
+
+@login_required
+def transfer_auto(request, pk):
+    if request.user.is_staff:
+        transfer = get_object_or_404(Transfer, pk=pk)
+        if transfer.system == "1":
+            client = User.objects.get(id=transfer.user_id)
+            auto = autopay(transfer)
+            if auto == True:
+                transfer.status = 1
+                transfer.save()
+                # Statistic global
+                stat = Statistic.objects.get(id=1)
+                stat.exchanged += transfer.amount
+                stat.save()
+                # Statistic user
+                client.profile.stat_payout += transfer.amount
+                client.save()
+                messages.add_message(request, messages.SUCCESS, "Статус заявки успешно изменен")
+            else:
+                messages.add_message(request, messages.ERROR, auto)
+        else:
+            messages.add_message(request, messages.ERROR, "В платеже указана недопустимая система для автовывода.")
         return redirect('moderation')
     else:
         raise PermissionDenied
