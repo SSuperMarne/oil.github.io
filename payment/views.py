@@ -66,6 +66,16 @@ def create_pay_sign(request, amount, system, m_orderid):
         context = [{'m_shop': PAYEER_SHOP_ID, 'm_orderid': m_orderid, 'm_amount': m_amount, 'm_curr': PAYEER_CURR, 'm_desc': m_desc, 'm_sign': sign}]
         return render(request, 'payment/process_payeer.html', {'context': context})
 
+def promo_check(order):
+    try:
+        promotion = Promotion.objects.latest('id')
+    except ObjectDoesNotExist:
+        promotion = 0
+    if promotion != 0:
+        promo = order.amount * promotion.promo / 100
+        order.amount += round(promo)
+        order.save()
+
 """
 Other payments function
 """
@@ -80,10 +90,6 @@ def add_payment(request):
         if form.is_valid():
             amount = form.cleaned_data.get('amount')
             system = form.cleaned_data.get('system')
-            if promotion:
-                promo = amount * promotion.promo / 100
-                amount += promo
-                amount = round(amount)
             # Создание платежа
             order = Order(amount=amount, user_id=request.user.id, status=False)
             order.save()
@@ -105,6 +111,7 @@ def payeer_status(request):
         if request.POST['m_sign'] == sign and request.POST['m_status'] == "success":
             success = request.POST['m_orderid'] + ".|success"
             order = Order.objects.get(id=request.POST['m_orderid'])
+            promo_check(order)
             return add_balance(order, success)
         if request.POST['m_sign'] == sign and request.POST['m_status'] == "fail":
             fail = request.POST['m_orderid'] + ".|fail"
@@ -122,6 +129,7 @@ def fk_status(request):
         if request.POST['SIGN'] == sign:
             success = "YES"
             order = Order.objects.get(id=request.POST['MERCHANT_ORDER_ID'])
+            promo_check(order)
             return add_balance(order, success)
     else:
         return redirect('landing_main')
