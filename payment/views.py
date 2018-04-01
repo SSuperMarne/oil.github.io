@@ -14,11 +14,7 @@ import hashlib
 """
 Configuration of payment systems
 """
-FREEKASSA_SHOP_ID = "70935"
-FREEKASSA_SECRET = "332bwjy1"
-PAYEER_SHOP_ID = "518803834"
-PAYEER_CURR = "RUB"
-PAYEER_SECRET = "Qt8rv6hCT379QQduzSJnCVBC3WePv3pT"
+from settings_local import FREEKASSA_SHOP_ID, FREEKASSA_SECRET, PAYEER_SHOP_ID, PAYEER_CURR, PAYEER_SECRET
 
 """
 Sub-functions for payments
