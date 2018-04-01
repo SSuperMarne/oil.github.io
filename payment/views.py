@@ -39,7 +39,7 @@ def add_balance(order, success):
         r = ReferralSys.objects.get(id_referral=order.user_id)
     except ObjectDoesNotExist:
         return HttpResponse(str(success))
-    r.profit += order.amount
+    r.profit += order.amount / 10
     r.save()
     r_referrer = Profile.objects.get(user_id=r.id_referrer)
     r_referrer.balance += order.amount / 10
