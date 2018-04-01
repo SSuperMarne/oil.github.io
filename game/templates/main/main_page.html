@@ -24,42 +24,44 @@
                                     </div>
                                 </div>
                                 <div class="panel-body no-padding">
-                                    {% if d.payments %}
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
-                                                <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата платежа</th>
-                                                <th><i class="fa fa-clock-o" aria-hidden="true"></i> Статус</th>
-                                                <th class="text-center"><i class="fa fa-cog" aria-hidden="true"></i> Действия</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for p in d.payments %}
-                                            <tr>
-                                                <td>{{ p.id }}</td>
-                                                <td>{{ p.amount}} руб.</td>
-                                                <td>{{ p.date }}</td>
-                                                {% if p.status %}
-                                                <td><span class="label label-success">ОПЛАЧЕНО</span></td>
-                                                {% else %}
-                                                <td><span class="label label-warning">НЕ ОПЛАЧЕНО</span></td>                                                
-                                                {% endif %}
-                                                <td class="text-center">
-                                                    {% if not p.status %}
-                                                    <a href="{% url 'payment_manage' pk=p.id action='pay' %}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></a>
+                                    <div class="col-md-12">
+                                        {% if d.payments %}
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
+                                                    <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата платежа</th>
+                                                    <th><i class="fa fa-clock-o" aria-hidden="true"></i> Статус</th>
+                                                    <th class="text-center"><i class="fa fa-cog" aria-hidden="true"></i> Действия</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for p in d.payments %}
+                                                <tr>
+                                                    <td>{{ p.id }}</td>
+                                                    <td>{{ p.amount}} руб.</td>
+                                                    <td>{{ p.date }}</td>
+                                                    {% if p.status %}
+                                                    <td><span class="label label-success">ОПЛАЧЕНО</span></td>
                                                     {% else %}
-                                                    <a href="{% url 'payment_manage' pk=p.id action='rm' %}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    <td><span class="label label-warning">НЕ ОПЛАЧЕНО</span></td>                                                
                                                     {% endif %}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                    {% else %}
-                                    <p class="alert alert-warning">Вы еще не пополняли свой счет. История платежей отсутствует.</p>
-                                    {% endif %}
+                                                    <td class="text-center">
+                                                        {% if not p.status %}
+                                                        <a href="{% url 'payment_manage' pk=p.id action='pay' %}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></a>
+                                                        {% else %}
+                                                        <a href="{% url 'payment_manage' pk=p.id action='rm' %}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        {% else %}
+                                        <p class="alert alert-warning">Вы еще не пополняли свой счет. История платежей отсутствует.</p>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 {% if d.payments %}
                                 <div class="panel-footer">
@@ -82,26 +84,28 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                            <tr>
-                                                <td><i class="fa fa-bar-chart" aria-hidden="true"></i> Куплено нефтяных вышек:</td>
-                                                <td>{{ user.profile.stat_tower }} шт.</td>
-                                            </tr>
-                                            <tr>
-                                                <td><i class="fa fa-certificate" aria-hidden="true"></i> Добыто нефти:</td>
-                                                <td>{{ user.profile.stat_produced }} ед.</td>
-                                            </tr>
-                                            <tr>
-                                                <td><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Вложено денежных средств:</td>
-                                                <td>{{ user.profile.stat_pay }} руб.</td>
-                                            </tr>
-                                            <tr>
-                                                <td><i class="fa fa-rub" aria-hidden="true"></i> Выведено денежных средств:</td>
-                                                <td>{{ user.profile.stat_payout }} руб.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="col-md-12">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <td><i class="fa fa-bar-chart" aria-hidden="true"></i> Куплено нефтяных вышек:</td>
+                                                    <td>{{ user.profile.stat_tower }} шт.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><i class="fa fa-certificate" aria-hidden="true"></i> Добыто нефти:</td>
+                                                    <td>{{ user.profile.stat_produced }} ед.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Вложено денежных средств:</td>
+                                                    <td>{{ user.profile.stat_pay }} руб.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><i class="fa fa-rub" aria-hidden="true"></i> Выведено денежных средств:</td>
+                                                    <td>{{ user.profile.stat_payout }} руб.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -119,40 +123,42 @@
                                     </div>
                                 </div>
                                 <div class="panel-body no-padding">
-                                    {% if d.refs %}
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th><i class="fa fa-user" aria-hidden="true"></i> Логин реферала</th>
-                                                <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата регистрации</th>
-                                                <th><i class="fa fa-percent" aria-hidden="true"></i> Доход</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for r in d.refs %}
-                                            <tr>
-                                                <td>{{ r.user.username }}</td>
-                                                <td>{{ r.date }}</td>
-                                                <td>{{ r.profit }} руб.</td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                     <ul class="pagination paginator-center">
-                                        {% if d.refs.has_previous %}
-                                                <li><a href="?referrals={{ d.refs.previous_page_number }}#referrals">Назад</a></li>
-                                        {% endif %}
-                                        {% for page in d.refs.paginator.page_range %}
-                                            <li class="{% if d.refs.number == page  %}active{% endif %}"><a href="?referrals={{page }}#referrals">{{ page }}</a></li>
-                                        {% endfor %}
+                                    <div class="col-md-12">
+                                        {% if d.refs %}
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th><i class="fa fa-user" aria-hidden="true"></i> Логин реферала</th>
+                                                    <th><i class="fa fa-calendar" aria-hidden="true"></i> Дата регистрации</th>
+                                                    <th><i class="fa fa-percent" aria-hidden="true"></i> Доход</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for r in d.refs %}
+                                                <tr>
+                                                    <td>{{ r.user.username }}</td>
+                                                    <td>{{ r.date }}</td>
+                                                    <td>{{ r.profit }} руб.</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                         <ul class="pagination paginator-center">
+                                            {% if d.refs.has_previous %}
+                                                    <li><a href="?referrals={{ d.refs.previous_page_number }}#referrals">Назад</a></li>
+                                            {% endif %}
+                                            {% for page in d.refs.paginator.page_range %}
+                                                <li class="{% if d.refs.number == page  %}active{% endif %}"><a href="?referrals={{page }}#referrals">{{ page }}</a></li>
+                                            {% endfor %}
 
-                                        {% if d.refs.has_next %}
-                                            <li> <a href="?referrals={{ d.refs.next_page_number }}#referrals">Далее</a></li>
+                                            {% if d.refs.has_next %}
+                                                <li> <a href="?referrals={{ d.refs.next_page_number }}#referrals">Далее</a></li>
+                                            {% endif %}
+                                         </ul>
+                                        {% else %}
+                                        <p class="alert alert-info">У вас еще нет рефералов. Приглашайте новых игроков с помощью ссылки ниже!</p>
                                         {% endif %}
-                                     </ul>
-                                    {% else %}
-                                    <p class="alert alert-info">У вас еще нет рефералов. Приглашайте новых игроков с помощью ссылки ниже!</p>
-                                    {% endif %}
+                                    </div>
                                 </div>
                                 <div class="panel-footer">
                                     <div class="row">
