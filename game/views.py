@@ -27,7 +27,7 @@ def panel_main(request):
 @login_required
 def panel_stats(request):
     try:
-        main_stats = Statistic.objects.get(id=1)
+        main_stats = Statistic.objects.latest('id')
         last_order = Order.objects.filter(status=True).latest('id')
         last_withdraw = Transfer.objects.filter(status=1).latest('id')
         top5_orders = Order.objects.filter(status=True).order_by('-amount')[:5]
