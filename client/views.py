@@ -41,7 +41,7 @@ def register(request):
 
 def referral(request, referrer):
     request.session['ref'] = referrer
-    return redirect('register')
+    return redirect('landing_main')
 
 """
 User profiles
