@@ -42,8 +42,8 @@ def panel_stats(request):
 
 @login_required
 def shop(request):
-    factories = Factory.objects.order_by('id')[:5]
-    towers = Tower.objects.order_by('id')[:5]
+    factories = Factory.objects.order_by('id')[:6]
+    towers = Tower.objects.order_by('id')[:6]
     return render(request, 'main/shop.html', {'factories': factories, 'towers': towers})
 
 @login_required
