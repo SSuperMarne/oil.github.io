@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^shop/(?P<category>\d+)/(?P<goods>\d+)/$', views.buy, name='buy'),
     url(r'^inventory/$', views.inventory, name='inventory'),
     url(r'^inventory/get/(?P<pk>\d+)/$', views.get_oil, name='get_oil'),
+    url(r'^inventory/get/all/$', views.get_all_oil, name='get_all_oil'),
 ]

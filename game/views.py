@@ -80,8 +80,8 @@ def exchange(request):
                 messages.add_message(request, messages.ERROR, "У вас недостаточно нефти для получения указанного количества рублей.")
             else:
                 convert = user_request * 100
-                client.oil = client.oil - convert
-                client.balance = client.balance + user_request
+                client.oil -= convert
+                client.balance += user_request
                 client.save()
                 messages.add_message(request, messages.INFO, "Операция успешно выполнена. Зачислено: " + str(user_request) + " руб.")
         else:
@@ -102,12 +102,12 @@ def buy(request, category, goods):
                 check = ClientFactory.objects.get(user_id=client.id, tower_id=good.id)
                 data = ClientTower(tower_id_id=good.id, user_id=client.id, work=timed(), tower_name=good.name, tower_oil=good.oil)
                 data.save()
-                client.balance = client.balance - good.price
-                client.stat_tower = client.stat_tower + 1 # user stat
+                client.balance -= good.price
+                client.stat_tower += 1 # user stat
                 client.save()
                 # Statistic global
-                stat = Statistic.objects.get(id=1)
-                stat.tower = stat.tower + 1
+                stat = Statistic.objects.latest('id')
+                stat.tower += 1
                 stat.save()
                 messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
             except ObjectDoesNotExist:
@@ -124,7 +124,7 @@ def buy(request, category, goods):
             except ObjectDoesNotExist:
                 data = ClientFactory(factory_id=good.id, name=good.name, user_id=client.id, tower_id=good.tower_id)
                 data.save()
-                client.balance = client.balance - good.price
+                client.balance -= good.price
                 client.save()
                 messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
     return redirect('shop')
@@ -139,16 +139,37 @@ def get_oil(request, pk):
         return redirect('inventory')
     client = Profile.objects.get(user_id=request.user.id)
     if timed() - a.work >= 0:
-        client.oil = client.oil + a.tower_oil
-        client.stat_produced = client.stat_produced + a.tower_oil # stats
+        client.oil += a.tower_oil
+        client.stat_produced += a.tower_oil # stats
         client.save()
         a.work = timed() + 86400
         a.save()
         # Statistic global
-        stat = Statistic.objects.get(id=1)
-        stat.oil = stat.oil + a.tower_oil
+        stat = Statistic.objects.latest('id')
+        stat.oil += a.tower_oil
         stat.save()
         messages.add_message(request, messages.INFO, "Нефть успешно собрана.")
     else:
         messages.add_message(request, messages.ERROR, "Прошло недостаточно времени для выдачи нефти.")
+    return redirect('inventory')
+
+@login_required
+def get_all_oil(request):
+    timed = lambda: int(round(time.time()))
+    towers = ClientTower.objects.filter(user_id=request.user.id)
+    if towers:
+        oil_counter = 0
+        for tower in towers:
+            if timed() - tower.work >= 0:
+                tower.work = timed() + 86400
+                tower.save()
+                oil_counter += tower.tower_oil
+        client = Profile.objects.get(user_id=request.user.id)
+        client.oil += oil_counter
+        client.stat_produced += oil_counter
+        client.save()
+        stat = Statistic.objects.latest('id')
+        stat.oil += oil_counter
+        stat.save()
+        messages.add_message(request, messages.SUCCESS, "Нефть с всех ваших вышек была собрана и зачислена на счет.")
     return redirect('inventory')
