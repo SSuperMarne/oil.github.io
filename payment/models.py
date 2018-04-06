@@ -16,6 +16,8 @@ class Order(models.Model):
 class Promotion(models.Model):
     name = models.CharField(max_length=64, unique=True, help_text="Укажите название акции. Оно будет видно только вам.")
     description = models.TextField(help_text="Система будет отображать этот текст пользователям при пополнении счёта. HTML-коды разрешены.")
+    color = models.CharField(default="info", max_length=10, 
+        help_text="Выберите цвет уведомления. Доступны следующие: info (синий), warning (желтый), success (зеленый), danger (красный).")
     promo = models.PositiveSmallIntegerField(help_text="Бонус при пополнении в процентах")
 
     def __str__(self):

@@ -10,7 +10,7 @@
                         </div>
                         <div class="panel-body">
                             {% if promo != 0 %}
-                            <p class="alert alert-info">{{ promo.description|safe }}</p>
+                            <p class="alert alert-{{ promo.color }}">{{ promo.description|safe }}</p>
                             {% endif %}
                             <p class="alert alert-success">Пожалуйста, выберите удобную вам платежную систему.<br>Ваш текущий баланс: <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i> руб.</b></p>
                             {% if messages %}{% for message in messages %}
