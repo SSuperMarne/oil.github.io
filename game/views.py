@@ -164,12 +164,15 @@ def get_all_oil(request):
                 tower.work = timed() + 86400
                 tower.save()
                 oil_counter += tower.tower_oil
-        client = Profile.objects.get(user_id=request.user.id)
-        client.oil += oil_counter
-        client.stat_produced += oil_counter
-        client.save()
-        stat = Statistic.objects.latest('id')
-        stat.oil += oil_counter
-        stat.save()
-        messages.add_message(request, messages.SUCCESS, "Нефть с всех ваших вышек была собрана и зачислена на счет.")
+        if oil_counter > 0:
+            client = Profile.objects.get(user_id=request.user.id)
+            client.oil += oil_counter
+            client.stat_produced += oil_counter
+            client.save()
+            stat = Statistic.objects.latest('id')
+            stat.oil += oil_counter
+            stat.save()
+            messages.add_message(request, messages.SUCCESS, "Нефть с всех ваших вышек была собрана и зачислена на счет.")
+        else:
+            messages.add_message(request, messages.WARNING, "В данный момент у вас нет вышек, с которых можно собрать нефть. Попробуйте позже.")
     return redirect('inventory')

@@ -11,7 +11,7 @@
                             <p class="panel-subtitle">Управляйте вашей недвижимостью</p>
                         </div>
                         <div class="panel-body">
-                        <p class="alert alert-info">Текущее количество нефти у вас: <b>{{ user.profile.oil }} единиц</b><br><a href="{% url 'exchange' %}">Нажмите здесь</a>, чтобы обменять нефть на рубли.</p>
+                        <p class="alert alert-info">Текущее количество нефти у вас: <b>{{ user.profile.oil }} единиц</b><br><a href="{% url 'exchange' %}">Нажмите здесь</a>, чтобы обменять нефть на рубли.{% if towers %}<br>Вы можете собрать нефть с всех ожидающих вышек одним нажатием: <a href="{% url 'get_all_oil' %}" class="btn btn-primary"><i class="fa fa-globe" aria-hidden="true"></i> Забрать всю нефть</a>{% endif %}</p>
                         {% for message in messages %}
                         <div class="alert alert-{{ message.tags }}">{{ message }}</div>
                         {% endfor %}
@@ -24,7 +24,7 @@
                                     <tr><td>{{ t.tower_name }}</td><td>{{ t.tower_oil }} ед.</td><td name="wtime">{{ t.work }}</td><td><a href="/inventory/get/{{ t.id }}/" class="btn btn-success" style="padding: 4px 12px;" name="gets">Забрать нефть</a></td></tr>
                                     {% endfor %}
                                     {% else %}
-                                    <tr><td><em>Башен нет</em> <i class="fa fa-frown-o"></i></td><td><em>Башен нет</em> <i class="fa fa-frown-o"></i></td><td><em>Башен нет</em> <i class="fa fa-frown-o"></i></td><td><a href="{% url 'shop' %}" class="btn btn-success" style="padding: 4px 12px;">Купить сейчас?</a></td><tr>
+                                    <tr><td><em>Нефтяных вышек нет <i class="fa fa-frown-o" aria-hidden="true"></i></em></td><td><em>Нефтяных вышек нет <i class="fa fa-frown-o" aria-hidden="true"></i></em></td><td><em>Нефтяных вышек нет <i class="fa fa-frown-o" aria-hidden="true"></i></em></td><td><a href="{% url 'shop' %}" class="btn btn-success" style="padding: 4px 12px;">Купить сейчас?</a></td><tr>
                                     {% endif %}
                                 </table>
                             </div>
