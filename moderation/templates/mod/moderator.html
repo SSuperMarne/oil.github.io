@@ -13,17 +13,7 @@
                                 <div class="alert alert-{{ message.tags }}">{{ message }}</div>
                             {% endfor %}
                             <div class="row">
-                                <div class="col-md-4">
-                                    <h4>Информация о рефералах игрока</h4>
-                                    <p class="text-info">Мы отобразим здесь подробную информацию о рефералах пользователя. Вам необходимо указать логин.</p>
-                                    <form method="POST" action="{% url 'mod_act' action='referrals' %}">
-                                        {% csrf_token %}
-                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
-                                        <br>
-                                        <button type="submit" class="btn btn-primary">Проверить рефералов</button>
-                                    </form>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <h4>Управление средствами игроков</h4>
                                     <p class="text-info">Здесь вы можете изменить значение валют у игрока. Для того чтобы вычесть валюту у игрока напишите отрицательное значение числа.</p>
                                     <form method="POST" action="{% url 'mod_act' action='modify' %}">
@@ -37,7 +27,17 @@
                                         <button type="submit" class="btn btn-primary">Выполнить расчет</button>
                                     </form>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <h4>Информация о рефералах игрока</h4>
+                                    <p class="text-info">Мы отобразим здесь подробную информацию о рефералах пользователя. Вам необходимо указать логин.</p>
+                                    <form method="POST" action="{% url 'mod_act' action='referrals' %}">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Проверить рефералов</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
                                     <h4>Проверить статистику пользователя</h4>
                                     <p class="text-info">Система ведет личную статистику каждого пользователя. Вы можете посмотреть статистику нужного вам аккаунта, указав логин в поле.</p>
                                     <form method="POST" action="{% url 'mod_act' action='statistic' %}">
@@ -45,6 +45,16 @@
                                         <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
                                         <br>
                                         <button type="submit" class="btn btn-primary">Узнать статистику</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <h4>Проверить инвентарь пользователя</h4>
+                                    <p class="text-info">Система проверит инвентарь пользователя и отобразит его купленные объекты на проекте.</p>
+                                    <form method="POST" action="{% url 'mod_act' action='inventory' %}">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Управлять инвентарем</button>
                                     </form>
                                 </div>
                             </div>

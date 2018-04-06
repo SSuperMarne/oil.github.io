@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
-from game.models import Support, Statistic
+from game.models import Support, Statistic, ClientTower, ClientFactory
 from client.models import Profile, Transfer, ReferralSys
 from payment.views import autopay
 from .forms import ModifyForm, NicknameForm
@@ -62,6 +62,19 @@ def mod_actions(request, action):
                 return render(request, 'mod/mod_userinfo.html', {'d': d})
             else:
                 form_not_valid()
+        if action == "inventory":
+            form = NicknameForm(request.POST)
+            if form.is_valid():
+                user = get_object_or_404(User, username=form.cleaned_data.get('nickname'))
+                factories = ClientFactory.objects.filter(user_id=user.id)
+                towers = ClientTower.objects.filter(user_id=user.id)
+                if towers:
+                    total_oil = count_towers = 0
+                    for tower in towers:
+                        count_towers += 1
+                        total_oil += tower.tower_oil
+                d = {'info': user, 'factories': factories, 'towers': towers, 'total_oil': total_oil, 'count_towers': count_towers}
+                return render(request, 'mod/mod_inventory.html', {'d': d})
         if action == "modify":
             form = ModifyForm(request.POST)
             if form.is_valid():
