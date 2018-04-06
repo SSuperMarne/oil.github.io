@@ -12,9 +12,9 @@
                         </div>
                         <div class="panel-body">
                         <p class="alert alert-info">Текущее количество нефти у вас: <b>{{ user.profile.oil }} единиц</b><br><a href="{% url 'exchange' %}">Нажмите здесь</a>, чтобы обменять нефть на рубли.</p>
-                        {% if messages %}{% for message in messages %}
-                        <p class="alert alert-danger">{{ message }}</p>
-                        {% endfor %}{% endif %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
                         <h3>Ваши башни <a style="font-size: 0.8em;" onClick="window.location.reload()" title="Обновить таблицу"><i class="fa fa-refresh"></i></a></h3>
                             <div class="table-responsive">
                                 <table class="table table-hover">

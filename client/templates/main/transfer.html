@@ -10,9 +10,9 @@
                         </div>
                         <div class="panel-body">
                             <p class="alert alert-info">Выводить деньги можно при условиях, что вы пополняли ваш баланс как минимум на <b>10 рублей</b> и добыли <b>500 единиц</b> нефти. Вы можете посмотреть свою статистику на главной странице.<br>Все платежи обрабатываются в течение 72 часов.</p>
-                            {% if messages %}{% for message in messages %}
-                            <p class="alert alert-success">{{ message }}</p>
-                            {% endfor %}{% endif %}
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
                             <div class="row">
                                 <div class="col-md-6 col-lg-4">
                                     <form role="form" method="POST">

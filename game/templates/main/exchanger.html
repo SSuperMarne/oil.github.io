@@ -10,9 +10,9 @@
                         </div>
                         <div class="panel-body">
                             <p class="alert alert-info">Текущий запас нефти: <b>{{ user.profile.oil }} ед.</b> | Сейчас возможно получить: <b>{{ made }}</b> руб.<br>Обмен производится по следующему курсу:<br><b>100 единиц</b> нефти = <b>1 рубль</b></p>
-                            {% if messages %}{% for message in messages %}
-                            <p class="alert alert-success">{{ message }}</p>
-                            {% endfor %}{% endif %}
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
                             {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
                             <div class="row">
                                 <div class="col-md-6 col-lg-4">

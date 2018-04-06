@@ -83,7 +83,7 @@ def exchange(request):
                 client.oil -= convert
                 client.balance += user_request
                 client.save()
-                messages.add_message(request, messages.INFO, "Операция успешно выполнена. Зачислено: " + str(user_request) + " руб.")
+                messages.add_message(request, messages.SUCCESS, "Операция успешно выполнена. Зачислено: " + str(user_request) + " руб.")
         else:
             messages.add_message(request, messages.ERROR, "Введено неверное значение. Действие отменено.")
     return render(request, 'main/exchanger.html', {'made': client_rubs()})
@@ -109,7 +109,7 @@ def buy(request, category, goods):
                 stat = Statistic.objects.latest('id')
                 stat.tower += 1
                 stat.save()
-                messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
+                messages.add_message(request, messages.SUCCESS, "Вы успешно приобрели товар.")
             except ObjectDoesNotExist:
                 messages.add_message(request, messages.ERROR, "Для покупки этой башни необходимо купить завод этого же типа.")
     elif category == "1":
@@ -120,13 +120,13 @@ def buy(request, category, goods):
         else:
             try:
                 check = ClientFactory.objects.get(user_id=client.id, factory_id=good.id)
-                messages.add_message(request, messages.ERROR, "Этот завод у вас уже приобретен.")
+                messages.add_message(request, messages.WARNING, "Этот завод у вас уже приобретен.")
             except ObjectDoesNotExist:
                 data = ClientFactory(factory_id=good.id, name=good.name, user_id=client.id, tower_id=good.tower_id)
                 data.save()
                 client.balance -= good.price
                 client.save()
-                messages.add_message(request, messages.INFO, "Вы успешно приобрели товар.")
+                messages.add_message(request, messages.SUCCESS, "Вы успешно приобрели товар.")
     return redirect('shop')
 
 @login_required
@@ -148,7 +148,7 @@ def get_oil(request, pk):
         stat = Statistic.objects.latest('id')
         stat.oil += a.tower_oil
         stat.save()
-        messages.add_message(request, messages.INFO, "Нефть успешно собрана.")
+        messages.add_message(request, messages.SUCCESS, "Нефть успешно собрана.")
     else:
         messages.add_message(request, messages.ERROR, "Прошло недостаточно времени для выдачи нефти.")
     return redirect('inventory')
