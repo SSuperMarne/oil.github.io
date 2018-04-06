@@ -75,6 +75,8 @@ def mod_actions(request, action):
                         total_oil += tower.tower_oil
                 d = {'info': user, 'factories': factories, 'towers': towers, 'total_oil': total_oil, 'count_towers': count_towers}
                 return render(request, 'mod/mod_inventory.html', {'d': d})
+            else:
+                form_not_valid()
         if action == "modify":
             form = ModifyForm(request.POST)
             if form.is_valid():
