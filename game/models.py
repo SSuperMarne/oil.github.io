@@ -24,7 +24,7 @@ class Tower(models.Model):
 class Factory(models.Model):
     name = models.CharField(max_length=30, unique=True, help_text="Укажите название завода")
     price = models.IntegerField(help_text="Цена за 1 шт. (укажите число)")
-    img = models.ImageField(upload_to='factories', help_text="Изображение завода")
+    img = models.FileField(upload_to='factories', help_text="Изображение завода")
     tower_id = models.IntegerField(help_text="Идентификатор связанной вышки в БД")
 
     def __str__(self):

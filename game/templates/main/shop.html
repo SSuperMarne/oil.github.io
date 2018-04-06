@@ -29,7 +29,7 @@
                             <div class="row">
                                 {% for f in factories %}
                                 <div class="col-sm-2">
-                                  <center><img class="img-circle" src="/media/{{ f.img }}" alt="{{ f.name }}" width="120px" height="120px">
+                                  <center><img src="/media/{{ f.img }}" alt="{{ f.name }}" width="120px" height="120px">
                                   <h4>{{ f.name }}</h4>
                                   <p><strong>Цена за штуку:</strong><br> <strong>{{ f.price }}</strong> рублей</p><a href="/shop/1/{{ f.id }}/" class="btn btn-default">Приобрести</a></center>
                                 </div>
