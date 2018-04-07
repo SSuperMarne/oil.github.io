@@ -68,8 +68,8 @@ def mod_actions(request, action):
                 user = get_object_or_404(User, username=form.cleaned_data.get('nickname'))
                 factories = ClientFactory.objects.filter(user_id=user.id)
                 towers = ClientTower.objects.filter(user_id=user.id)
+                total_oil = count_towers = 0
                 if towers:
-                    total_oil = count_towers = 0
                     for tower in towers:
                         count_towers += 1
                         total_oil += tower.tower_oil
