@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
-from game.models import Support, Statistic, ClientTower, ClientFactory
+from game.models import Statistic, ClientTower, ClientFactory
 from client.models import Profile, Transfer, ReferralSys
 from payment.views import autopay
 from .forms import ModifyForm, NicknameForm
@@ -32,11 +32,10 @@ def moderation(request):
     # Статусы платежей: 1 - выплачено, 2 - отклонено, 3 - обработка
     if request.user.is_staff:
         total_draws = Transfer.objects.all().order_by('-id')
-        tickets = Support.objects.all().order_by('-id')
         paginator = Paginator(total_draws, 10)
         page = request.GET.get('draws')
         draws = paginator.get_page(page)
-        return render(request, 'mod/moderator.html', {'draws': draws, 'tickets': tickets})
+        return render(request, 'mod/moderator.html', {'draws': draws})
     else:
         raise PermissionDenied
 
@@ -93,16 +92,6 @@ def mod_actions(request, action):
                     user.profile.oil, old_rub, user.profile.balance))
             else:
                 form_not_valid()
-        return redirect('moderation')
-    else:
-        raise PermissionDenied
-
-@login_required
-def support_del(request, pk):
-    if request.user.is_staff:
-        a = get_object_or_404(Support, pk=pk)
-        a.delete()
-        messages.add_message(request, messages.SUCCESS, "Вы успешно удалили запрос.")
         return redirect('moderation')
     else:
         raise PermissionDenied

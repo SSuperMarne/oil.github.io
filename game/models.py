@@ -6,12 +6,6 @@ class Statistic(models.Model):
     donated = models.IntegerField(help_text="Всего внесено в проект (руб.)")
     exchanged = models.IntegerField(help_text="Всего выведено средств (руб.)")
 
-class Support(models.Model):
-    nickname = models.CharField(max_length=150)
-    email = models.EmailField()
-    title = models.CharField(max_length=128)
-    text = models.TextField(max_length=2048)
-
 class Tower(models.Model):
     name = models.CharField(max_length=30, unique=True, help_text="Укажите название вышки")
     oil = models.IntegerField(help_text="Производительность нефти в 24 часа (укажите число)")

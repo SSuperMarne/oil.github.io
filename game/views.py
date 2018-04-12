@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
 from payment.models import Order
 from client.models import Profile, ReferralSys, Transfer
-from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower, Advertisement
+from .models import Statistic, Factory, Tower, ClientFactory, ClientTower, Advertisement
 from .forms import ExchangeForm
 import math
 import time
@@ -50,22 +50,6 @@ def shop(request):
 def inventory(request):
     towers = ClientTower.objects.filter(user_id=request.user.id)
     return render(request, 'main/inventory.html', {'towers': towers})
-
-@login_required
-def new_support(request):
-    if request.method == 'POST':
-        form = SupportForm(request.POST)
-        if form.is_valid():
-            nickname = request.user.username
-            email = request.user.email
-            title = form.cleaned_data.get('title')
-            text = form.cleaned_data.get('text')
-            add = Support(nickname=nickname, email=email, title=title, text=text)
-            add.save()
-            messages.add_message(request, messages.INFO, "Запрос отправлен администрации! Вы получите ответ на e-mail, который указан в вашем профиле.")
-    else:
-        form = SupportForm()
-    return render(request, 'main/support.html', {"form": form})
 
 @login_required
 def exchange(request):
