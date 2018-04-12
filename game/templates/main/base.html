@@ -35,6 +35,13 @@
                             <a href="{% url 'payment' %}"><i class="fa fa-rub"></i> <span>Сейчас у вас <b>{{ user.profile.balance }} руб.</b> и <b>{{ user.profile.oil }} ед.</b> нефти</span></a>
                         </li>
                         <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-envelope"></i> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'pm_list' %}"><i class="fa fa-list"></i> Список сообщений</a></li>
+                                <li><a href="{% url 'pm_new_create' %}"><i class="fa fa-paper-plane"></i> Отправить сообщение</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/user-md-1.png' %}{% endif %}" class="img-circle" alt="Avatar"> <span>{{ user.username }}</span> <i class="icon-submenu lnr lnr-chevron-down"></i>
                             </a>

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'game',
     'payment',
     'moderation',
+    'pm',
 ]
 
 MIDDLEWARE = [

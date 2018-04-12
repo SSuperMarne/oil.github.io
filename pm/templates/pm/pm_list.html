@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Список личных сообщений - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <!-- OVERVIEW -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Список личных сообщений</h3>
+                        </div>
+                        <div class="panel-body no-padding">
+                            <div class="col-md-12">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                                {% endfor %}
+                                {% if pm %}
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th><i class="fa fa-book" aria-hidden="true"></i> Заголовок</th>
+                                            <th><i class="fa fa-envelope-o" aria-hidden="true"></i> От кого</th>
+                                            <th><i class="fa fa fa-envelope-open-o" aria-hidden="true"></i> Кому</th>
+                                            <th><i class="fa fa-cog" aria-hidden="true"></i> Состояние</th>
+                                            <th><i class="fa fa-cog" aria-hidden="true"></i> Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for p in pm %}
+                                        <tr>
+                                            <td>{{ p.id }}</td>
+                                            <td>{{ p.title}}</td>
+                                            <td>{{ p.owner.username }}</td>
+                                            <td>{{ p.recipient }}</td>
+                                            {% if p.status == 1 %}
+                                            <td><span class="label label-danger">ЗАКРЫТО</span></td>
+                                            {% elif p.status == 2 %}
+                                            <td><span class="label label-success">ОТКРЫТО</span></td>
+                                            {% elif p.status == 3 %}
+                                            <td><span class="label label-warning">ОБРАБОТКА</span></td>
+                                            {% else %}
+                                            <td><span class="label label-info">ДИАЛОГ</span></td>                                            
+                                            {% endif %}
+                                            <td>
+                                                <a href="" class="btn btn-primary">Смотреть</a>
+                                                <a href="" class="btn btn-danger">Удалить</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <div class="alert alert-warning">Мы не нашли переписок, в которых вы учавствовали. Попробуйте <a href="#">создать новое сообщение</a>.</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END OVERVIEW -->
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}

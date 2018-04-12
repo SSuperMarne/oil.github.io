@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'', include('game.urls')),
     url(r'', include('payment.urls')),
     url(r'', include('moderation.urls')),
+    url(r'', include('pm.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

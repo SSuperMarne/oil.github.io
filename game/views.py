@@ -7,7 +7,7 @@ from django.db.models import Max
 from payment.models import Order
 from client.models import Profile, ReferralSys, Transfer
 from .models import Statistic, Support, Factory, Tower, ClientFactory, ClientTower, Advertisement
-from .forms import SupportForm, ExchangeForm
+from .forms import ExchangeForm
 import math
 import time
 
