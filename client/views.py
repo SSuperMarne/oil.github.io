@@ -57,6 +57,7 @@ def u_avatar(request):
         form = AvatarForm(request.POST, request.FILES)
         if form.is_valid():
             client = Profile.objects.get(user_id=request.user.id)
+            client.avatar.delete(False)
             client.avatar = form.cleaned_data['avatar']
             client.save()
             messages.add_message(request, messages.SUCCESS, "Ваш аватар успешно изменен.")
