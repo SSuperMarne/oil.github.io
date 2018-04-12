@@ -4,13 +4,23 @@
             <!-- MAIN CONTENT -->
             <div class="main-content">
                 <div class="container-fluid">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
                     <!-- PROFILE -->
                     <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Основная информация профиля</h3>
-                        </div>
                         <div class="panel-body no-padding">
                             <div class="col-md-8 col-xl-4">
+                                <h4>Смена аватара</h4>
+                                <form action="{% url 'avatar' %}" method="POST" class="form-inline" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="sr-only" for="avatar">Смена аватара</label>
+                                        <input type="file" class="form-control" id="avatar" name="avatar" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                </form>
+                                <h4>Основная информация</h4>
                                 <ul style="list-style-type: none; margin-left: -30px;">
                                     <li><b><i class="fa fa-user"></i> Логин аккаунта:</b> {{ user.username }}</li>
                                     <li><b><i class="fa fa-calendar"></i> Дата регистрации:</b> {{ user.date_joined }}</li>

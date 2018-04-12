@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum
-from .forms import SignUpForm, TransferForm
+from .forms import SignUpForm, TransferForm, AvatarForm
 from .models import Profile, Transfer, ReferralSys
 from payment.views import create_pay_sign
 from payment.models import Order
@@ -50,6 +50,21 @@ User profiles
 def u_profile(request):
     ref_profit = ReferralSys.objects.filter(id_referrer=request.user.id).aggregate(value=Sum('profit'))
     return render(request, 'main/profile.html', {'ref_profit': ref_profit})
+
+@login_required
+def u_avatar(request):
+    if request.method == 'POST':
+        form = AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            client = Profile.objects.get(user_id=request.user.id)
+            client.avatar = form.cleaned_data['avatar']
+            client.save()
+            messages.add_message(request, messages.SUCCESS, "Ваш аватар успешно изменен.")
+        else:
+            messages.add_message(request, messages.ERROR, "Загрузите правильное изображение. Файл, который вы загрузили, поврежден или не является изображением.")
+        return redirect('profile')
+    else:
+        return redirect('panel_main')
 
 """
 The function for withdraw

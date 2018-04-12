@@ -24,3 +24,6 @@ class TransferForm(forms.Form):
     rubs = forms.IntegerField(min_value=1)
     system = forms.ChoiceField(choices = STATUS_CHOICES)
     vault = forms.CharField(min_length=5, max_length=64)
+
+class AvatarForm(forms.Form):
+    avatar = forms.ImageField()

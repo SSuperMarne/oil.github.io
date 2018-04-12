@@ -5,12 +5,13 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    balance = models.IntegerField(default=50, blank=False)
-    oil = models.IntegerField(default=0, blank=False)
-    stat_tower = models.IntegerField(default=0, blank=False)
-    stat_produced = models.IntegerField(default=0, blank=False)
-    stat_pay = models.IntegerField(default=0, blank=False)
-    stat_payout = models.IntegerField(default=0, blank=False)
+    balance = models.IntegerField(default=50)
+    oil = models.IntegerField(default=0)
+    avatar = models.ImageField(upload_to="avatars", blank=True)
+    stat_tower = models.IntegerField(default=0)
+    stat_produced = models.IntegerField(default=0)
+    stat_pay = models.IntegerField(default=0)
+    stat_payout = models.IntegerField(default=0)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

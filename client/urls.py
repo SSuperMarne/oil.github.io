@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^profile/passwd/done/$', auth_views.password_change_done, {'template_name': 'registration/passwd.html'}, name='password_change_done'),
 # other client urls
     url(r'^profile/$', views.u_profile, name='profile'),
+    url(r'^profile/avatar/$', views.u_avatar, name='avatar'),
     url(r'^payment/history/$', views.payment_history, name='payment_history'),
     url(r'^withdraw/$', views.transfer, name='withdraw'),
     url(r'^payment/(?P<pk>\d+)/(?P<action>[a-z]+)/$', views.payment_manage, name='payment_manage'),
