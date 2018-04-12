@@ -6,3 +6,7 @@ class NewPMForm(forms.Form):
     title = forms.CharField(max_length=120)
     text = forms.CharField(max_length=3000)
     #captcha = ReCaptchaField()
+
+class AddPMForm(forms.Form):
+    text = forms.CharField(max_length=3000)
+    #captcha = ReCaptchaField()

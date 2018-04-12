@@ -23,7 +23,7 @@
                                             <th><i class="fa fa-envelope-o" aria-hidden="true"></i> От кого</th>
                                             <th><i class="fa fa fa-envelope-open-o" aria-hidden="true"></i> Кому</th>
                                             <th><i class="fa fa-cog" aria-hidden="true"></i> Состояние</th>
-                                            <th><i class="fa fa-cog" aria-hidden="true"></i> Действия</th>
+                                            <th><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Действия</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -32,7 +32,7 @@
                                             <td>{{ p.id }}</td>
                                             <td>{{ p.title}}</td>
                                             <td>{{ p.owner.username }}</td>
-                                            <td>{{ p.recipient }}</td>
+                                            <td>{{ p.recipient_name }}</td>
                                             {% if p.status == 1 %}
                                             <td><span class="label label-danger">ЗАКРЫТО</span></td>
                                             {% elif p.status == 2 %}
@@ -43,15 +43,15 @@
                                             <td><span class="label label-info">ДИАЛОГ</span></td>                                            
                                             {% endif %}
                                             <td>
-                                                <a href="" class="btn btn-primary">Смотреть</a>
-                                                <a href="" class="btn btn-danger">Удалить</a>
+                                                <a href="{% url 'pm_view' pk=p.id %}" class="btn btn-primary"><i class="fa fa-eye"></i> Смотреть</a>
+                                                <a href="{% url 'pm_delete' pk=p.id %}" class="btn btn-danger"><i class="fa fa-times"></i> Удалить</a>
                                             </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
                                 {% else %}
-                                <div class="alert alert-warning">Мы не нашли переписок, в которых вы учавствовали. Попробуйте <a href="#">создать новое сообщение</a>.</div>
+                                <div class="alert alert-warning">Мы не нашли переписок, в которых вы учавствовали. Попробуйте <a href="{% url 'pm_new_create' %}">создать новое сообщение</a>.</div>
                                 {% endif %}
                             </div>
                         </div>

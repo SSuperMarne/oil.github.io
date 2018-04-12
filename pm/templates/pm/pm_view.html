@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Просмотр тикета - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                    <!-- PM HEADING -->
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Просмотр тикета #{{ ticket.id }}</h3>
+                            <h5><b>Тема:</b> {{ticket.title}}</h5>
+                            <h5><b>Диалог создан:</b> {{ ticket.owner }}</h5>
+                            <h5><b>Направлено:</b> {{ ticket.recipient_name }}</h5>
+                        </div>
+                        <div class="panel-body">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <textarea class="form-control" name="text" placeholder="Текст вашего сообщения" rows="6" required style="width: 500px;"></textarea>
+                                <br>
+                                {{ form.captcha }}
+                                <br>
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- END PM HEADING -->
+                    {% for pm in pms %}
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Сообщение #{{ forloop.counter }} ({{ pm.date }})</h3>
+                            <div class="right">
+                                {% if pm.status %}
+                                <h3 class="panel-title">Отправил: {{ pm.ticket.owner }} <span class="label label-info">СОЗДАТЕЛЬ ДИАЛОГА</span></h3>
+                                {% else %}
+                                <h3 class="panel-title">Отправил: {{ pm.ticket.recipient_name }}</h3>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <p>{{ pm.message }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- END MAIN CONTENT -->
+        </div>
+        <!-- END MAIN -->
+{% endblock %}
