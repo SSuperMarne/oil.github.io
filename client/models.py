@@ -31,6 +31,7 @@ class Transfer(models.Model):
     vault = models.CharField(max_length=64)
     date = models.DateTimeField(auto_now_add=True)
     user_id = models.IntegerField()
+    # Статусы платежей: 1 - выплачено, 2 - отклонено, 3 - обработка
     status = models.IntegerField()
 
 class ReferralSys(models.Model):

@@ -9,16 +9,14 @@
                             <h3 class="panel-title">Запрос в техническую поддержку</h3>
                         </div>
                         <div class="panel-body">
-                            {% if messages %}{% for message in messages %}
-                            <p class="alert alert-success">{{ message }}</p>
-                            {% endfor %}{% endif %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
                             {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
                             <div class="row">
                                 <div class="col-md-6 col-lg-4">
                                     <form method="POST">
                                         {% csrf_token %}
-                                        <input type="text" class="form-control" name="title" placeholder="Тема обращения" minlength="3" maxlength="128" required>
-                                        <br>
                                         <textarea class="form-control" name="text" placeholder="Пожалуйста, расскажите нам о возникшей проблеме." rows="6" required></textarea>
                                         <br>
                                         {{ form.captcha }}

@@ -10,3 +10,7 @@ class NewPMForm(forms.Form):
 class AddPMForm(forms.Form):
     text = forms.CharField(max_length=3000)
     #captcha = ReCaptchaField()
+
+class AddSupportForm(forms.Form):
+    text = forms.CharField(max_length=3000)
+    #captcha = ReCaptchaField()

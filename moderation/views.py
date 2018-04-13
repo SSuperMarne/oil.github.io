@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
 from game.models import Statistic, ClientTower, ClientFactory
 from client.models import Profile, Transfer, ReferralSys
+from pm.models import Ticket, PersonalMessage
 from payment.views import autopay
 from .forms import ModifyForm, NicknameForm
 
@@ -29,13 +30,13 @@ Main functions
 """
 @login_required
 def moderation(request):
-    # Статусы платежей: 1 - выплачено, 2 - отклонено, 3 - обработка
     if request.user.is_staff:
         total_draws = Transfer.objects.all().order_by('-id')
+        tickets = Ticket.objects.filter(status=3).order_by('-id')
         paginator = Paginator(total_draws, 10)
         page = request.GET.get('draws')
         draws = paginator.get_page(page)
-        return render(request, 'mod/moderator.html', {'draws': draws})
+        return render(request, 'mod/moderator.html', {'draws': draws, 'tickets': tickets})
     else:
         raise PermissionDenied
 
