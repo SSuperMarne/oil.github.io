@@ -10,24 +10,25 @@
                     <!-- PM HEADING -->
                     <div class="panel panel-headline">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Просмотр тикета #{{ ticket.id }}</h3>
-                            <h5><b>Тема:</b> {{ticket.title}}</h5>
+                            <h3 class="panel-title">Просмотр тикета #{{ ticket.id }} <b>[режим модератора]</b></h3>
+                            <h5><b>Статус:</b> {% if ticket.status == 1 %}<span class="label label-danger">ЗАКРЫТО</span>{% elif ticket.status == 2 %}<span class="label label-success">ОТКРЫТО</span>{% elif ticket.status == 3 %}<span class="label label-warning">ОЖИДАЕТ ВАШЕГО ОТВЕТА</span>{% else %}<span class="label label-info">ДИАЛОГ</span>{% endif %}</h5>
                             <h5><b>Диалог создан:</b> {{ ticket.owner }}</h5>
-                            <h5><b>Направлено:</b> {% if ticket.recipient == 0 %}<span class="label label-info">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>{% else %}{{ ticket.recipient_name }} {% endif %}</h5>
+                            <h5><b>Email создателя:</b> {{ ticket.owner.email }}</h5>
+                            <h5><b>Последний вход в систему:</b> {{ ticket.owner.last_login }}</h5>
                         </div>
                         <div class="panel-body">
-                            {% if ticket.status != 1 %}
                             <form method="POST">
                                 {% csrf_token %}
-                                <textarea class="form-control" name="text" placeholder="Текст вашего сообщения" rows="6" required style="width: 500px;"></textarea>
+                                <textarea class="form-control" name="text" placeholder="Введите здесь текст для отправки его от имени технической поддержки проекта" rows="6" required style="width: 500px;"></textarea>
                                 <br>
-                                {{ form.captcha }}
-                                <br>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" name="close" value="1" id="check_close">
+                                  <label class="form-check-label" for="check_close">
+                                    Закрыть тикет? (запретить отправлять сообщения)
+                                  </label>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Отправить</button>
                             </form>
-                            {% else %}
-                            <p class="alert alert-danger">Этот тикет закрыт. Скорее всего, в тикет долго не приходили ответы или проблема была решена. Если у вас остались вопросы - создайте новый тикет.</p>
-                            {% endif %}
                         </div>
                     </div>
                     <!-- END PM HEADING -->

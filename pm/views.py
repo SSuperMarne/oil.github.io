@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.db.models import Q
 from .models import Ticket, PersonalMessage
-from .forms import NewPMForm, AddPMForm, AddSupportForm
+from .forms import NewPMForm, AddPMForm, AddSupportForm, ReplySupportForm
 
 """
 Sub-functions for personal messages
@@ -48,17 +48,20 @@ def pm_new_create(request):
 @login_required
 def pm_view(request, pk):
     ticket = get_object_or_404(Ticket, pk=pk)
-    if ticket.owner != request.user and ticket.recipient != request.user.id and not request.user.is_staff:
+    if ticket.owner != request.user and ticket.recipient != request.user.id:
         messages.add_message(request, messages.WARNING, "Нет прав!")
         return redirect('pm_list')
-    if ticket.status == 1:
-        messages.add_message(request, messages.ERROR, "Этот тикет закрыт. Ответы в закрытый тикет невозможны.")
-        return redirect('pm_list')
     if request.method == 'POST':
+        if ticket.status == 1:
+            messages.add_message(request, messages.ERROR, "Этот тикет закрыт. Ответы в закрытый тикет невозможны.")
+            return redirect('pm_list')
         form = AddPMForm(request.POST)
         if form.is_valid():
             text = form.cleaned_data.get('text')
-            if ticket.owner == request.user:
+            if ticket.status == 2: # смена статуса на "ожидание", если тикет открыт
+                ticket.status = 3
+                ticket.save()
+            if ticket.owner == request.user: # от чьего имени отправляется сообщение
                 pm = PersonalMessage(ticket=ticket, message=text, status=True)
             else:
                 pm = PersonalMessage(ticket=ticket, message=text, status=False)
@@ -66,8 +69,9 @@ def pm_view(request, pk):
             messages.add_message(request, messages.SUCCESS, "Сообщение успешно отправлено!")
             return redirect('pm_view', pk=pk)
     else:
+        form = AddPMForm()
         pm = PersonalMessage.objects.filter(ticket=ticket)
-        return render(request, 'pm/pm_view.html', {"ticket": ticket, "pms": pm})
+        return render(request, 'pm/pm_view.html', {"ticket": ticket, "pms": pm, "form": form})
 
 @login_required
 def pm_delete(request, pk):
@@ -91,4 +95,29 @@ def pm_support_new(request):
             if ticket_create(request, 0, "Запрос в техническую поддержку", text, 3):
                 messages.add_message(request, messages.SUCCESS, "Запрос в техническую поддержку был успешно создан!")
                 return redirect('pm_list')
-    return render(request, 'pm/support.html')
+    else:
+        form = AddSupportForm()
+    return render(request, 'pm/support.html', {"form": form})
+
+@login_required
+def pm_support_view(request, pk):
+    if request.user.is_staff:
+        ticket = get_object_or_404(Ticket, pk=pk)
+        pm = PersonalMessage.objects.filter(ticket=ticket)
+        if request.method == 'POST':
+            form = ReplySupportForm(request.POST)
+            if form.is_valid():
+                text = form.cleaned_data.get('text')
+                close = form.cleaned_data.get('close')
+                if close: # если чекбокс отмечен закрыть тикет
+                    ticket.status = 1
+                    ticket.save()
+                else:
+                    ticket.status = 2
+                    ticket.save()
+                pm_create = PersonalMessage(ticket=ticket, message=text, status=False)
+                pm_create.save()
+                messages.add_message(request, messages.SUCCESS, "Сообщение успешно отправлено!")
+        return render(request, 'moderation/pm_view.html', {"ticket": ticket, "pms": pm})
+    else:
+        raise PermissionDenied

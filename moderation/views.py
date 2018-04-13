@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Sum
 from game.models import Statistic, ClientTower, ClientFactory
 from client.models import Profile, Transfer, ReferralSys
-from pm.models import Ticket, PersonalMessage
+from pm.models import Ticket
 from payment.views import autopay
 from .forms import ModifyForm, NicknameForm
 

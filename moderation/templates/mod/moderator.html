@@ -68,7 +68,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <h4>Список обращений в техническую поддержку</h4>
-                                    <p class="text-info">Здесь мы отображаем все обращения в техническую поддержку, которые ожидают рассмотрения в текущий момент.</p>
+                                    <p class="text-info">Здесь мы отображаем все обращения в техническую поддержку, которые ожидают рассмотрения в текущий момент. Закрытые или уже отвеченные тикеты скрыты.</p>
                                     {% if tickets %}
                                     <table class="table table-striped table-vcenter">
                                         <thead>
@@ -83,7 +83,7 @@
                                             <tr>
                                                 <td class="text-center">{{ t.owner.username }}</td>
                                                 <td class="text-center"><span class="label label-warning">ОЖИДАЕТ РАССМОТРЕНИЯ</span></td>
-                                                <td class="text-center"><a href="{% url 'pm_view' pk=t.id %}" class="btn btn-info">Посмотреть тикет</a></td>
+                                                <td class="text-center"><a href="{% url 'pm_support_view' pk=t.id %}" class="btn btn-info">Посмотреть тикет</a></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
