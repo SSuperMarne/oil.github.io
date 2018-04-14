@@ -1801,3 +1801,22 @@ ul.activity-timeline > li {
   margin-right: auto;
   margin-left: auto;
 }
+
+.towers {
+  float: none;
+  margin: 0 auto;
+  display: inline-block;
+  position: relative;
+  width: 1024px;
+  height: 570px;
+  background-image: url("../../static/img/main.gif");
+}
+.towers span {
+  display: inline-block;
+  position: absolute;
+  padding-top: 5%;
+  padding-left: 13%;
+}
+.towers a {
+  margin-bottom: 10px;
+}

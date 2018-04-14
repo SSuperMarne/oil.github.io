@@ -4,6 +4,9 @@
             <!-- MAIN CONTENT -->
             <div class="main-content">
                 <div class="container-fluid">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
                     <!-- OVERVIEW -->
                     <div class="panel panel-headline">
                         <div class="panel-heading">
@@ -11,23 +14,54 @@
                             <p class="panel-subtitle">Управляйте вашей недвижимостью</p>
                         </div>
                         <div class="panel-body">
-                        <p class="alert alert-info">Текущее количество нефти у вас: <b>{{ user.profile.oil }} единиц</b><br><a href="{% url 'exchange' %}">Нажмите здесь</a>, чтобы обменять нефть на рубли.{% if towers %}<br>Вы можете собрать нефть со всех ожидающих вышек одним нажатием: <a href="{% url 'get_all_oil' %}" class="btn btn-primary"><i class="fa fa-globe" aria-hidden="true"></i> Забрать всю нефть</a>{% endif %}</p>
-                        {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
-                        <h3>Ваши башни <a style="font-size: 0.8em;" onClick="window.location.reload()" title="Обновить таблицу"><i class="fa fa-refresh"></i></a></h3>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                   <tr><th><i class="fa fa-list"></i> Название башни</th><th><i class="fa fa-money"></i> Нефти в день</th><th><i class="fa fa-clock-o"></i> Добудет нефть через</th><th><i class="fa fa-check-circle"></i> Действия</th></tr>
-                                    {% if towers %}
-                                    {% for t in towers %}
-                                    <tr><td>{{ t.tower_name }}</td><td>{{ t.tower_oil }} ед.</td><td name="wtime">{{ t.work }}</td><td><a href="/inventory/get/{{ t.id }}/" class="btn btn-success" style="padding: 4px 12px;" name="gets">Забрать нефть</a></td></tr>
+                            {% if towers %}
+                            <h3 class="text-center"><i class="fa fa-tasks"></i> Общая информация о ваших объектах</h3>
+                            <h5 class="text-center">Отслеживайте работу вашего виртуального бизнеса</h5>
+                            <center>
+                                <div class="towers">
+                                    <span>
+                                        <p>Сейчас в ваших хранилищах: <b>{{ user.profile.oil }} единиц нефти</b></p>
+                                        <a href="{% url 'get_all_oil' %}" class="btn btn-success"><i class="fa fa-globe"></i> Собрать нефть с вышек</a>
+                                        <p>Хотите выполнить обмен нефти?</p>
+                                        <a href="{% url 'exchange' %}" class="btn btn-danger"><i class="fa fa-ravelry"></i> Отправиться в обменник</a>
+                                    </span>
+                                </div>
+                            <h3 class="text-center"><i class="fa fa-archive"></i> Ваши фабрики</h3>
+                            <h5 class="text-center">Фабрики необходимы для размещения вышек</h5>
+                                <div class="row">
+                                    {% for f in factories %}
+                                    <div class="col-md-2">
+                                        <center>
+                                            <img src="{{ f.factory.img.url }}" alt="{{ f.factory.name }}" width="120px" height="120px" />
+                                            <h4>{{ f.factory.name }}</h4>
+                                            <p>
+                                                <strong>Приобретено за:</strong> {{ f.factory.price }} рублей<br>
+                                            </p>
+                                        </center>
+                                    </div>
                                     {% endfor %}
-                                    {% else %}
-                                    <tr><td><em>Нефтяных вышек нет <i class="fa fa-frown-o" aria-hidden="true"></i></em></td><td><em>Нефтяных вышек нет <i class="fa fa-frown-o" aria-hidden="true"></i></em></td><td><em>Нефтяных вышек нет <i class="fa fa-frown-o" aria-hidden="true"></i></em></td><td><a href="{% url 'shop' %}" class="btn btn-success" style="padding: 4px 12px;">Купить сейчас?</a></td><tr>
-                                    {% endif %}
-                                </table>
-                            </div>
+                                </div>
+                            <h3 class="text-center"><i class="fa fa-pie-chart"></i> Ваши нефтяные вышки</h3>
+                            <h5 class="text-center">Вышки добывают нефть. Собирайте нефть и обменивайте на рубли!</h5>
+                                <div class="row">
+                                    {% for t in towers %}
+                                    <div class="col-md-2">
+                                        <center>
+                                            <img src="{{ t.tower_id.img.url }}" alt="{{ t.tower_id.name }}" width="120px" height="120px" />
+                                            <h4>{{ t.tower_id.name }}</h4>
+                                            <p>
+                                                <strong>Приобретено за:</strong> {{ t.tower_id.price }} рублей<br>
+                                                <strong>Добывает:</strong> {{ t.tower_id.oil }} ед. в день<br>
+                                                <strong>Статус:</strong> <span name="ready_time">{{ t.work }}</span><br>
+                                            </p>
+                                        </center>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </center>
+                            {% else %}
+                            <p class="alert alert-info">Сейчас вы не имеете купленных нефтяных вышек. Мы отобразим здесь ваш инвентарь после покупки первой вышки. Приобрести вышки можно в <a href="{% url 'shop' %}">игровом магазине</a>.</p>
+                            {% endif %}
                         </div>
                     </div>
                     <!-- END OVERVIEW -->
@@ -36,22 +70,19 @@
             <!-- END MAIN CONTENT -->
         </div>
         <!-- END MAIN -->
-    <script type="text/javascript">
-    var w = document.getElementsByName("wtime");
-    var b = document.getElementsByName("gets");
+{% endblock %}
+{% block jsscript %}
+<script>
+    var w = document.getElementsByName("ready_time");
     var d = new Date();
     for (var i = 0; i < w.length; i++) {
       var r = w[i].innerHTML - Math.round(d.valueOf() / 1000);
       var g = Math.round(r / 60 / 60);
       if (g <= 0) {
-        w[i].innerHTML = "<em>Ожидает сбора</em>";
+        w[i].innerHTML = "<span class=\"label label-success\"><i class=\"fa fa-check\"></i> Ожидает сбора</span>";
       } else {
-        w[i].innerHTML = g + " час(ов)";
-        b[i].className += " disabled";
+        w[i].innerHTML = "выполнит работу через " + g + " часа(ов)";
       }
     }
-    Array.from(document.querySelectorAll('tr')).forEach(e => 
-    e.innerHTML.toLowerCase().includes('ожидает сбора') ? e.classList.add('success') : null
-    );
-    </script>
+</script>
 {% endblock %}

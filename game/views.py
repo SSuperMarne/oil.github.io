@@ -49,7 +49,8 @@ def shop(request):
 @login_required
 def inventory(request):
     towers = ClientTower.objects.filter(user_id=request.user.id)
-    return render(request, 'main/inventory.html', {'towers': towers})
+    factories = ClientFactory.objects.filter(user_id=request.user.id)
+    return render(request, 'main/inventory.html', {'towers': towers, 'factories': factories})
 
 @login_required
 def exchange(request):
