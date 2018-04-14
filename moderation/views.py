@@ -72,7 +72,7 @@ def mod_actions(request, action):
                 if towers:
                     for tower in towers:
                         count_towers += 1
-                        total_oil += tower.tower_oil
+                        total_oil += tower.tower.oil
                 d = {'info': user, 'factories': factories, 'towers': towers, 'total_oil': total_oil, 'count_towers': count_towers}
                 return render(request, 'mod/mod_inventory.html', {'d': d})
             else:

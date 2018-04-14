@@ -16,7 +16,7 @@
                             <div class="col-md-12">
                                 {% if d.towers %}
                                 <p class="alert alert-info">
-                                    <i class="fa fa-building" aria-hidden="true"></i> <b>Построено вышек:</b> {% for t in d.towers %}{{ t.tower_name }} ({{t.tower_oil}} ед.); {% endfor %}
+                                    <i class="fa fa-building" aria-hidden="true"></i> <b>Построено вышек:</b> {% for t in d.towers %}{{ t.tower.name }} ({{t.tower.oil}} ед., {{t.level}} ур.); {% endfor %}
                                     <br>
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i> <b>Ежедневный прибыток от вышек:</b> <span id="oil_count">{{ d.total_oil }}</span> ед. нефти или <span id="rub_count"></span> руб. в день
                                     <br>
@@ -27,7 +27,7 @@
                                 {% endif %}
 
                                 {% if d.factories %}
-                                <p class="alert alert-info"><i class="fa fa-industry" aria-hidden="true"></i> <b>Фабрики</b>: {% for f in d.factories %}{{ f.name }}; {% endfor %}</p>
+                                <p class="alert alert-info"><i class="fa fa-industry" aria-hidden="true"></i> <b>Фабрики</b>: {% for f in d.factories %}{{ f.factory.name }}; {% endfor %}</p>
                                 {% else %}
                                 <p class="alert alert-warning">Пользователь не имеет купленных фабрик!</p>
                                 {% endif %}
