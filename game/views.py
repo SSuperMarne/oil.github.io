@@ -115,30 +115,6 @@ def buy(request, category, goods):
     return redirect('shop')
 
 @login_required
-def get_oil(request, pk):
-    timed = lambda: int(round(time.time()))
-    try:
-        a = ClientTower.objects.get(user_id=request.user.id, id=pk)
-    except ObjectDoesNotExist:
-        messages.add_message(request, messages.ERROR, "Запрос выполнен неверно. Свяжитесь с администрацией магазина.")
-        return redirect('inventory')
-    client = Profile.objects.get(user_id=request.user.id)
-    if timed() - a.work >= 0:
-        client.oil += a.tower_oil
-        client.stat_produced += a.tower_oil # stats
-        client.save()
-        a.work = timed() + 86400
-        a.save()
-        # Statistic global
-        stat = Statistic.objects.latest('id')
-        stat.oil += a.tower_oil
-        stat.save()
-        messages.add_message(request, messages.SUCCESS, "Нефть успешно собрана.")
-    else:
-        messages.add_message(request, messages.ERROR, "Прошло недостаточно времени для выдачи нефти.")
-    return redirect('inventory')
-
-@login_required
 def get_all_oil(request):
     timed = lambda: int(round(time.time()))
     towers = ClientTower.objects.filter(user_id=request.user.id)
