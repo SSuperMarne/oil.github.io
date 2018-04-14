@@ -161,5 +161,5 @@ def tower_level_up(request, pk):
         tower.save()
         messages.add_message(request, messages.SUCCESS, "Вы успешно приобрели повышение уровня для нефтяной вышки.")
     else:
-        messages.add_message(request, messages.WARNING, "Вы не имеете необходимой суммы для оплаты услуги. Необходимо: %s руб." % levels[tower.level + 1].price)
+        messages.add_message(request, messages.WARNING, "Вы не имеете необходимой суммы для оплаты услуги.")
     return redirect('inventory')
