@@ -15,6 +15,14 @@ class Tower(models.Model):
     def __str__(self):
         return self.name
 
+class TowerLevel(models.Model):
+    name = models.CharField(max_length=30, unique=True, help_text="Название уровня. Отображается в таблице уровней вышек.")
+    up = models.PositiveSmallIntegerField(help_text="Данное число всегда прибавляется к основной производительности вышки при сборе. Чем больше уровень - тем больше число.")
+    price = models.PositiveSmallIntegerField(help_text="Цена перехода на этот уровень")
+
+    def __str__(self):
+        return self.name
+
 class Factory(models.Model):
     name = models.CharField(max_length=30, unique=True, help_text="Укажите название завода")
     price = models.IntegerField(help_text="Цена за 1 шт. (укажите число)")
@@ -27,6 +35,7 @@ class Factory(models.Model):
 class ClientTower(models.Model):
     tower = models.ForeignKey(Tower, on_delete=models.CASCADE)
     user_id = models.IntegerField(blank=False)
+    level = models.PositiveSmallIntegerField(default=1)
     work = models.IntegerField()
 
 class ClientFactory(models.Model):

@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
 from payment.models import Order
 from client.models import Profile, ReferralSys, Transfer
-from .models import Statistic, Factory, Tower, ClientFactory, ClientTower, Advertisement
+from .models import Statistic, Factory, Tower, ClientFactory, ClientTower, Advertisement, TowerLevel
 from .forms import ExchangeForm
 import math
 import time
@@ -50,7 +50,8 @@ def shop(request):
 def inventory(request):
     towers = ClientTower.objects.filter(user_id=request.user.id)
     factories = ClientFactory.objects.filter(user_id=request.user.id)
-    return render(request, 'main/inventory.html', {'towers': towers, 'factories': factories})
+    levels = TowerLevel.objects.all()
+    return render(request, 'main/inventory.html', {'towers': towers, 'factories': factories, 'levels': levels})
 
 @login_required
 def exchange(request):
@@ -120,10 +121,13 @@ def get_all_oil(request):
     towers = ClientTower.objects.filter(user_id=request.user.id)
     if towers:
         oil_counter = 0
+        levels = TowerLevel.objects.all()
         for tower in towers:
             if timed() - tower.work >= 0:
                 tower.work = timed() + 86400
                 tower.save()
+                if tower.level != 1:
+                    oil_counter += levels[tower.level - 1].up
                 oil_counter += tower.tower.oil
         if oil_counter > 0:
             client = Profile.objects.get(user_id=request.user.id)
@@ -136,4 +140,26 @@ def get_all_oil(request):
             messages.add_message(request, messages.SUCCESS, "Вы собрали нефть с ожидающих вышек. Всего зачислено нефти: {0} единиц.".format(oil_counter))
         else:
             messages.add_message(request, messages.WARNING, "В данный момент у вас нет вышек, с которых можно собрать нефть. Пожалуйста, попробуйте позже.")
+    return redirect('inventory')
+
+@login_required
+def tower_level_up(request, pk):
+    try:
+        tower = ClientTower.objects.get(user_id=request.user.id, pk=pk)
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.ERROR, "Данная вышка не зарегистрирована на ваш аккаунт.")
+        return redirect('inventory')
+    if tower.level == 16:
+        messages.add_message(request, messages.WARNING, "Эта вышка имеет максимальный уровень.")
+        return redirect('inventory')
+    client = Profile.objects.get(user_id=request.user.id)
+    levels = TowerLevel.objects.all()
+    if client.balance >= levels[tower.level].price:
+        client.balance -= levels[tower.level].price
+        client.save()
+        tower.level += 1
+        tower.save()
+        messages.add_message(request, messages.SUCCESS, "Вы успешно приобрели повышение уровня для нефтяной вышки.")
+    else:
+        messages.add_message(request, messages.WARNING, "Вы не имеете необходимой суммы для оплаты услуги. Необходимо: %s руб." % levels[tower.level + 1].price)
     return redirect('inventory')

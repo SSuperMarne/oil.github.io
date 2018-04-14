@@ -31,13 +31,11 @@
                                 <div class="row">
                                     {% for f in factories %}
                                     <div class="col-md-2">
-                                        <center>
-                                            <img src="{{ f.factory.img.url }}" alt="{{ f.factory.name }}" width="120px" height="120px" />
-                                            <h4>{{ f.factory.name }}</h4>
-                                            <p>
-                                                <strong>Приобретено за:</strong> {{ f.factory.price }} рублей<br>
-                                            </p>
-                                        </center>
+                                        <img src="{{ f.factory.img.url }}" alt="{{ f.factory.name }}" width="120px" height="120px" />
+                                        <h4>{{ f.factory.name }}</h4>
+                                        <p>
+                                            <strong>Приобретено за:</strong> {{ f.factory.price }} рублей<br>
+                                        </p>
                                     </div>
                                     {% endfor %}
                                 </div>
@@ -46,15 +44,14 @@
                                 <div class="row">
                                     {% for t in towers %}
                                     <div class="col-md-2">
-                                        <center>
-                                            <img src="{{ t.tower.img.url }}" alt="{{ t.tower.name }}" width="120px" height="120px" />
-                                            <h4>{{ t.tower.name }}</h4>
-                                            <p>
-                                                <strong>Приобретено за:</strong> {{ t.tower.price }} рублей<br>
-                                                <strong>Добывает:</strong> {{ t.tower.oil }} ед. в день<br>
-                                                <strong>Статус:</strong> <span name="ready_time">{{ t.work }}</span><br>
-                                            </p>
-                                        </center>
+                                        <img src="{{ t.tower.img.url }}" alt="{{ t.tower.name }}" width="120px" height="120px" />
+                                        <h4>{{ t.tower.name }}</h4>
+                                        <p>
+                                            <strong>Приобретено за:</strong> {{ t.tower.price }} рублей<br>
+                                            <strong>Добывает:</strong> {{ t.tower.oil }} ед. в день<br>
+                                            <strong>Уровень:</strong> {{ t.level }} ур. {% if t.level != 16 %}<a href="{% url 'lvlup' pk=t.id %}"><i class="fa fa-arrow-up"></i></a> {%endif%}<a href="#" onclick="$('#levels').modal('show'); return false;"><i class="fa fa-question-circle"></i></a><br>
+                                            <strong>Статус:</strong> <span name="ready_time">{{ t.work }}</span><br>
+                                        </p>
                                     </div>
                                     {% endfor %}
                                 </div>
@@ -72,6 +69,40 @@
         <!-- END MAIN -->
 {% endblock %}
 {% block jsscript %}
+<div class="modal fade" tabindex="-1" role="dialog" id="levels">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Таблица уровней вышек</h4>
+      </div>
+      <div class="modal-body">
+        <p>Уровень позволяет получить бонус к основной производительности вышки. Чем выше уровень - тем выше бонус.</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Название уровня</th>
+              <th>Бонус к нефти</th>
+              <th>Цена перехода</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for l in levels %}
+            <tr>
+              <td>{{ l.name }}</td>
+              <td>{{ l.up }} ед.</td>
+              <td>{{ l.price }} руб.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
     var w = document.getElementsByName("ready_time");
     var d = new Date();

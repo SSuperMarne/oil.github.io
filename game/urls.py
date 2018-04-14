@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^shop/(?P<category>\d+)/(?P<goods>\d+)/$', views.buy, name='buy'),
     url(r'^inventory/$', views.inventory, name='inventory'),
     url(r'^inventory/get/all/$', views.get_all_oil, name='get_all_oil'),
+    url(r'^inventory/tower/(?P<pk>\d+)/$', views.tower_level_up, name='lvlup'),
 ]
