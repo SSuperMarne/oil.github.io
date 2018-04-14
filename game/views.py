@@ -84,8 +84,8 @@ def buy(request, category, goods):
             messages.add_message(request, messages.ERROR, "У вас нет необходимой суммы для оплаты товара.")
         else:
             try:
-                check = ClientFactory.objects.get(user_id=client.id, tower_id=good.id)
-                data = ClientTower(tower_id_id=good.id, user_id=client.id, work=timed(), tower_name=good.name, tower_oil=good.oil)
+                check = ClientFactory.objects.get(user_id=client.id, factory__tower_id=good.id)
+                data = ClientTower(tower=good, user_id=client.id, work=timed())
                 data.save()
                 client.balance -= good.price
                 client.stat_tower += 1 # user stat
@@ -104,10 +104,10 @@ def buy(request, category, goods):
             messages.add_message(request, messages.ERROR, "У вас нет необходимой суммы для оплаты товара.")
         else:
             try:
-                check = ClientFactory.objects.get(user_id=client.id, factory_id=good.id)
+                check = ClientFactory.objects.get(user_id=client.id, factory=good)
                 messages.add_message(request, messages.WARNING, "Этот завод у вас уже приобретен.")
             except ObjectDoesNotExist:
-                data = ClientFactory(factory_id=good.id, name=good.name, user_id=client.id, tower_id=good.tower_id)
+                data = ClientFactory(factory=good, user_id=client.id)
                 data.save()
                 client.balance -= good.price
                 client.save()
@@ -124,7 +124,7 @@ def get_all_oil(request):
             if timed() - tower.work >= 0:
                 tower.work = timed() + 86400
                 tower.save()
-                oil_counter += tower.tower_oil
+                oil_counter += tower.tower.oil
         if oil_counter > 0:
             client = Profile.objects.get(user_id=request.user.id)
             client.oil += oil_counter
@@ -133,7 +133,7 @@ def get_all_oil(request):
             stat = Statistic.objects.latest('id')
             stat.oil += oil_counter
             stat.save()
-            messages.add_message(request, messages.SUCCESS, "Нефть с всех ваших вышек была собрана и зачислена на счет.")
+            messages.add_message(request, messages.SUCCESS, "Вы собрали нефть с ожидающих вышек. Всего зачислено нефти: {0} единиц.".format(oil_counter))
         else:
-            messages.add_message(request, messages.WARNING, "В данный момент у вас нет вышек, с которых можно собрать нефть. Попробуйте позже.")
+            messages.add_message(request, messages.WARNING, "В данный момент у вас нет вышек, с которых можно собрать нефть. Пожалуйста, попробуйте позже.")
     return redirect('inventory')

@@ -47,11 +47,11 @@
                                     {% for t in towers %}
                                     <div class="col-md-2">
                                         <center>
-                                            <img src="{{ t.tower_id.img.url }}" alt="{{ t.tower_id.name }}" width="120px" height="120px" />
-                                            <h4>{{ t.tower_id.name }}</h4>
+                                            <img src="{{ t.tower.img.url }}" alt="{{ t.tower.name }}" width="120px" height="120px" />
+                                            <h4>{{ t.tower.name }}</h4>
                                             <p>
-                                                <strong>Приобретено за:</strong> {{ t.tower_id.price }} рублей<br>
-                                                <strong>Добывает:</strong> {{ t.tower_id.oil }} ед. в день<br>
+                                                <strong>Приобретено за:</strong> {{ t.tower.price }} рублей<br>
+                                                <strong>Добывает:</strong> {{ t.tower.oil }} ед. в день<br>
                                                 <strong>Статус:</strong> <span name="ready_time">{{ t.work }}</span><br>
                                             </p>
                                         </center>

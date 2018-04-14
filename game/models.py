@@ -25,17 +25,13 @@ class Factory(models.Model):
         return self.name
 
 class ClientTower(models.Model):
-    tower_id = models.ForeignKey(Tower, on_delete=models.CASCADE)
+    tower = models.ForeignKey(Tower, on_delete=models.CASCADE)
     user_id = models.IntegerField(blank=False)
     work = models.IntegerField()
-    tower_name = models.CharField(max_length=256, blank=False) # DO NOT NEED! TOWER: NAME
-    tower_oil = models.IntegerField(blank=False) # DO NOT NEED! TOWER: OIL
 
 class ClientFactory(models.Model):
     factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
-    name = models.CharField(max_length=64, blank=False) # DO NOT NEED! Factory: NAME
     user_id = models.IntegerField(blank=False)
-    tower_id = models.IntegerField()  # DO NOT NEED! Factory: TOWER_ID
 
 class Advertisement(models.Model):
     name = models.CharField(max_length=64, unique=True, help_text="Укажите название баннера. Оно будет видно только вам.")
