@@ -75,7 +75,7 @@ def transfer(request):
     if request.method == 'POST':
         form = TransferForm(request.POST)
         client = Profile.objects.get(user_id=request.user.id)
-        if form.is_valid() and client.stat_pay >= 10 and client.stat_produced >= 500:
+        if form.is_valid() and client.stat_pay >= 10 and client.stat_produced >= 200:
             money = form.cleaned_data.get('rubs')
             if money <= client.balance:  
                 transfer = Transfer(amount=money, system=form.cleaned_data.get('system'), 
@@ -87,7 +87,7 @@ def transfer(request):
             else:
                 messages.add_message(request, messages.ERROR, "Недостаточно средств на балансе аккаунта")
         else:
-            messages.add_message(request, messages.ERROR, "Для вывода средств необходимо пополнить баланс минимум на 10 рублей, а также добыть 500 ед. нефти.")
+            messages.add_message(request, messages.ERROR, "Для вывода средств необходимо пополнить баланс минимум на 10 рублей, а также добыть 200 ед. нефти.")
     history = Transfer.objects.order_by('-id').filter(user_id=request.user.id)[:10]
     return render(request, 'main/transfer.html', {'history': history})
 
