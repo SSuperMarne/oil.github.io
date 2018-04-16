@@ -16,7 +16,15 @@
                   <h3 class="text-center"><i class="fa fa-tasks"></i> Общая информация о ваших объектах</h3>
                   <h5 class="text-center">Отслеживайте работу вашего виртуального бизнеса</h5>
                   <center>
-                      <div class="towers">
+                      <!-- for smartphones and tables -->
+                      <div class="hidden-md hidden-lg">
+                          <p>Сейчас в ваших хранилищах: <b>{{ user.profile.oil }} единиц нефти</b></p>
+                          <a href="{% url 'get_all_oil' %}" class="btn btn-success"><i class="fa fa-globe"></i> Собрать нефть с вышек</a>
+                          <p>Хотите выполнить обмен нефти?</p>
+                          <a href="{% url 'exchange' %}" class="btn btn-danger"><i class="fa fa-ravelry"></i> Отправиться в обменник</a>
+                      </div>
+                      <!-- desktops -->
+                      <div class="towers hidden-xs hidden-sm">
                           <span>
                               <p>Сейчас в ваших хранилищах: <b>{{ user.profile.oil }} единиц нефти</b></p>
                               <a href="{% url 'get_all_oil' %}" class="btn btn-success"><i class="fa fa-globe"></i> Собрать нефть с вышек</a>
