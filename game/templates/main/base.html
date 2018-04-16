@@ -92,8 +92,8 @@
         </div>
         <div class="pull-left info">
           <p>{{ user.username }}</p>
-          <a href=""><i class="fa fa-ravelry"></i> {{ user.profile.oil }} нефти</a>
-          <a href=""><i class="fa fa-rub"></i> {{ user.profile.balance }} руб.</a>
+          <a href="{% url 'exchange' %}"><i class="fa fa-ravelry"></i> {{ user.profile.oil }} нефти</a>
+          <a href="{% url 'payment_history' %}"><i class="fa fa-rub"></i> {{ user.profile.balance }} руб.</a>
         </div>
       </div>
       <!-- /USER PANEL -->
