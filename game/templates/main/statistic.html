@@ -1,157 +1,146 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Статистика проекта - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <!-- STATISTIC -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Статистика проекта</h3>
-                            <p class="panel-subtitle">Период: Март 21, 2018 - наст. время</p>
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Статистика проекта - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Статистика проекта
+        <small>Период: Март 20, 2018 - наст. время</small>
+      </h1>
+{% endblock %}
+{% block content %}
+        <!-- STATISTIC -->
+        <div class="panel panel-headline">
+            <div class="panel-body">
+                {% if d.stats != 0 %}
+                <div class="row">
+                    <div class="col-md-3">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-aqua"><i class="fa fa-bar-chart"></i></span>
+                        <div class="info-box-content">
+                          <span class="info-box-text">Всего построенных вышек</span>
+                          <span class="info-box-number">{{ d.stats.tower }} шт.</span>
                         </div>
-                        <div class="panel-body">
-                            {% if d.stats != 0 %}
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="metric">
-                                        <span class="icon"><i class="fa fa-bar-chart"></i></span>
-                                        <p>
-                                            <span class="number">{{ d.stats.tower }} шт.</span>
-                                            <span class="title">Всего построенных вышек</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="metric">
-                                        <span class="icon"><i class="fa fa-certificate"></i></span>
-                                        <p>
-                                            <span class="number">{{ d.stats.oil }} ед.</span>
-                                            <span class="title">Всего нефти добыто</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="metric">
-                                        <span class="icon"><i class="fa fa-credit-card-alt"></i></span>
-                                        <p>
-                                            <span class="number">{{ d.stats.donated }} руб.</span>
-                                            <span class="title">Всего внесено в проект</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="metric">
-                                        <span class="icon"><i class="fa fa-bar-chart"></i></span>
-                                        <p>
-                                            <span class="number">{{ d.stats.exchanged }} руб.</span>
-                                            <span class="title">Всего выведено средств</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="metric">
-                                        <span class="icon"><i class="fa fa-users"></i></span>
-                                        <p>
-                                            <span class="number">{{ d.u_count.id }} чел.</span>
-                                            <span class="title">Количество игроков на проекте</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="metric">
-                                        <span class="icon"><i class="fa fa-clock-o"></i></span>
-                                        <p>
-                                            <span class="number">{{ d.last_o.amount }} руб.</span>
-                                            <span class="title">Последний платеж был совершен <b>{{ d.last_o.user.username }}</b></span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="metric">
-                                        <span class="icon"><i class="fa fa-undo"></i></span>
-                                        <p>
-                                            <span class="number">{{ d.last_wd.amount }} руб.</span>
-                                            <span class="title">Последний вывод был совершен <b>{{ d.last_wd.user.username }}</b></span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            {% else %}
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="alert alert-danger">Недостаточно данных для построения статистики. Пожалуйста, попробуйте посмотреть этот раздел позже.</p>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
+                      </div>
                     </div>
-                    <!-- END STATISTIC -->
-                    {% if d.stats != 0 %}
-                    <!-- TOP5 -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Рейтинг игроков проекта</h3>
-                            <p class="panel-subtitle">За все время работы проекта</p>
+                    <div class="col-md-3">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-red"><i class="fa fa-certificate"></i></span>
+                        <div class="info-box-content">
+                          <span class="info-box-text">Всего нефти добыто</span>
+                          <span class="info-box-number">{{ d.stats.oil }} ед.</span>
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4>ТОП-5 инвесторов проекта</h4>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center"><i class="fa fa-star" aria-hidden="true"></i> Место в рейтинге</th>
-                                                <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Логин пользователя</th>
-                                                <th class="text-center"><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
-                                                <th class="text-center"><i class="fa fa-calendar" aria-hidden="true"></i> Дата операции</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for t1 in d.top5_ords %}
-                                            <tr {% if forloop.counter == 1 %}class="danger"{% elif forloop.counter == 2 %}class="warning"{% elif forloop.counter == 3 %}class="success"{% else %}class="info"{% endif %}>
-                                                <td class="text-center">#{{ forloop.counter }}</td>
-                                                <td class="text-center">{{ t1.user.username }}</td>
-                                                <td class="text-center">{{ t1.amount }} руб.</td>
-                                                <td class="text-center">{{ t1.date }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4>ТОП-5 успешных выводов средств</h4>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center"><i class="fa fa-star" aria-hidden="true"></i> Место в рейтинге</th>
-                                                <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Логин пользователя</th>
-                                                <th class="text-center"><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
-                                                <th class="text-center"><i class="fa fa-calendar" aria-hidden="true"></i> Дата операции</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for t1 in d.top5_wds %}
-                                            <tr {% if forloop.counter == 1 %}class="danger"{% elif forloop.counter == 2 %}class="warning"{% elif forloop.counter == 3 %}class="success"{% else %}class="info"{% endif %}>
-                                                <td class="text-center">#{{ forloop.counter }}</td>
-                                                <td class="text-center">{{ t1.user.username }}</td>
-                                                <td class="text-center">{{ t1.amount }} руб.</td>
-                                                <td class="text-center">{{ t1.date }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                      </div>
                     </div>
-                    <!-- END TOP5 -->
-                    {% endif %}
+                    <div class="col-md-3">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-green"><i class="fa fa-credit-card-alt"></i></span>
+                        <div class="info-box-content">
+                          <span class="info-box-text">Всего внесено в проект</span>
+                          <span class="info-box-number">{{ d.stats.donated }} руб.</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-orange"><i class="fa fa-bar-chart"></i></span>
+                        <div class="info-box-content">
+                          <span class="info-box-text">Всего выведено средств</span>
+                          <span class="info-box-number">{{ d.stats.exchanged }} руб.</span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-purple"><i class="fa fa-users"></i></span>
+                        <div class="info-box-content">
+                          <span class="info-box-text">Количество игроков на проекте</span>
+                          <span class="info-box-number">{{ d.u_count.id }} чел.</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-blue"><i class="fa fa-clock-o"></i></span>
+                        <div class="info-box-content">
+                          <span class="info-box-text">Последний платеж был совершен <b>{{ d.last_o.user.username }}</b></span>
+                          <span class="info-box-number">{{ d.last_o.amount }} руб.</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-undo"></i></span>
+                        <div class="info-box-content">
+                          <span class="info-box-text">Последний вывод был совершен <b>{{ d.last_wd.user.username }}</b></span>
+                          <span class="info-box-number">{{ d.last_wd.amount }} руб.</span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="alert alert-danger">Недостаточно данных для построения статистики. Пожалуйста, попробуйте посмотреть этот раздел позже.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- END STATISTIC -->
+        {% if d.stats != 0 %}
+        <!-- TOP5 -->
+        <div class="panel panel-headline">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>ТОП-10 инвесторов проекта</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"><i class="fa fa-star" aria-hidden="true"></i> Место в рейтинге</th>
+                                    <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Логин пользователя</th>
+                                    <th class="text-center"><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
+                                    <th class="text-center"><i class="fa fa-calendar" aria-hidden="true"></i> Дата операции</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for t1 in d.top5_ords %}
+                                <tr {% if forloop.counter == 1 %}class="danger"{% elif forloop.counter == 2 %}class="warning"{% elif forloop.counter == 3 %}class="success"{% else %}class="info"{% endif %}>
+                                    <td class="text-center">#{{ forloop.counter }}</td>
+                                    <td class="text-center">{{ t1.user.username }}</td>
+                                    <td class="text-center">{{ t1.amount }} руб.</td>
+                                    <td class="text-center">{{ t1.date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>ТОП-10 успешных выводов средств</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"><i class="fa fa-star" aria-hidden="true"></i> Место в рейтинге</th>
+                                    <th class="text-center"><i class="fa fa-id-card" aria-hidden="true"></i> Логин пользователя</th>
+                                    <th class="text-center"><i class="fa fa-rub" aria-hidden="true"></i> Сумма</th>
+                                    <th class="text-center"><i class="fa fa-calendar" aria-hidden="true"></i> Дата операции</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for t1 in d.top5_wds %}
+                                <tr {% if forloop.counter == 1 %}class="danger"{% elif forloop.counter == 2 %}class="warning"{% elif forloop.counter == 3 %}class="success"{% else %}class="info"{% endif %}>
+                                    <td class="text-center">#{{ forloop.counter }}</td>
+                                    <td class="text-center">{{ t1.user.username }}</td>
+                                    <td class="text-center">{{ t1.amount }} руб.</td>
+                                    <td class="text-center">{{ t1.date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
         </div>
-        <!-- END MAIN -->
+        <!-- END TOP5 -->
+        {% endif %}
 {% endblock %}

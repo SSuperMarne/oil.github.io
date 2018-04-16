@@ -1,155 +1,149 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Модерация - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Панель управления игроками</h3>
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Модерация - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Панель модератора
+        <small>Панель управления игроками</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4>Управление средствами игроков</h4>
+                            <p class="text-info">Здесь вы можете изменить значение валют у игрока. Для того чтобы вычесть валюту у игрока напишите отрицательное значение числа.</p>
+                            <form method="POST" action="{% url 'mod_act' action='modify' %}">
+                                {% csrf_token %}
+                                <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                <br>
+                                <input type="number" class="form-control" name="oil" placeholder="Изменить нефть">
+                                <br>
+                                <input type="number" class="form-control" name="rub" placeholder="Изменить валюту (рубль)">
+                                <br>
+                                <button type="submit" class="btn btn-primary">Выполнить расчет</button>
+                            </form>
                         </div>
-                        <div class="panel-body">
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                            {% endfor %}
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <h4>Управление средствами игроков</h4>
-                                    <p class="text-info">Здесь вы можете изменить значение валют у игрока. Для того чтобы вычесть валюту у игрока напишите отрицательное значение числа.</p>
-                                    <form method="POST" action="{% url 'mod_act' action='modify' %}">
-                                        {% csrf_token %}
-                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
-                                        <br>
-                                        <input type="number" class="form-control" name="oil" placeholder="Изменить нефть">
-                                        <br>
-                                        <input type="number" class="form-control" name="rub" placeholder="Изменить валюту (рубль)">
-                                        <br>
-                                        <button type="submit" class="btn btn-primary">Выполнить расчет</button>
-                                    </form>
-                                </div>
-                                <div class="col-md-3">
-                                    <h4>Информация о рефералах игрока</h4>
-                                    <p class="text-info">Мы отобразим здесь подробную информацию о рефералах пользователя. Вам необходимо указать логин.</p>
-                                    <form method="POST" action="{% url 'mod_act' action='referrals' %}">
-                                        {% csrf_token %}
-                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
-                                        <br>
-                                        <button type="submit" class="btn btn-primary">Проверить рефералов</button>
-                                    </form>
-                                </div>
-                                <div class="col-md-3">
-                                    <h4>Проверить статистику пользователя</h4>
-                                    <p class="text-info">Система ведет личную статистику каждого пользователя. Вы можете посмотреть статистику нужного вам аккаунта, указав логин в поле.</p>
-                                    <form method="POST" action="{% url 'mod_act' action='statistic' %}">
-                                        {% csrf_token %}
-                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
-                                        <br>
-                                        <button type="submit" class="btn btn-primary">Узнать статистику</button>
-                                    </form>
-                                </div>
-                                <div class="col-md-3">
-                                    <h4>Проверить инвентарь пользователя</h4>
-                                    <p class="text-info">Система проверит инвентарь пользователя и отобразит его купленные объекты на проекте.</p>
-                                    <form method="POST" action="{% url 'mod_act' action='inventory' %}">
-                                        {% csrf_token %}
-                                        <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
-                                        <br>
-                                        <button type="submit" class="btn btn-primary">Управлять инвентарем</button>
-                                    </form>
-                                </div>
-                            </div>
+                        <div class="col-md-3">
+                            <h4>Информация о рефералах игрока</h4>
+                            <p class="text-info">Мы отобразим здесь подробную информацию о рефералах пользователя. Вам необходимо указать логин.</p>
+                            <form method="POST" action="{% url 'mod_act' action='referrals' %}">
+                                {% csrf_token %}
+                                <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Проверить рефералов</button>
+                            </form>
                         </div>
-                    </div>
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Панель управления игрой</h3>
+                        <div class="col-md-3">
+                            <h4>Проверить статистику пользователя</h4>
+                            <p class="text-info">Система ведет личную статистику каждого пользователя. Вы можете посмотреть статистику нужного вам аккаунта, указав логин в поле.</p>
+                            <form method="POST" action="{% url 'mod_act' action='statistic' %}">
+                                {% csrf_token %}
+                                <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Узнать статистику</button>
+                            </form>
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4>Список обращений в техническую поддержку</h4>
-                                    <p class="text-info">Здесь мы отображаем все обращения в техническую поддержку, которые ожидают рассмотрения в текущий момент. Закрытые или уже отвеченные тикеты скрыты.</p>
-                                    {% if tickets %}
-                                    <table class="table table-striped table-vcenter">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">Заявитель</th>
-                                                <th class="text-center">Статус заявки</th>
-                                                <th class="text-center">Действия</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for t in tickets %}
-                                            <tr>
-                                                <td class="text-center">{{ t.owner.username }}</td>
-                                                <td class="text-center"><span class="label label-warning">ОЖИДАЕТ РАССМОТРЕНИЯ</span></td>
-                                                <td class="text-center"><a href="{% url 'pm_support_view' pk=t.id %}" class="btn btn-info">Посмотреть тикет</a></td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                    {% else %}
-                                    <p class="alert alert-info">В данный момент обращения в техническую поддержку отсутствуют.</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <h4>Список заявок на вывод средств</h4>
-                                    <p class="text-info">Здесь мы отображаем все заявки на вывод средств. Вам необходимо произвести выплату средств и нажать кнопку одобрения платежа.</p>
-                                    <div class="table-responsive" id="draws">
-                                        <table class="table table-hover">
-                                            <tr>
-                                                <th class="text-center">ID</th>
-                                                <th class="text-center">Клиент</th>
-                                                <th class="text-center"><i class="fa fa-credit-card"></i> Сумма</th>
-                                                <th class="text-center"><i class="fa fa-cog"></i> Система</th>
-                                                <th class="text-center"><i class="fa fa-money"></i> Номер кошелька</th>
-                                                <th class="text-center"><i class="fa fa-calendar"></i> Дата создания</th>
-                                                <th class="text-center"><i class="fa fa-hourglass-start"></i> Статус платежа</th>
-                                            </tr>
-                                            {% for d in draws %}
-                                            <tr>
-                                                <td class="text-center">{{ d.id }}</td>
-                                                <td class="text-center">{{ d.user.username }}</td>
-                                                <td class="text-center">{{ d.amount }} руб.</td>
-                                                <td class="text-center">{% if d.system == "1" %}Payeer{% elif d.system == "2" %}QIWI{% elif d.system == "3" %}WebMoney{% endif %}</td>
-                                                <td class="text-center">{{ d.vault }}</td>
-                                                <td class="text-center">{{ d.date }}</td>
-                                                <td class="text-center">
-                                                    {% if d.status == 1 %}
-                                                    <font color="green"><b><i class="fa fa-check"></i> Выплачено</b></font>
-                                                    {% elif d.status == 2 %}
-                                                    <font color="red"><b><i class="fa fa-times"></i> Отклонено</b></font>
-                                                    {% elif d.status == 3 %}
-                                                    <a href="{% url 'mod_wd' status='accept' pk=d.id %}" class="btn btn-success"><i class="fa fa-check"></i> Выплачено</a>
-                                                    <a href="{% url 'mod_wd' status='deny' pk=d.id %}" class="btn btn-danger"><i class="fa fa-times"></i> Отклонено</a>
-                                                    <a href="{% url 'mod_wd_auto' pk=d.id %}" class="btn btn-warning {% if d.system != "1" %}disabled{% endif %}"><i class="fa fa-repeat"></i> Автовыплата</a>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </table>
-                                    </div>
-                                    <ul class="pagination paginator-center">
-                                        {% if draws.has_previous %}
-                                            <li><a href="?draws={{ draws.previous_page_number }}#draws">Назад</a></li>
-                                        {% endif %}
-                                        {% for page in draws.paginator.page_range %}
-                                            <li class="{% if draws.number == page  %}active{% endif %}"><a href="?draws={{ page }}#draws">{{ page }}</a></li>
-                                        {% endfor %}
-
-                                        {% if draws.has_next %}
-                                            <li> <a href="?draws={{ draws.next_page_number }}#draws">Далее</a></li>
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="col-md-3">
+                            <h4>Проверить инвентарь пользователя</h4>
+                            <p class="text-info">Система проверит инвентарь пользователя и отобразит его купленные объекты на проекте.</p>
+                            <form method="POST" action="{% url 'mod_act' action='inventory' %}">
+                                {% csrf_token %}
+                                <input type="text" class="form-control" name="nickname" placeholder="Логин аккаунта" maxlength="150" required>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Управлять инвентарем</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Панель управления игрой</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Список обращений в техническую поддержку</h4>
+                            <p class="text-info">Здесь мы отображаем все обращения в техническую поддержку, которые ожидают рассмотрения в текущий момент. Закрытые или уже отвеченные тикеты скрыты.</p>
+                            {% if tickets %}
+                            <table class="table table-striped table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Заявитель</th>
+                                        <th class="text-center">Статус заявки</th>
+                                        <th class="text-center">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for t in tickets %}
+                                    <tr>
+                                        <td class="text-center">{{ t.owner.username }}</td>
+                                        <td class="text-center"><span class="label label-warning">ОЖИДАЕТ РАССМОТРЕНИЯ</span></td>
+                                        <td class="text-center"><a href="{% url 'pm_support_view' pk=t.id %}" class="btn btn-info">Посмотреть тикет</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p class="alert alert-info">В данный момент обращения в техническую поддержку отсутствуют.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h4>Список заявок на вывод средств</h4>
+                            <p class="text-info">Здесь мы отображаем все заявки на вывод средств. Вам необходимо произвести выплату средств и нажать кнопку одобрения платежа.</p>
+                            <div class="table-responsive" id="draws">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Клиент</th>
+                                        <th class="text-center"><i class="fa fa-credit-card"></i> Сумма</th>
+                                        <th class="text-center"><i class="fa fa-cog"></i> Система</th>
+                                        <th class="text-center"><i class="fa fa-money"></i> Номер кошелька</th>
+                                        <th class="text-center"><i class="fa fa-calendar"></i> Дата создания</th>
+                                        <th class="text-center"><i class="fa fa-hourglass-start"></i> Статус платежа</th>
+                                    </tr>
+                                    {% for d in draws %}
+                                    <tr>
+                                        <td class="text-center">{{ d.id }}</td>
+                                        <td class="text-center">{{ d.user.username }}</td>
+                                        <td class="text-center">{{ d.amount }} руб.</td>
+                                        <td class="text-center">{% if d.system == "1" %}Payeer{% elif d.system == "2" %}QIWI{% elif d.system == "3" %}WebMoney{% endif %}</td>
+                                        <td class="text-center">{{ d.vault }}</td>
+                                        <td class="text-center">{{ d.date }}</td>
+                                        <td class="text-center">
+                                            {% if d.status == 1 %}
+                                            <font color="green"><b><i class="fa fa-check"></i> Выплачено</b></font>
+                                            {% elif d.status == 2 %}
+                                            <font color="red"><b><i class="fa fa-times"></i> Отклонено</b></font>
+                                            {% elif d.status == 3 %}
+                                            <a href="{% url 'mod_wd' status='accept' pk=d.id %}" class="btn btn-success"><i class="fa fa-check"></i> Выплачено</a>
+                                            <a href="{% url 'mod_wd' status='deny' pk=d.id %}" class="btn btn-danger"><i class="fa fa-times"></i> Отклонено</a>
+                                            <a href="{% url 'mod_wd_auto' pk=d.id %}" class="btn btn-warning {% if d.system != "1" %}disabled{% endif %}"><i class="fa fa-repeat"></i> Автовыплата</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <ul class="pagination paginator-center">
+                                {% if draws.has_previous %}
+                                    <li><a href="?draws={{ draws.previous_page_number }}#draws">Назад</a></li>
+                                {% endif %}
+                                {% for page in draws.paginator.page_range %}
+                                    <li class="{% if draws.number == page  %}active{% endif %}"><a href="?draws={{ page }}#draws">{{ page }}</a></li>
+                                {% endfor %}
+
+                                {% if draws.has_next %}
+                                    <li> <a href="?draws={{ draws.next_page_number }}#draws">Далее</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 {% endblock %}

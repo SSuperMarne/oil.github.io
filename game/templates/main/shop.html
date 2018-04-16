@@ -1,46 +1,39 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Магазин проекта - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <!-- OVERVIEW -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Игровой магазин проекта</h3>
-                            <p class="panel-subtitle">Основное место для покупки недвижимости в игре</p>
-                        </div>
-                        <div class="panel-body">
-                        <p class="alert alert-info">Ваш текущий баланс: <b>{{ user.profile.balance }}</b> руб.<br><a href="{% url 'payment' %}">Нажмите здесь</a>, чтобы пополнить баланс.<br>Вышки необходимы для добычи нефти, а фабрики для строительства вышек. На каждый тип вышек необходим один завод этого же типа.</p>
-                        {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
-                            <h3>Магазин нефтяных вышек</h3>
-                            <div class="row">
-                                {% for t in towers %}
-                                <div class="col-sm-2">
-                                  <center><img class="img-circle" src="/media/{{ t.img }}" alt="{{ t.name }}" width="120px" height="120px">
-                                  <h4>{{ t.name }}</h4>
-                                  <p><strong>Скорость добычи:</strong><br> <strong>{{ t.oil }}</strong> нефти в день</p><p><strong>Цена за штуку:</strong><br> <strong>{{ t.price }}</strong> рублей</p><a href="/shop/0/{{ t.id }}/" class="btn btn-default">Приобрести</a></center>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            <h3>Магазин фабрик</h3>
-                            <div class="row">
-                                {% for f in factories %}
-                                <div class="col-sm-2">
-                                  <center><img src="/media/{{ f.img }}" alt="{{ f.name }}" width="120px" height="120px">
-                                  <h4>{{ f.name }}</h4>
-                                  <p><strong>Цена за штуку:</strong><br> <strong>{{ f.price }}</strong> рублей</p><a href="/shop/1/{{ f.id }}/" class="btn btn-default">Приобрести</a></center>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Магазин проекта - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Игровой магазин
+        <small>Основное место для покупки недвижимости в игре</small>
+      </h1>
+{% endblock %}
+{% block content %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        <!-- OVERVIEW -->
+        <div class="panel panel-headline">
+            <div class="panel-body">
+            <p>Ваш текущий баланс: <b>{{ user.profile.balance }}</b> руб.<br><a href="{% url 'payment' %}">Нажмите здесь</a>, чтобы пополнить баланс.<br>Вышки необходимы для добычи нефти, а фабрики для строительства вышек. На каждый тип вышек необходим один завод этого же типа.</p>
+                <h3>Магазин нефтяных вышек</h3>
+                <div class="row">
+                    {% for t in towers %}
+                    <div class="col-sm-2">
+                      <center><img class="img-circle" src="/media/{{ t.img }}" alt="{{ t.name }}" width="120px" height="120px">
+                      <h4>{{ t.name }}</h4>
+                      <p><strong>Скорость добычи:</strong><br> <strong>{{ t.oil }}</strong> нефти в день</p><p><strong>Цена за штуку:</strong><br> <strong>{{ t.price }}</strong> рублей</p><a href="/shop/0/{{ t.id }}/" class="btn btn-default">Приобрести</a></center>
                     </div>
-                    <!-- END OVERVIEW -->
+                    {% endfor %}
+                </div>
+                <h3>Магазин фабрик</h3>
+                <div class="row">
+                    {% for f in factories %}
+                    <div class="col-sm-2">
+                      <center><img src="/media/{{ f.img }}" alt="{{ f.name }}" width="120px" height="120px">
+                      <h4>{{ f.name }}</h4>
+                      <p><strong>Цена за штуку:</strong><br> <strong>{{ f.price }}</strong> рублей</p><a href="/shop/1/{{ f.id }}/" class="btn btn-default">Приобрести</a></center>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
         </div>
-        <!-- END MAIN -->
+        <!-- END OVERVIEW -->
 {% endblock %}

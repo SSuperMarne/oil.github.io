@@ -1,73 +1,72 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Список личных сообщений - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <!-- OVERVIEW -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Список личных сообщений</h3>
-                        </div>
-                        <div class="panel-body no-padding">
-                            <div class="col-md-12">
-                                {% for message in messages %}
-                                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                                {% endfor %}
-                                {% if pm %}
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th><i class="fa fa-book" aria-hidden="true"></i> Заголовок</th>
-                                            <th><i class="fa fa-envelope-o" aria-hidden="true"></i> От кого</th>
-                                            <th><i class="fa fa fa-envelope-open-o" aria-hidden="true"></i> Кому</th>
-                                            <th><i class="fa fa-cog" aria-hidden="true"></i> Состояние</th>
-                                            <th><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Действия</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for p in pm %}
-                                        <tr>
-                                            <td>{{ p.id }}</td>
-                                            <td>{{ p.title}}</td>
-                                            <td>{{ p.owner.username }}</td>
-                                            <td>
-                                                {% if p.recipient == 0 %}
-                                                <span class="label label-info">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>
-                                                {% else %}
-                                                {{ p.recipient_name }}
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if p.status == 1 %}
-                                                <span class="label label-danger">ЗАКРЫТО</span>
-                                                {% elif p.status == 2 %}
-                                                <span class="label label-success">ОТКРЫТО</span>
-                                                {% elif p.status == 3 %}
-                                                <span class="label label-warning">ОБРАБОТКА</span>
-                                                {% else %}
-                                                <span class="label label-info">ДИАЛОГ</span>                                          
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'pm_view' pk=p.id %}" class="btn btn-primary"><i class="fa fa-eye"></i> Смотреть</a>
-                                                <a href="{% url 'pm_delete' pk=p.id %}" class="btn btn-danger"><i class="fa fa-times"></i> Удалить</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                                {% else %}
-                                <div class="alert alert-warning">Мы не нашли переписок, в которых вы учавствовали. Попробуйте <a href="{% url 'pm_new_create' %}">создать новое сообщение</a>.</div>
-                                {% endif %}
-                            </div>
-                        </div>
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Список личных сообщений - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Личные сообщения
+        <small>Список ваших личных сообщений</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+              <div class="row">
+                <div class="col-md-3">
+                  <a href="{% url 'pm_new_create' %}" class="btn btn-primary btn-block margin-bottom">Написать сообщение</a>
+
+                  <div class="box box-solid">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Разделы</h3>
+
+                      <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                      </div>
                     </div>
-                    <!-- END OVERVIEW -->
+                    <div class="box-body no-padding">
+                      <ul class="nav nav-pills nav-stacked">
+                        <li class="active"><a href="{% url 'pm_list' %}"><i class="fa fa-inbox"></i> Ваши сообщения</a></li>
+                        <li><a href="{% url 'pm_new_create' %}"><i class="fa fa-envelope-o"></i> Написать сообщение</a></li>
+                        <li><a href="{% url 'pm_support_new' %}"><i class="fa fa-question-circle"></i> Создать запрос в техническую поддержку</a></li>
+                      </ul>
+                    </div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /. box -->
                 </div>
-            </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
+                <!-- /.col -->
+                <div class="col-md-9">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Ваши сообщения</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                      <div class="table-responsive mailbox-messages">
+                        {% if pm %}
+                        <table class="table table-hover table-striped">
+                          <tbody>
+                          {% for p in pm %}
+                          <tr>
+                            <td class="mailbox-name">Для: <a href="{% url 'pm_view' pk=p.id %}">{% if p.recipient == 0 %}<span class="label label-info">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>{% else %}{{ p.recipient_name }}{% endif %}</a></td>
+                            <td class="mailbox-subject">{{ p.title}}</td>
+                            <td class="mailbox-attachment">{% if p.status == 1 %}<span class="label label-danger">ЗАКРЫТО</span>{% elif p.status == 2 %}<span class="label label-success">ОТКРЫТО</span>{% elif p.status == 3 %}<span class="label label-warning">ОБРАБОТКА</span>{% else %}<span class="label label-info">ДИАЛОГ</span>{% endif %}</td>
+                            <td class="mailbox-date"><a href="{% url 'pm_view' pk=p.id %}" class="btn btn-primary"><i class="fa fa-eye"></i> Смотреть</a> <a href="{% url 'pm_delete' pk=p.id %}" class="btn btn-danger"><i class="fa fa-times"></i> Удалить</a></td>
+                          </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                        <!-- /.table -->
+                        {% else %}
+                        <p class="alert alert-warning">Мы не нашли переписок, в которых вы учавствовали. Попробуйте <a href="{% url 'pm_new_create' %}">создать новое сообщение</a>.</p>
+                        {% endif %}
+                      </div>
+                      <!-- /.mail-box-messages -->
+                    </div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /. box -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
 {% endblock %}

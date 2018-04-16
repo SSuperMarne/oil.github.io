@@ -1,56 +1,51 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Просмотр тикета - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                    {% endfor %}
-                    <!-- PM HEADING -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Просмотр тикета #{{ ticket.id }}</h3>
-                            <h5><b>Тема:</b> {{ticket.title}}</h5>
-                            <h5><b>Диалог создан:</b> {{ ticket.owner }}</h5>
-                            <h5><b>Направлено:</b> {% if ticket.recipient == 0 %}<span class="label label-info">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>{% else %}{{ ticket.recipient_name }} {% endif %}</h5>
-                        </div>
-                        <div class="panel-body">
-                            {% if ticket.status != 1 %}
-                            <form method="POST">
-                                {% csrf_token %}
-                                <textarea class="form-control" name="text" placeholder="Текст вашего сообщения" rows="6" required style="width: 500px;"></textarea>
-                                <br>
-                                {{ form.captcha }}
-                                <br>
-                                <button type="submit" class="btn btn-primary">Отправить</button>
-                            </form>
-                            {% else %}
-                            <p class="alert alert-danger">Этот тикет закрыт. Скорее всего, в тикет долго не приходили ответы или проблема была решена. Если у вас остались вопросы - создайте новый тикет.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <!-- END PM HEADING -->
-                    {% for pm in pms %}
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Сообщение #{{ forloop.counter }} ({{ pm.date }})</h3>
-                            <div class="right">
-                                {% if pm.status %}
-                                <h3 class="panel-title">Отправитель: {{ pm.ticket.owner }} <span class="label label-info">СОЗДАТЕЛЬ ДИАЛОГА</span></h3>
-                                {% else %}
-                                <h3 class="panel-title">Отправитель: {{ pm.ticket.recipient_name }} {% if ticket.recipient == 0 %}<span class="label label-danger">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>{% endif %}</h3>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <p>{{ pm.message }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Просмотр тикета - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Просмотр тикета #{{ ticket.id }}
+        <small>Тема: {{ticket.title}}</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <!-- PM HEADING -->
+            <div class="panel panel-headline">
+                <div class="panel-heading">
+                    <h5><b>Создатель диалога:</b> {{ ticket.owner }}</h5>
+                    <h5><b>Направлено:</b> {% if ticket.recipient == 0 %}<span class="label label-info">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>{% else %}{{ ticket.recipient_name }} {% endif %}</h5>
+                </div>
+                <div class="panel-body">
+                    {% if ticket.status != 1 %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <textarea class="form-control" name="text" placeholder="Текст вашего сообщения" rows="6" required style="width: 500px;"></textarea>
+                        <br>
+                        {{ form.captcha }}
+                        <br>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </form>
+                    {% else %}
+                    <p class="alert alert-danger">Этот тикет закрыт. Скорее всего, в тикет долго не приходили ответы или проблема была решена. Если у вас остались вопросы - создайте новый тикет.</p>
+                    {% endif %}
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
+            <!-- END PM HEADING -->
+            {% for pm in pms %}
+            <div class="panel">
+                <div class="panel-heading">
+                    {% if pm.status %}
+                    <h3 class="panel-title">Сообщение #{{ forloop.counter }} (Отправитель: {{ pm.ticket.owner }} <span class="label label-info">СОЗДАТЕЛЬ ДИАЛОГА</span>)</h3>
+                    {% else %}
+                    <h3 class="panel-title">Сообщение #{{ forloop.counter }} (Отправитель: {{ pm.ticket.recipient_name }} {% if ticket.recipient == 0 %}<span class="label label-danger">ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>{% endif %})</h3>
+                    {% endif %}
+                </div>
+                <div class="panel-body">
+                    <p>{{ pm.message }}</p>
+                </div>
+                <div class="panel-footer">
+                    Дата получения: {{ pm.date }}
+                </div>
+            </div>
+            {% endfor %}
 {% endblock %}

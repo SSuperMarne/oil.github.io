@@ -3,114 +3,163 @@
 <head>
     {% block headers %}{% endblock %}
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <!-- VENDOR CSS -->
-    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/linearicons/style.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/chartist/css/chartist-custom.css' %}">
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <!-- GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
-    <!-- ICONS -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="{% static 'components/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'components/font-awesome/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'components/Ionicons/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/skins/skin-black.min.css' %}">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="icon" type="image/png" sizes="96x96" href="{% static '/favicon.ico' %}">
     <script charset="UTF-8" src="//cdn.sendpulse.com/9dae6d62c816560a842268bde2cd317d/js/push/75789eb0ab6627fbc531662d74cc3fc8_1.js" async></script>
 </head>
-<body>
+<body class="hold-transition skin-black sidebar-mini">
     <!-- WRAPPER -->
-    <div id="wrapper">
-        <!-- NAVBAR -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="brand">
-                <a href="{% url 'panel_main' %}"><img src="{% static 'img/logo-dark.png' %}" alt="Klorofil Logo" class="img-responsive logo"></a>
-            </div>
-            <div class="container-fluid">
-                <div class="navbar-btn">
-                    <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+    <div class="wrapper">
+    <header class="main-header">
+    <a href="{% url 'panel_main' %}" class="logo">
+      <span class="logo-mini"><b>O</b>IL</span>
+      <span class="logo-lg"><img src="{% static 'img/logo.png' %}" alt="Logotype"></span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Показать навигацию</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- MESSAGES -->
+          <li class="dropdown messages-menu">
+            <a href="{% url 'pm_list' %}" class="dropdown-toggle">
+              <i class="fa fa-envelope-o"></i>
+            </a>
+          </li>
+          <!-- /MESSAGES -->
+
+          <!-- USER ACCOUNT -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/user-profile.png' %}{% endif %}" class="user-image" alt="User avatar">
+              <span class="hidden-xs">{{ user.username }}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="user-header">
+                <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/user-profile.png' %}{% endif %}" class="img-circle" alt="User avatar">
+                <p>
+                  {{ user.username }}
+                  <small>На балансе {{ user.profile.balance }} руб. и {{ user.profile.oil }} ед. нефти</small>
+                </p>
+              </li>
+              <li class="user-body">
+                <div class="row">
+                  <div class="col-xs-6 text-center">
+                    <a href="{% url 'payment' %}">Пополнить баланс</a>
+                  </div>
+                  <div class="col-xs-6 text-center">
+                    <a href="{% url 'payment_history' %}">История платежей</a>
+                  </div>
                 </div>
-                <div id="navbar-menu">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="{% url 'payment' %}"><i class="fa fa-rub"></i> <span>Сейчас у вас <b>{{ user.profile.balance }} руб.</b> и <b>{{ user.profile.oil }} ед.</b> нефти</span></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-envelope"></i> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url 'pm_list' %}"><i class="fa fa-list"></i> Список сообщений</a></li>
-                                <li><a href="{% url 'pm_new_create' %}"><i class="fa fa-paper-plane"></i> Отправить сообщение</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/user-md-1.png' %}{% endif %}" class="img-circle" alt="Avatar"> <span>{{ user.username }}</span> <i class="icon-submenu lnr lnr-chevron-down"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{% url 'profile' %}"><i class="fa fa-user"></i> <span>Мой профиль</span></a></li>
-                                <li><a href="{% url 'passwd' %}"><i class="fa fa-key"></i> <span>Сменить пароль</span></a></li>
-                                <li><a href="{% url 'payment' %}"><i class="fa fa-money"></i> <span>Пополнить баланс</span></a></li>
-                                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>Выход</span></a></li>
-                            </ul>
-                        </li>
-                    </ul>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="{% url 'profile' %}" class="btn btn-default btn-flat">Ваш профиль</a>
                 </div>
-            </div>
-        </nav>
-        <!-- END NAVBAR -->
-        <!-- LEFT SIDEBAR -->
-        <div id="sidebar-nav" class="sidebar">
-            <div class="sidebar-scroll">
-                <nav>
-                    <div class="uprofile hidden-xs">
-                        <h4>Здравствуйте, <b>{{ user.username }}</b>!</h4>
-                        <a href="{% url 'profile' %}">
-                            {% if user.profile.avatar %}
-                            <img src="{{ user.profile.avatar.url }}" alt="User avatar">
-                            {% else %}
-                            <img src="{% static 'img/user-md-1.png' %}" alt="User avatar">
-                            {% endif %}
-                        </a>
-                    </div>
-                    <ul class="nav">
-                        <li><a href="{% url 'panel_main' %}"{% if "/account/" == request.path %} class="active"{% endif %}><i class="lnr lnr-home"></i> <span>Главная страница</span></a></li>
-                        <li><a href="{% url 'payment' %}"{% if "/payment/" == request.path %} class="active"{% endif %}><i class="lnr lnr-inbox"></i> <span>Пополнить баланс</span></a></li>
-                        <li><a href="{% url 'withdraw' %}"{% if "/withdraw/" == request.path %} class="active"{% endif %}><i class="fa fa-credit-card"></i> <span>Вывод средств</span></a></li>
-                        <li><a href="{% url 'inventory' %}"{% if "/inventory/" == request.path %} class="active"{% endif %}><i class="lnr lnr-briefcase"></i> <span>Мой инвентарь</span></a></li>
-                        <li><a href="{% url 'shop' %}"{% if "/shop/" == request.path %} class="active"{% endif %}><i class="lnr lnr-store"></i> <span>Игровой магазин</span></a></li>
-                        <li><a href="{% url 'exchange' %}"{% if "/exchange/" == request.path %} class="active"{% endif %}><i class="fa fa-refresh"></i> <span>Игровой обменник</span></a></li>
-                        <li><a href="{% url 'pm_support_new' %}"{% if "/support/" == request.path %} class="active"{% endif %}><i class="lnr lnr-pencil"></i> <span>Техническая поддержка</span></a></li>
-                        <li><a href="{% url 'statistic' %}"{% if "/statistic/" == request.path %} class="active"{% endif %}><i class="lnr lnr-chart-bars"></i> <span>Статистика</span></a></li>
-                        {% if user.is_staff %}
-                        <li><a href="{% url 'moderation' %}"{% if "/moderation/" == request.path %} class="active"{% endif %}><i class="fa fa-server"></i> <span>Панель модератора</span></a></li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
+                <div class="pull-right">
+                  <a href="{% url 'logout' %}" class="btn btn-default btn-flat">Выйти</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- /USER ACCOUNT -->
+        </ul>
+      </div>
+    </nav>
+    </header>
+    <!-- SIDEBAR -->
+    <aside class="main-sidebar">
+    <section class="sidebar">
+      <!-- USER PANEL -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="{% static 'img/user-profile.png' %}" class="img-circle" alt="User avatar">
         </div>
-        <!-- END LEFT SIDEBAR -->
-        {% block content %}{% endblock %}
-        <div class="clearfix"></div>
-        <footer>
-            <div class="container-fluid">
-                <p class="copyright">&copy; 2018 <a href="{% url 'landing_main' %}" target="_blank">OIL-GAME.WIN</a>. All Rights Reserved.</p>
-            </div>
-        </footer>
+        <div class="pull-left info">
+          <p>{{ user.username }}</p>
+          <a href=""><i class="fa fa-ravelry"></i> {{ user.profile.oil }} нефти</a>
+          <a href=""><i class="fa fa-rub"></i> {{ user.profile.balance }} руб.</a>
+        </div>
+      </div>
+      <!-- /USER PANEL -->
+
+      <!-- MENU-->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">ОСНОВНОЕ</li>
+        <li{% if "/account/" == request.path %} class="active"{% endif %}><a href="{% url 'panel_main' %}"><i class="fa fa-home"></i> <span>Главная страница</span></a></li>
+        <li{% if "/inventory/" == request.path %} class="active"{% endif %}><a href="{% url 'inventory' %}"><i class="fa fa-briefcase"></i> <span>Мой инвентарь</span></a></li>
+        <li{% if "/shop/" == request.path %} class="active"{% endif %}><a href="{% url 'shop' %}"><i class="fa fa-shopping-cart"></i> <span>Игровой магазин</span></a></li>
+        <li class="header">ЭКОНОМИКА</li>
+        <li{% if "/payment/" == request.path %} class="active"{% endif %}><a href="{% url 'payment' %}"><i class="fa fa-credit-card"></i> <span>Пополнить баланс</span></a></li>
+        <li{% if "/withdraw/" == request.path %} class="active"{% endif %}><a href="{% url 'withdraw' %}"><i class="fa fa-money"></i> <span>Вывод средств</span></a></li>
+        <li{% if "/exchange/" == request.path %} class="active"{% endif %}><a href="{% url 'exchange' %}"><i class="fa fa-refresh"></i> <span>Игровой обменник</span></a></li>
+        <li class="header">РАЗНОЕ</li>
+        <li{% if "/statistic/" == request.path %} class="active"{% endif %}><a href="{% url 'statistic' %}"><i class="fa fa-bar-chart"></i> <span>Статистика проекта</span></a></li>
+        <li{% if "/support/" == request.path %} class="active"{% endif %}><a href="{% url 'pm_support_new' %}"><i class="fa fa-question-circle"></i> <span>Техническая поддержка</span></a></li>
+        {% if user.is_staff %}
+        <li class="header">АДМИНИСТРИРОВАНИЕ</li>
+        <li><a href="/admin/"><i class="fa fa-server"></i> <span>Панель администратора</span></a></li>
+        <li{% if "/moderation/" == request.path %} class="active"{% endif %}><a href="{% url 'moderation' %}"><i class="fa fa-lock"></i> <span>Панель модератора</span></a></li>
+        {% endif %}
+      </ul>
+      <!-- /MENU -->
+    </section>
+    <!-- /SIDEBAR -->
+    </aside>
+
+    <!-- CONTENT WRAPPER-->
+    <div class="content-wrapper">
+    <section class="content-header">
+      {% block titles %}{% endblock %}
+      <ol class="breadcrumb">
+        <li><a href="{% url 'panel_main' %}"><i class="fa fa-dashboard"></i> OIL-GAME</a></li>
+        <li class="active">Эта страница</li>
+      </ol>
+    </section>
+    <section class="content container-fluid">
+
+      {% block content %}{% endblock %}
+
+    </section>
+    <!-- /CONTENT -->
+    </div>
+    <!-- /CONTENT WRAPPER-->
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <a href="{% url 'pm_support_new' %}">Контактные данные</a>
+    </div>
+    <strong><a href="//oil-game.win/">OIL-GAME.WIN</a> &copy; 2018</strong>. All rights reserved.
+    </footer>
+    <!-- /FOOTER -->
     </div>
     <!-- END WRAPPER -->
-    <!-- Javascript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'vendor/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
-    <script src="{% static 'vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js' %}"></script>
-    <script src="{% static 'vendor/chartist/js/chartist.min.js' %}"></script>
-    <script src="{% static 'scripts/klorofil-common.js' %}"></script>
-    <script id="chatBroEmbedCode">
-    /* Chatbro Widget Embed Code Start */
-    function ChatbroLoader(chats,async){async=!1!==async;var params={embedChatsParameters:chats instanceof Array?chats:[chats],lang:navigator.language||navigator.userLanguage,needLoadCode:'undefined'==typeof Chatbro,embedParamsVersion:localStorage.embedParamsVersion,chatbroScriptVersion:localStorage.chatbroScriptVersion},xhr=new XMLHttpRequest;xhr.withCredentials=!0,xhr.onload=function(){eval(xhr.responseText)},xhr.onerror=function(){console.error('Chatbro loading error')},xhr.open('GET','//www.chatbro.com/embed.js?'+btoa(unescape(encodeURIComponent(JSON.stringify(params)))),async),xhr.send()}
-    /* Chatbro Widget Embed Code End */
-    ChatbroLoader({encodedChatId: '7riv'});
-    </script>
+<!-- Javascript -->
+<script src="{% static 'components/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'components/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/core.min.js' %}"></script>
+<script id="chatBroEmbedCode">
+/* Chatbro Widget Embed Code Start */
+function ChatbroLoader(chats,async){async=!1!==async;var params={embedChatsParameters:chats instanceof Array?chats:[chats],lang:navigator.language||navigator.userLanguage,needLoadCode:'undefined'==typeof Chatbro,embedParamsVersion:localStorage.embedParamsVersion,chatbroScriptVersion:localStorage.chatbroScriptVersion},xhr=new XMLHttpRequest;xhr.withCredentials=!0,xhr.onload=function(){eval(xhr.responseText)},xhr.onerror=function(){console.error('Chatbro loading error')},xhr.open('GET','//www.chatbro.com/embed.js?'+btoa(unescape(encodeURIComponent(JSON.stringify(params)))),async),xhr.send()}
+/* Chatbro Widget Embed Code End */
+ChatbroLoader({encodedChatId: '7riv'});
+</script>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
     (function (d, w, c) {

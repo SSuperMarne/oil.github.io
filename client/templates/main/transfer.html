@@ -1,70 +1,64 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Вывод средств - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Вывод средств</h3>
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Вывод средств - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Вывод средств
+        <small>Вывод заработанных средств из системы</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <div class="panel">
+                <div class="panel-body">
+                    <p class="alert alert-info">Выводить деньги можно при условиях, что вы пополняли ваш баланс как минимум на <b>10 рублей</b> и добыли <b>200 единиц</b> нефти. Вы можете посмотреть свою статистику на главной странице.<br>Все платежи обрабатываются в течение 72 часов.</p>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <form role="form" method="POST">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                <label for="rubs">Укажите сумму (в рублях)</label>
+                                <input name="rubs" type="number" class="form-control" id="rubs" min="0" placeholder="Максимум: {{ user.profile.balance }} руб.">
+                              </div>
+                              <div class="form-group">
+                                <label for="system">Выберите платежную систему</label>
+                                <select name="system" id="system" class="form-control">
+                                  <option value="1">Payeer</option>
+                                  <option value="2">QIWI</option>
+                                  <option value="3">WebMoney</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="vault">Укажите ваш кошелек</label>
+                                <input name="vault" type="text" class="form-control" id="vault" placeholder="Укажите номер кошелька">
+                              </div>
+                              <button type="submit" class="btn btn-default">Создать заявку</button>
+                            </form>
                         </div>
-                        <div class="panel-body">
-                            <p class="alert alert-info">Выводить деньги можно при условиях, что вы пополняли ваш баланс как минимум на <b>10 рублей</b> и добыли <b>200 единиц</b> нефти. Вы можете посмотреть свою статистику на главной странице.<br>Все платежи обрабатываются в течение 72 часов.</p>
-                            {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                            {% endfor %}
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4">
-                                    <form role="form" method="POST">
-                                      {% csrf_token %}
-                                      <div class="form-group">
-                                        <label for="rubs">Укажите сумму (в рублях)</label>
-                                        <input name="rubs" type="number" class="form-control" id="rubs" min="0" placeholder="Максимум: {{ user.profile.balance }} руб.">
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="system">Выберите платежную систему</label>
-                                        <select name="system" id="system" class="form-control">
-                                          <option value="1">Payeer</option>
-                                          <option value="2">QIWI</option>
-                                          <option value="3">WebMoney</option>
-                                        </select>
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="vault">Укажите ваш кошелек</label>
-                                        <input name="vault" type="text" class="form-control" id="vault" placeholder="Укажите номер кошелька">
-                                      </div>
-                                      <button type="submit" class="btn btn-default">Создать заявку</button>
-                                    </form>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h3>История вывода средств</h3>
+                            {% if history %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                   <tr><th><i class="fa fa-credit-card"></i> Сумма</th><th><i class="fa fa-cog"></i> Система</th><th><i class="fa fa-money"></i> Номер кошелька</th><th><i class="fa fa-calendar"></i> Дата создания</th><th><i class="fa fa-hourglass-start"></i> Статус платежа</th></tr>
+                                    {% for hist in history %}
+                                    <tr>
+                                    <td>{{ hist.amount }} руб.</td>
+                                    <td>{% if hist.system == "1" %}Payeer{% elif hist.system == "2" %}QIWI{% elif hist.system == "3" %}WebMoney{% endif %}</td>
+                                    <td>{{ hist.vault }}</td>
+                                    <td>{{ hist.date }}</td>
+                                    <td>{% if hist.status == 1 %}<font color="green"><b><i class="fa fa-check"></i> Выплачено</b></font>{% elif hist.status == 2 %}<font color="red"><b><i class="fa fa-times"></i> Отклонено</b></font>{% elif hist.status == 3 %}<font color="orange"><b><i class="fa fa-refresh"></i> Обрабатывается</b></font>{% endif %}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
                             </div>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <h3>История вывода средств</h3>
-                                    {% if history %}
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                           <tr><th><i class="fa fa-credit-card"></i> Сумма</th><th><i class="fa fa-cog"></i> Система</th><th><i class="fa fa-money"></i> Номер кошелька</th><th><i class="fa fa-calendar"></i> Дата создания</th><th><i class="fa fa-hourglass-start"></i> Статус платежа</th></tr>
-                                            {% for hist in history %}
-                                            <tr>
-                                            <td>{{ hist.amount }} руб.</td>
-                                            <td>{% if hist.system == "1" %}Payeer{% elif hist.system == "2" %}QIWI{% elif hist.system == "3" %}WebMoney{% endif %}</td>
-                                            <td>{{ hist.vault }}</td>
-                                            <td>{{ hist.date }}</td>
-                                            <td>{% if hist.status == 1 %}<font color="green"><b><i class="fa fa-check"></i> Выплачено</b></font>{% elif hist.status == 2 %}<font color="red"><b><i class="fa fa-times"></i> Отклонено</b></font>{% elif hist.status == 3 %}<font color="orange"><b><i class="fa fa-refresh"></i> Обрабатывается</b></font>{% endif %}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </table>
-                                    </div>
-                                    {% else %}
-                                    <p class="alert alert-warning">История вывода средств для этого аккаунта отсутствует</p>
-                                    {% endif %}
-                                </div>
-                            </div>
+                            {% else %}
+                            <p class="alert alert-warning">История вывода средств для этого аккаунта отсутствует</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
 {% endblock %}

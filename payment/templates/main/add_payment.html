@@ -1,45 +1,42 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Пополнить баланс - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Пополнение баланса аккаунта</h3>
-                        </div>
-                        <div class="panel-body">
-                            {% if promo != 0 %}
-                            <p class="alert alert-{{ promo.color }}">{{ promo.description|safe }}</p>
-                            {% endif %}
-                            <p class="alert alert-success">Пожалуйста, выберите удобную вам платежную систему.<br>Ваш текущий баланс: <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i> руб.</b></p>
-                            {% if messages %}{% for message in messages %}
-                            <p class="alert alert-danger">{{ message }}</p>
-                            {% endfor %}{% endif %}
-                            <div class="row">
-                                <div class="col-md-5 col-lg-3 pay-form">
-                                    <form method="POST">
-                                      {% csrf_token %}
-                                      <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-rub" aria-hidden="true"></i></span>
-                                        <input name="amount" type="number" class="form-control" id="change" min="0" placeholder="Сумма пополнения (в руб.)" autofocus>
-                                      </div>
-                                      <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-cog" aria-hidden="true"></i></span>
-                                        <select name="system" id="system" class="form-control">
-                                          <option value="1">Free-Kassa (большинство способов оплаты)</option>
-                                          <option value="2">Payeer</option>
-                                        </select>
-                                      </div>
-                                      <button type="submit" class="btn btn-default">Пополнить счет</button>
-                                    </form>
-                                </div>         
-                            </div>
-                        </div>
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Пополнить баланс - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Пополнение баланса
+        <small>Пополнение счета вашего аккаунта</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <div class="panel">
+                <div class="panel-body">
+                    {% if promo != 0 %}
+                    <p class="alert alert-{{ promo.color }}">{{ promo.description|safe }}</p>
+                    {% endif %}
+                    <p>Пожалуйста, выберите удобную вам платежную систему.<br>Ваш текущий баланс: <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i> руб.</b></p>
+                    {% if messages %}{% for message in messages %}
+                    <p class="alert alert-danger">{{ message }}</p>
+                    {% endfor %}{% endif %}
+                    <div class="row">
+                        <div class="col-md-5 col-lg-3 pay-form">
+                            <form method="POST">
+                              {% csrf_token %}
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-rub" aria-hidden="true"></i></span>
+                                <input name="amount" type="number" class="form-control" id="change" min="0" placeholder="Сумма пополнения (в руб.)" autofocus>
+                              </div>
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-cog" aria-hidden="true"></i></span>
+                                <select name="system" id="system" class="form-control">
+                                  <option value="1">Free-Kassa (большинство способов оплаты)</option>
+                                  <option value="2">Payeer</option>
+                                </select>
+                              </div>
+                              <button type="submit" class="btn btn-default">Пополнить счет</button>
+                            </form>
+                        </div>         
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
 {% endblock %}

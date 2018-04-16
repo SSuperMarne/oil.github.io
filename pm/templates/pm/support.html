@@ -1,35 +1,32 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Запрос в техническую поддержку - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Запрос в техническую поддержку</h3>
-                        </div>
-                        <div class="panel-body">
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                            {% endfor %}
-                            {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4">
-                                    <form method="POST">
-                                        {% csrf_token %}
-                                        <textarea class="form-control" name="text" placeholder="Пожалуйста, расскажите нам о возникшей проблеме." rows="6" required></textarea>
-                                        <br>
-                                        {{ form.captcha }}
-                                        <br>
-                                        <button type="submit" class="btn btn-primary">Отправить</button>
-                                    </form>
-                                </div>
-                            </div>
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Запрос в техническую поддержку - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Техническая поддержка
+        <small>Запрос в техническую поддержку</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <div class="panel">
+                <div class="panel-body">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                    {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <textarea class="form-control" name="text" placeholder="Пожалуйста, расскажите нам о возникшей проблеме." rows="6" required></textarea>
+                                <br>
+                                {{ form.captcha }}
+                                <br>
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
 {% endblock %}

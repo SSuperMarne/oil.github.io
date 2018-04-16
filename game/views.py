@@ -30,8 +30,8 @@ def panel_stats(request):
         main_stats = Statistic.objects.latest('id')
         last_order = Order.objects.filter(status=True).latest('id')
         last_withdraw = Transfer.objects.filter(status=1).latest('id')
-        top5_orders = Order.objects.filter(status=True).order_by('-amount')[:5]
-        top5_wds = Transfer.objects.filter(status=1).order_by('-amount')[:5]
+        top5_orders = Order.objects.filter(status=True).order_by('-amount')[:10]
+        top5_wds = Transfer.objects.filter(status=1).order_by('-amount')[:10]
     except ObjectDoesNotExist:
         top5_orders = top5_wds = main_stats = users_count = last_order = last_withdraw = 0
     else:

@@ -1,75 +1,110 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Мой профиль - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                    {% endfor %}
-                    <!-- PROFILE -->
-                    <div class="panel panel-headline">
-                        <div class="panel-body no-padding">
-                            <div class="col-md-8 col-xl-4">
-                                <h4>Смена аватара</h4>
-                                <form action="{% url 'avatar' %}" method="POST" class="form-inline" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label class="sr-only" for="avatar">Смена аватара</label>
-                                        <input type="file" class="form-control" id="avatar" name="avatar" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                                </form>
-                                <h4>Основная информация</h4>
-                                <ul style="list-style-type: none; margin-left: -30px;">
-                                    <li><b><i class="fa fa-user"></i> Логин аккаунта:</b> {{ user.username }}</li>
-                                    <li><b><i class="fa fa-calendar"></i> Дата регистрации:</b> {{ user.date_joined }}</li>
-                                    <li><b><i class="fa fa-envelope"></i> Ваш Email:</b> {{ user.email }}</li>
-                                    <li><b><i class="fa fa-rub"></i> Ваш текущий баланс:</b> {{ user.profile.balance }} руб.</li>
-                                    <li><b><i class="fa fa-certificate" aria-hidden="true"></i> Ваш запас нефти:</b> {{ user.profile.oil }} ед.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END PROFILE -->
-                    <!-- REFERRALS -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Реферальная система</h3>
-                        </div>
-                        <div class="panel-body no-padding">
-                            <div class="col-md-8 col-xl-4">
-                                <p class="alert alert-info">Зарабатывайте дополнительные деньги на приглашениях пользователей в проект! Делитесь своей реферальной ссылкой (размещена ниже) и мы будем вам выплачивать дополнительно 10% от каждого пополнения реферала. Список своих рефералов можно посмотреть на главной странице.</p>
-                                <ul style="list-style-type: none; margin-left: -30px;">
-                                    {% if ref_profit.value >= 0 %}
-                                    <li><b><i class="fa fa-money" aria-hidden="true"></i> Ваш общий доход с рефералов:</b> {{ ref_profit.value }} руб.</li>
-                                    {% else %}
-                                    <li><b><i class="fa fa-money" aria-hidden="true"></i> Ваш общий доход с рефералов:</b> рефералов нет</li>
-                                    {% endif %}
-                                    <li><b><i class="fa fa-link" aria-hidden="true"></i> Ваша реферальная ссылка:</b> <span id="reflink" class="text-primary" onclick="SelectText('reflink');">https://oil-game.win{% url 'refreg' referrer=user.id %} <i class="fa fa-clone" aria-hidden="true"></i></span></li>
-                                    <li>Делитесь этой ссылкой и получайте 10% от пополнений рефералов!</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END REFERRALS -->
-                    <!-- PASSWD -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Смена пароля</h3>
-                        </div>
-                        <div class="panel-body no-padding">
-                            <div class="col-md-8 col-xl-4">
-                                <p class="alert alert-info"><a href="{% url 'passwd' %}">Нажмите здесь</a>, чтобы перейти на страницу смены пароля.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END PASSWD -->
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Мой профиль - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Ваш профиль
+        <small>Подробная информация о вашем аккаунте</small>
+      </h1>
+{% endblock %}
+{% block content %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+          <div class="row">
+            <div class="col-md-3">
+              <div class="box box-primary">
+                <div class="box-body box-profile">
+                  <img class="profile-user-img img-responsive img-circle" src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/user-profile.png' %}{% endif %}" alt="User profile">
+                  <h3 class="profile-username text-center">{{ user.username }}</h3>
+                  <p class="text-muted text-center">На сайте с {{ user.date_joined }}</p>
+                  <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                      <b>Никнейм:</b> <a class="pull-right">{{ user.username }}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Дата регистрации:</b> <a class="pull-right">{{ user.date_joined }}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>E-mail:</b> <a class="pull-right">{{ user.email }}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Баланс:</b> <a class="pull-right">{{ user.profile.balance }} руб.</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Запас нефти:</b> <a class="pull-right">{{ user.profile.oil }} ед.</a>
+                    </li>
+                  </ul>
                 </div>
+              </div>
+              <!-- Statistic box -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Статистика аккаунта</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <strong><i class="fa fa-bar-chart margin-r-5"></i> Куплено нефтяных вышек</strong>
+                  <p class="text-muted">
+                    {{user.profile.stat_tower}} штук
+                  </p>
+                  <hr>
+                  <strong><i class="fa fa-certificate margin-r-5"></i> Добыто нефти</strong>
+                  <p class="text-muted">{{ user.profile.stat_produced }} едениц нефти</p>
+                  <hr>
+                  <strong><i class="fa fa-credit-card-alt margin-r-5"></i> Вложено денежных средств</strong>
+                  <p class="text-muted">{{ user.profile.stat_pay }} российских рублей</p>
+                  <hr>
+                  <strong><i class="fa fa-rub margin-r-5"></i> Выведено денежных средств</strong>
+                  <p class="text-muted">{{ user.profile.stat_payout }} российских рублей</p>
+                </div>
+                <!-- /.box-body -->
+              </div>
+              <!-- /.box -->
             </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
+            <!-- /.col -->
+            <div class="col-md-9">
+              <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#referalls" data-toggle="tab">Реферальная система</a></li>
+                  <li><a href="#passwd" data-toggle="tab">Смена пароля</a></li>
+                  <li><a href="#avatar" data-toggle="tab">Смена аватара</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="active tab-pane" id="referalls">
+                    <p class="alert alert-info">Зарабатывайте дополнительные деньги на приглашениях пользователей в проект! Делитесь своей реферальной ссылкой (размещена ниже) и мы будем вам выплачивать дополнительно 10% от каждого пополнения реферала. Список своих рефералов можно посмотреть на главной странице.</p>
+                    <ul style="list-style-type: none; margin-left: -30px;">
+                        {% if ref_profit.value >= 0 %}
+                        <li><b><i class="fa fa-money" aria-hidden="true"></i> Ваш общий доход с рефералов:</b> {{ ref_profit.value }} руб.</li>
+                        {% else %}
+                        <li><b><i class="fa fa-money" aria-hidden="true"></i> Ваш общий доход с рефералов:</b> рефералов нет</li>
+                        {% endif %}
+                        <li><b><i class="fa fa-link" aria-hidden="true"></i> Ваша реферальная ссылка:</b> <span id="reflink" class="text-primary" onclick="SelectText('reflink');">https://oil-game.win{% url 'refreg' referrer=user.id %} <i class="fa fa-clone" aria-hidden="true"></i></span></li>
+                        <li>Делитесь этой ссылкой и получайте 10% от пополнений рефералов!</li>
+                    </ul>
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="passwd">
+                    <p class="alert alert-info"><a href="{% url 'passwd' %}">Нажмите здесь</a>, чтобы перейти на страницу смены пароля.</p>
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="avatar">
+                      <form action="{% url 'avatar' %}" method="POST" class="form-inline" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="form-group">
+                              <label class="sr-only" for="avatar">Смена аватара</label>
+                              <input type="file" class="form-control" id="avatar" name="avatar" required>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Сохранить</button>
+                      </form>
+                  </div>
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div>
+              <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
 {% endblock %}
 {% block jsscript %}
 <script>

@@ -1,72 +1,65 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Ваш инвентарь - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                    {% endfor %}
-                    <!-- OVERVIEW -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Ваш инвентарь</h3>
-                            <p class="panel-subtitle">Управляйте вашей недвижимостью</p>
-                        </div>
-                        <div class="panel-body">
-                            {% if towers %}
-                            <h3 class="text-center"><i class="fa fa-tasks"></i> Общая информация о ваших объектах</h3>
-                            <h5 class="text-center">Отслеживайте работу вашего виртуального бизнеса</h5>
-                            <center>
-                                <div class="towers">
-                                    <span>
-                                        <p>Сейчас в ваших хранилищах: <b>{{ user.profile.oil }} единиц нефти</b></p>
-                                        <a href="{% url 'get_all_oil' %}" class="btn btn-success"><i class="fa fa-globe"></i> Собрать нефть с вышек</a>
-                                        <p>Хотите выполнить обмен нефти?</p>
-                                        <a href="{% url 'exchange' %}" class="btn btn-danger"><i class="fa fa-ravelry"></i> Отправиться в обменник</a>
-                                    </span>
-                                </div>
-                            <h3 class="text-center"><i class="fa fa-archive"></i> Ваши фабрики</h3>
-                            <h5 class="text-center">Фабрики необходимы для размещения вышек</h5>
-                                <div class="row">
-                                    {% for f in factories %}
-                                    <div class="col-md-2">
-                                        <img src="{{ f.factory.img.url }}" alt="{{ f.factory.name }}" width="120px" height="120px" />
-                                        <h4>{{ f.factory.name }}</h4>
-                                        <p>
-                                            <strong>Приобретено за:</strong> {{ f.factory.price }} рублей<br>
-                                        </p>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            <h3 class="text-center"><i class="fa fa-pie-chart"></i> Ваши нефтяные вышки</h3>
-                            <h5 class="text-center">Вышки добывают нефть. Собирайте нефть и обменивайте на рубли!</h5>
-                                <div class="row">
-                                    {% for t in towers %}
-                                    <div class="col-md-2">
-                                        <img src="{{ t.tower.img.url }}" alt="{{ t.tower.name }}" width="120px" height="120px" />
-                                        <h4>{{ t.tower.name }}</h4>
-                                        <p>
-                                            <strong>Приобретено за:</strong> {{ t.tower.price }} рублей<br>
-                                            <strong>Добывает:</strong> {{ t.tower.oil }} ед. в день<br>
-                                            <strong>Уровень:</strong> {{ t.level }} ур. {% if t.level != 16 %}<a href="{% url 'lvlup' pk=t.id %}"><i class="fa fa-arrow-up"></i></a> {%endif%}<a href="#" onclick="$('#levels').modal('show'); return false;"><i class="fa fa-question-circle"></i></a><br>
-                                            <strong>Статус:</strong> <span name="ready_time">{{ t.work }}</span><br>
-                                        </p>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </center>
-                            {% else %}
-                            <p class="alert alert-info">Сейчас вы не имеете купленных нефтяных вышек. Мы отобразим здесь ваш инвентарь после покупки первой вышки. Приобрести вышки можно в <a href="{% url 'shop' %}">игровом магазине</a>.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <!-- END OVERVIEW -->
-                </div>
-            </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Ваш инвентарь - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Ваш инвентарь
+        <small>Управляйте вашей недвижимостью</small>
+      </h1>
+{% endblock %}
+{% block content %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+          <!-- OVERVIEW -->
+          <div class="panel panel-headline">
+              <div class="panel-body">
+                  {% if towers %}
+                  <h3 class="text-center"><i class="fa fa-tasks"></i> Общая информация о ваших объектах</h3>
+                  <h5 class="text-center">Отслеживайте работу вашего виртуального бизнеса</h5>
+                  <center>
+                      <div class="towers">
+                          <span>
+                              <p>Сейчас в ваших хранилищах: <b>{{ user.profile.oil }} единиц нефти</b></p>
+                              <a href="{% url 'get_all_oil' %}" class="btn btn-success"><i class="fa fa-globe"></i> Собрать нефть с вышек</a>
+                              <p>Хотите выполнить обмен нефти?</p>
+                              <a href="{% url 'exchange' %}" class="btn btn-danger"><i class="fa fa-ravelry"></i> Отправиться в обменник</a>
+                          </span>
+                      </div>
+                  <h3 class="text-center"><i class="fa fa-archive"></i> Ваши фабрики</h3>
+                  <h5 class="text-center">Фабрики необходимы для размещения вышек</h5>
+                      <div class="row">
+                          {% for f in factories %}
+                          <div class="col-md-2">
+                              <img src="{{ f.factory.img.url }}" alt="{{ f.factory.name }}" width="120px" height="120px" />
+                              <h4>{{ f.factory.name }}</h4>
+                              <p>
+                                  <strong>Приобретено за:</strong> {{ f.factory.price }} рублей<br>
+                              </p>
+                          </div>
+                          {% endfor %}
+                      </div>
+                  <h3 class="text-center"><i class="fa fa-pie-chart"></i> Ваши нефтяные вышки</h3>
+                  <h5 class="text-center">Вышки добывают нефть. Собирайте нефть и обменивайте на рубли!</h5>
+                      <div class="row">
+                          {% for t in towers %}
+                          <div class="col-md-2">
+                              <img src="{{ t.tower.img.url }}" alt="{{ t.tower.name }}" width="120px" height="120px" />
+                              <h4>{{ t.tower.name }}</h4>
+                              <p>
+                                  <strong>Приобретено за:</strong> {{ t.tower.price }} рублей<br>
+                                  <strong>Добывает:</strong> {{ t.tower.oil }} ед. в день<br>
+                                  <strong>Уровень:</strong> {{ t.level }} ур. {% if t.level != 16 %}<a href="{% url 'lvlup' pk=t.id %}"><i class="fa fa-arrow-up"></i></a> {%endif%}<a href="#" onclick="$('#levels').modal('show'); return false;"><i class="fa fa-question-circle"></i></a><br>
+                                  <strong>Статус:</strong> <span name="ready_time">{{ t.work }}</span><br>
+                              </p>
+                          </div>
+                          {% endfor %}
+                      </div>
+                  </center>
+                  {% else %}
+                  <p class="alert alert-info">Сейчас вы не имеете купленных нефтяных вышек. Мы отобразим здесь ваш инвентарь после покупки первой вышки. Приобрести вышки можно в <a href="{% url 'shop' %}">игровом магазине</a>.</p>
+                  {% endif %}
+              </div>
+          </div>
+          <!-- END OVERVIEW -->
 {% endblock %}
 {% block jsscript %}
 <div class="modal fade" tabindex="-1" role="dialog" id="levels">
@@ -80,19 +73,11 @@
         <p>Уровень позволяет получить бонус к основной производительности вышки. Чем выше уровень - тем выше бонус.</p>
         <table class="table">
           <thead>
-            <tr>
-              <th>Название уровня</th>
-              <th>Бонус к нефти</th>
-              <th>Цена перехода</th>
-            </tr>
+            <tr><th>Название уровня</th><th>Бонус к нефти</th><th>Цена перехода</th></tr>
           </thead>
           <tbody>
             {% for l in levels %}
-            <tr>
-              <td>{{ l.name }}</td>
-              <td>{{ l.up }} ед.</td>
-              <td>{{ l.price }} руб.</td>
-            </tr>
+            <tr><td>{{ l.name }}</td><td>{{ l.up }} ед.</td><td>{{ l.price }} руб.</td></tr>
             {% endfor %}
           </tbody>
         </table>

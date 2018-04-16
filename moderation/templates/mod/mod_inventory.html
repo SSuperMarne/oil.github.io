@@ -1,45 +1,39 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Информация о пользователе - OilGame - экономическая игра с выводом средств</title>{% endblock %}{% block content %}
-        <!-- MAIN -->
-        <div class="main">
-            <!-- MAIN CONTENT -->
-            <div class="main-content">
-                <div class="container-fluid">
-                    <!-- OVERVIEW -->
-                    <div class="panel panel-headline">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Проверка инвентаря пользователя</h3>
-                        </div>
-                        <div class="panel-body no-padding">
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                            {% endfor %}
-                            <div class="col-md-12">
-                                {% if d.towers %}
-                                <p class="alert alert-info">
-                                    <i class="fa fa-building" aria-hidden="true"></i> <b>Построено вышек:</b> {% for t in d.towers %}{{ t.tower.name }} ({{t.tower.oil}} ед., {{t.level}} ур.); {% endfor %}
-                                    <br>
-                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> <b>Ежедневный прибыток от вышек:</b> <span id="oil_count">{{ d.total_oil }}</span> ед. нефти или <span id="rub_count"></span> руб. в день
-                                    <br>
-                                    <i class="fa fa-superpowers" aria-hidden="true"></i> <b>Общее количество вышек:</b> {{ d.count_towers }} шт. 
-                                </p>
-                                {% else %}
-                                <p class="alert alert-warning">Пользователь не имеет купленных вышек!</p>
-                                {% endif %}
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Информация о пользователе - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Инвентарь пользователя
+        <small>Результат действия из панели модератора</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <!-- OVERVIEW -->
+            <div class="panel panel-headline">
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        {% if d.towers %}
+                        <p class="text-info">
+                            <i class="fa fa-building" aria-hidden="true"></i> <b>Построено вышек:</b> {% for t in d.towers %}{{ t.tower.name }} ({{t.tower.oil}} ед., {{t.level}} ур.); {% endfor %}
+                            <br>
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> <b>Ежедневный прибыток от вышек:</b> <span id="oil_count">{{ d.total_oil }}</span> ед. нефти или <span id="rub_count"></span> руб. в день
+                            <br>
+                            <i class="fa fa-superpowers" aria-hidden="true"></i> <b>Общее количество вышек:</b> {{ d.count_towers }} шт. 
+                        </p>
+                        {% else %}
+                        <p class="alert alert-warning">Пользователь не имеет купленных вышек!</p>
+                        {% endif %}
 
-                                {% if d.factories %}
-                                <p class="alert alert-info"><i class="fa fa-industry" aria-hidden="true"></i> <b>Фабрики</b>: {% for f in d.factories %}{{ f.factory.name }}; {% endfor %}</p>
-                                {% else %}
-                                <p class="alert alert-warning">Пользователь не имеет купленных фабрик!</p>
-                                {% endif %}
-                            </div>
-                        </div>
+                        {% if d.factories %}
+                        <p class="text-info"><i class="fa fa-industry" aria-hidden="true"></i> <b>Фабрики</b>: {% for f in d.factories %}{{ f.factory.name }}; {% endfor %}</p>
+                        {% else %}
+                        <p class="alert alert-warning">Пользователь не имеет купленных фабрик!</p>
+                        {% endif %}
                     </div>
-                    <!-- END OVERVIEW -->
                 </div>
             </div>
-            <!-- END MAIN CONTENT -->
-        </div>
-        <!-- END MAIN -->
+            <!-- END OVERVIEW -->
 {% endblock %}
 {% block jsscript %}
 <script>
