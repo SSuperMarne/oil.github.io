@@ -23,7 +23,7 @@ def surfing_add(request):
             add.save()
             request.user.profile.balance -= tariff.price
             request.user.save()
-            messages.add_message(request, messages.SUCCESS, "Сайт успешно добавлен, первый взнос внесен. Активируйте сайт для начала показа.")
+            messages.add_message(request, messages.SUCCESS, "Сайт успешно добавлен и активирован, первый взнос внесен.")
     else:
         form = AddSurfForm()
     return render(request, 'surfing/add_site.html', {'tariffs': tariffs, 'form': form, 'sites': sites})
