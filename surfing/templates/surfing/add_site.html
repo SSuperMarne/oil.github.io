@@ -1,0 +1,116 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Добавить сайт в серфинг - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Добавить сайт в серфинг
+        <small>Эффективный инструмент для рекламодателей</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <!-- TARIFFS -->
+              <div class="row">
+                {% for t in tariffs %}
+                <div class="col-md-4">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <i class="fa fa-usd"></i>
+                      <h3 class="box-title">Тариф "{{ t.name }}"</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body text-center">
+                      <ul class="list-unstyled surfing-tariff">
+                        <li><i class="fa fa-link"></i> Переход после просмотра: <span class="label label-success">ЕСТЬ</span></li>
+                        <li><i class="fa fa-cubes"></i> Защита от роботов: <span class="label label-success">ЕСТЬ</span></li>
+                        <li><i class="fa fa-list"></i> Выделение в списке: {% if t.color %}<span class="label label-success">ЕСТЬ</span>{%else%}<span class="label label-danger">НЕТ</span>{% endif %}</li>
+                        <li><i class="fa fa-external-link"></i> Просмотр в новом окне: {% if t.blank %}<span class="label label-success">ЕСТЬ</span>{%else%}<span class="label label-danger">НЕТ</span>{% endif %}</li>
+                        <li><i class="fa fa-clock-o"></i> Время просмотра сайта: <span class="label label-primary">{{ t.time }} секунд</span></li>
+                        <li><i class="fa fa-rub"></i> Цена за 1000 просмотров: <span class="label label-primary">{{ t.price }} рублей</span></li>
+                      </ul>
+                    </div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /.box -->
+                </div>
+                <!-- ./col -->
+                {% endfor %}
+              </div>
+              <!-- /.row -->
+            <!-- END TARIFFS -->
+            <!-- OTHERS -->
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="box box-danger">
+                    <div class="box-header with-border">
+                      <i class="fa fa-plus"></i>
+                      <h3 class="box-title">Добавить новый сайт</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                      <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label><i class="fa fa-font"></i> Название рекламного блока</label>
+                          <input type="text" name="title" class="form-control" placeholder="Заголовок рекламы" maxlength="120" required>
+                        </div>
+                        <div class="form-group">
+                          <label><i class="fa fa-link"></i> URL-адрес для рекламирования</label>
+                          <input type="url" name="url" class="form-control" placeholder="http://example.com" required>
+                        </div>
+                        <div class="form-group">
+                          <label><i class="fa fa-arrows"></i> Выберите тариф</label>
+                          <select name="tariff" class="form-control" required>
+                            {% for t in tariffs %}<option value="{{ t.pk }}">Тариф "{{ t.name }}"</option>{% endfor %}
+                          </select>
+                        </div>
+                        <button class="btn btn-primary">Добавить сайт</button>
+                      </form>
+                    </div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /.box -->
+                </div>
+                <!-- ./col -->
+                <div class="col-md-7">
+                  <div class="box box-success">
+                    <div class="box-header with-border">
+                      <i class="fa fa-list"></i>
+                      <h3 class="box-title">Ваши сайты</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                      <table class="table table-hover">
+                          <thead>
+                          <tr>
+                            <th>Название</th>
+                            <th>Тариф</th>
+                            <th>URL</th>
+                            <th>Баланс</th>
+                            <th>Состояние</th>
+                            <th>Действия</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {% for s in sites %}
+                          <tr>
+                            <td>{{ s.title }}</td>
+                            <td>{{ s.tariff.name }}</td>
+                            <td>{{ s.url }}</td>
+                            <td>{{ s.balance }} руб.</td>
+                            <td>{% if s.status %}<span class="label label-success">РАБОТАЕТ</span>{% else %}<span class="label label-warning">ПАУЗА</span>{% endif %}</td>
+                            <td><a href="#" class="btn btn-primary">Изменить</a></td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /.box -->
+                </div>
+                <!-- ./col -->
+              </div>
+              <!-- /.row -->
+            <!-- END OTHERS -->
+{% endblock %}

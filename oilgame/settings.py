@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'payment',
     'moderation',
     'pm',
+    'surfing',
 ]
 
 MIDDLEWARE = [

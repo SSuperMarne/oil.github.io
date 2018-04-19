@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'', include('payment.urls')),
     url(r'', include('moderation.urls')),
     url(r'', include('pm.urls')),
+    url(r'', include('surfing.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

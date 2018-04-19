@@ -109,6 +109,8 @@
         <li{% if "/withdraw/" == request.path %} class="active"{% endif %}><a href="{% url 'withdraw' %}"><i class="fa fa-money"></i> <span>Вывод средств</span></a></li>
         <li{% if "/exchange/" == request.path %} class="active"{% endif %}><a href="{% url 'exchange' %}"><i class="fa fa-refresh"></i> <span>Игровой обменник</span></a></li>
         <li class="header">РАЗНОЕ</li>
+        <li{% if "/surfing/" == request.path %} class="active"{% endif %}><a href="#"><i class="fa fa-globe"></i> <span>Серфинг сайтов</span><span class="pull-right-container"><small class="label pull-right bg-red">NEW</small></span></a>
+        <li{% if "/surfing/add/" == request.path %} class="active"{% endif %}><a href="{% url 'add_surfing' %}"><i class="fa fa-plus-square"></i> <span>Добавить сайт в серфинг</span></a></li>
         <li{% if "/statistic/" == request.path %} class="active"{% endif %}><a href="{% url 'statistic' %}"><i class="fa fa-bar-chart"></i> <span>Статистика проекта</span></a></li>
         <li{% if "/support/" == request.path %} class="active"{% endif %}><a href="{% url 'pm_support_new' %}"><i class="fa fa-question-circle"></i> <span>Техническая поддержка</span></a></li>
         {% if user.is_staff %}

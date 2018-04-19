@@ -22,16 +22,22 @@
   margin-bottom: 10px;
 }
 .img-center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .sponsor-code {
-    text-align: center;
-    margin: 10px;
+  text-align: center;
+  margin: 10px;
 }
 .pay-form div {
-    margin: 10px 0;
+  margin: 10px 0;
+}
+.surfing-tariff {
+  font-size: 18px;
+}
+.surfing-tariff > li {
+  padding: 5px 0;
 }
 /*!
  *   AdminLTE v2.4.2
