@@ -1,8 +1,8 @@
-{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Запрос в техническую поддержку - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% extends 'main/base.html' %}{% load staticfiles %}{% block headers %}<title>Редактирование сайта - OilGame - экономическая игра с выводом средств</title>{% endblock %}
 {% block titles %}
       <h1>
-        Техническая поддержка
-        <small>Запрос в техническую поддержку</small>
+        Редактирование сайта в серфинге
+        <small>Изменение данных о сайте</small>
       </h1>
 {% endblock %}
 {% block content %}
@@ -11,19 +11,35 @@
             {% endfor %}
             <div class="panel">
                 <div class="panel-body">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                    {% endfor %}
                     {% if form.errors %}<p class="alert alert-danger">Обнаружены ошибки при обработке данных. Пожалуйста, проверьте, что данные указаны верно</p>{% endif %}
                     <div class="row">
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-6">
                             <form method="POST">
                                 {% csrf_token %}
-                                <textarea class="form-control" name="text" placeholder="Пожалуйста, расскажите нам о возникшей проблеме." rows="6" required></textarea>
-                                <br>
-                                {{ form.captcha }}
-                                <br>
-                                <button type="submit" class="btn btn-primary">Отправить</button>
+                                <div class="form-group">
+                                  <label><i class="fa fa-font"></i> Смена названия рекламного блока</label>
+                                  <input type="text" name="title" class="form-control" value="{{ site.title }}" maxlength="120" required>
+                                </div>
+                                <div class="form-group">
+                                  <label><i class="fa fa-link"></i> URL-адрес для рекламирования</label>
+                                  <input type="url" name="url" class="form-control" value="{{ site.url }}" required>
+                                </div>
+                                <div class="form-group">
+                                  <label><i class="fa fa-rub"></i> Баланс сайта (при повышении списывается с баланса, округлен до целого)</label>
+                                  <input type="number" name="balance" class="form-control" value="{{ site.balance|floatformat:0 }}" required>
+                                </div>
+                                <div class="form-group">
+                                  <label><i class="fa fa-arrows"></i> Смена тарифа</label>
+                                  <select name="tariff" class="form-control" required>
+                                    {% for t in tariffs %}<option value="{{ t.pk }}">Тариф "{{ t.name }}"</option>{% endfor %}
+                                  </select>
+                                </div>
+                                <div class="form-group checkbox">
+                                  <label>
+                                    <input type="checkbox" name="status" {% if site.status %}checked{%endif%}> Активировать сайт и отображать в списке серфинга
+                                  </label>
+                                </div>
+                                <button class="btn btn-primary">Применить изменения</button>
                             </form>
                         </div>
                     </div>

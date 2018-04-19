@@ -100,7 +100,7 @@
                             <td>{{ s.url }}</td>
                             <td><span name="balance">{{ s.balance }}</span> руб. (<span name="views"></span> просмотров)</td>
                             <td>{% if s.status %}<span class="label label-success">РАБОТАЕТ</span>{% else %}<span class="label label-warning">ПАУЗА</span>{% endif %}</td>
-                            <td><a href="#" class="btn btn-primary">Изменить</a></td>
+                            <td><a href="{% url 'edit_surfing' pk=s.id %}" class="btn btn-primary">Изменить</a></td>
                           </tr>
                           {% endfor %}
                         </tbody>

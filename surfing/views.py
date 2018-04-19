@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Tariff, SurfingSite
-from .forms import AddSurfForm
+from .forms import AddSurfForm, EditSurfForm
 
 def surfing_add(request):
     tariffs = Tariff.objects.all()
@@ -26,3 +27,32 @@ def surfing_add(request):
     else:
         form = AddSurfForm()
     return render(request, 'surfing/add_site.html', {'tariffs': tariffs, 'form': form, 'sites': sites})
+
+def surfing_edit(request, pk):
+    try:
+        site = SurfingSite.objects.get(pk=pk, user_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.WARNING, "Нет прав!")
+        return redirect('add_surfing')
+    tariffs = Tariff.objects.all()
+    if request.method == "POST":
+        form = EditSurfForm(request.POST)
+        if form.is_valid():
+            balance = form.cleaned_data.get('balance')
+            if balance > round(site.balance):
+                difference = balance - round(site.balance)
+                if request.user.profile.balance < difference:
+                    messages.add_message(request, messages.WARNING, "У вас недостаточно средств на балансе для повышения баланса сайта.")
+                else:
+                    request.user.profile.balance -= difference
+                    request.user.save()
+                    site.balance += difference
+                    messages.add_message(request, messages.SUCCESS, "{} руб. было зачислено на баланс сайта. Средства списаны с вашего баланса.".format(difference))
+            site.url = form.cleaned_data.get('url')
+            site.title = form.cleaned_data.get('title')
+            site.tariff = form.cleaned_data.get('tariff')
+            site.status = form.cleaned_data.get('status')
+            site.save()
+            messages.add_message(request, messages.SUCCESS, "Информация о сайте была обновлена.")
+            return redirect('add_surfing')
+    return render(request, 'surfing/edit_site.html', {'tariffs': tariffs, 'site': site})
