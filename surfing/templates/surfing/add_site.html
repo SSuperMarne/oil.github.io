@@ -79,6 +79,7 @@
                       <h3 class="box-title">Ваши сайты</h3>
                     </div>
                     <!-- /.box-header -->
+                    {% if sites %}
                     <div class="box-body table-responsive no-padding">
                       <table class="table table-hover">
                           <thead>
@@ -95,9 +96,9 @@
                           {% for s in sites %}
                           <tr>
                             <td>{{ s.title }}</td>
-                            <td>{{ s.tariff.name }}</td>
+                            <td><span name="tar_name">{{ s.tariff.name }}</span></td>
                             <td>{{ s.url }}</td>
-                            <td>{{ s.balance }} руб.</td>
+                            <td><span name="balance">{{ s.balance }}</span> руб. (<span name="views"></span> просмотров)</td>
                             <td>{% if s.status %}<span class="label label-success">РАБОТАЕТ</span>{% else %}<span class="label label-warning">ПАУЗА</span>{% endif %}</td>
                             <td><a href="#" class="btn btn-primary">Изменить</a></td>
                           </tr>
@@ -105,7 +106,16 @@
                         </tbody>
                       </table>
                     </div>
-                    <!-- /.box-body -->
+                    <!-- /.box-body.sites -->
+                    {% else %}
+                    <div class="box-body">
+                      <div class="alert alert-warning alert-dismissible">
+                        <h4><i class="icon fa fa-warning"></i> Сайты отсутствуют</h4>
+                        Вы ещё не добавляли сайты в серфинг. Список не может быть отображен.
+                      </div>
+                    </div>
+                    <!-- /.box-body.alert -->
+                    {% endif %}
                   </div>
                   <!-- /.box -->
                 </div>
@@ -113,4 +123,19 @@
               </div>
               <!-- /.row -->
             <!-- END OTHERS -->
+{% endblock %}
+{% block jsscript %}
+<script>
+  var balance = document.getElementsByName("balance");
+  var views = document.getElementsByName("views");
+  var tariff = document.getElementsByName("tar_name");
+  for (var i = 0; i < balance.length; i++) { 
+    {% for t in tariffs %}if (tariff[i].innerHTML == "{{ t.name }}") {
+      var one_view = {{ t.price }} / 1000;
+    }
+    {% endfor %}
+    var vm = parseInt(balance[i].innerHTML) / one_view;
+    views[i].innerHTML = Math.floor(vm);
+  }
+</script>
 {% endblock %}

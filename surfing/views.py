@@ -18,7 +18,7 @@ def surfing_add(request):
             if request.user.profile.balance < tariff.price:
                 messages.add_message(request, messages.WARNING, "У вас недостаточно средств на балансе для оплаты услуги.")
                 return redirect('add_surfing')
-            add = SurfingSite(tariff=tariff, user_id=request.user.id, balance=tariff.price, title=title, url=url, status=False)
+            add = SurfingSite(tariff=tariff, user_id=request.user.id, balance=tariff.price, title=title, url=url, status=True)
             add.save()
             request.user.profile.balance -= tariff.price
             request.user.save()
