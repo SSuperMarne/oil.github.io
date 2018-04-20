@@ -15,7 +15,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="icon" type="image/png" sizes="96x96" href="{% static '/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static '/favicon.ico' %}">
     <script charset="UTF-8" src="//cdn.sendpulse.com/9dae6d62c816560a842268bde2cd317d/js/push/75789eb0ab6627fbc531662d74cc3fc8_1.js" async></script>
 </head>
 <body class="hold-transition skin-black sidebar-mini">
@@ -109,7 +109,7 @@
         <li{% if "/withdraw/" == request.path %} class="active"{% endif %}><a href="{% url 'withdraw' %}"><i class="fa fa-money"></i> <span>Вывод средств</span></a></li>
         <li{% if "/exchange/" == request.path %} class="active"{% endif %}><a href="{% url 'exchange' %}"><i class="fa fa-refresh"></i> <span>Игровой обменник</span></a></li>
         <li class="header">РАЗНОЕ</li>
-        <li{% if "/surfing/" == request.path %} class="active"{% endif %}><a href="#"><i class="fa fa-globe"></i> <span>Серфинг сайтов</span><span class="pull-right-container"><small class="label pull-right bg-red">NEW</small></span></a>
+        <li{% if "/surfing/" == request.path %} class="active"{% endif %}><a href="{% url 'list_surfing' %}"><i class="fa fa-globe"></i> <span>Серфинг сайтов</span><span class="pull-right-container"><small class="label pull-right bg-red">NEW</small></span></a>
         <li{% if "/surfing/add/" == request.path %} class="active"{% endif %}><a href="{% url 'add_surfing' %}"><i class="fa fa-plus-square"></i> <span>Добавить сайт в серфинг</span></a></li>
         <li{% if "/statistic/" == request.path %} class="active"{% endif %}><a href="{% url 'statistic' %}"><i class="fa fa-bar-chart"></i> <span>Статистика проекта</span></a></li>
         <li{% if "/support/" == request.path %} class="active"{% endif %}><a href="{% url 'pm_support_new' %}"><i class="fa fa-question-circle"></i> <span>Техническая поддержка</span></a></li>

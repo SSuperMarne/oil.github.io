@@ -1,0 +1,78 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="{% static 'components/jquery/jquery.min.js' %}"></script>
+    <link href="{% static 'css/surfing.css' %}" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="{% static '/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,700" rel="stylesheet">
+    <title>Просмотр сайта - OILGAME</title>
+</head>
+<body>
+    <script>
+        time = {{ site.tariff.time }};
+        var time_start = {{ site.tariff.time }};
+        var loaded = false;
+        var url = "{{ site.url }}";
+        var TTimer;
+          function checkfocus() {
+            if (loaded) {
+                if(document.hasFocus()) {
+                    document.getElementById("check").innerHTML='Дождитесь окончания таймера:<div class="timer" id="timer">'+time+'</div>';
+                    if (focus == 0) { timerStart(); }
+                    focus = 1;
+                } else {
+                    document.getElementById("check").innerHTML='<span style="color:#9e0707;">Окно не активно! Не уходите с вкладки!</span>';
+                    time = time_start;
+                    focus = 0;
+                }
+            } else {
+                timerStart();
+                loaded = true;
+            }
+          }
+          function timerStep() {
+            if(time<0) {
+                time=0;
+                return;
+            } else {
+                if(document.getElementById("timer")!=null) {
+                    time--;
+                    document.getElementById("timer").innerHTML=time;
+                    if(time==0) {
+                        clearTimeout(TTimer);
+                        clearInterval(checker);
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '{% url 'status_surfing' %}', false);
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        var params = JSON.stringify({id:{{ site.id }}})
+                        xhr.send(params);
+                        if (xhr.status != 200) {
+                          document.getElementById("check").innerHTML='<span style="color:#9e0707;">Возникла ошибка при обработке! ' + `${xhr.responseText}</span>`;
+                        } else {
+                          window.location.replace(url);
+                        }
+                    } else {
+                        TTimer=setTimeout(timerStep, 1000);
+                    }
+                }
+            }
+          }
+          function timerStart() {
+            clearTimeout(TTimer);
+            TTimer=setTimeout(timerStep, 1000);
+          }
+          var checker = setInterval(checkfocus, 100);
+    </script>
+    <table class='info-board' style='position: absolute; bottom: 0px;height:80px;'>
+    <tr>
+    <td style='width: 100%;text-align:center;padding-left: 10px;' rowspan='2'>
+    <div class='logo'><img src="{% static 'img/logo.png' %}"></div>
+    <div id='check'>Дождитесь окончания таймера:<div class='timer' id='timer'></div></div>
+    </td>
+    </tr>
+    </table>
+    <iframe style='padding-bottom: 80px;' src='{{ site.url }}' width='100%' height='100%' id='framesite' frameborder='0' scrolling='yes'></iframe>
+</body>
+</html>

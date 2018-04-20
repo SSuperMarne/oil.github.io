@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Tariff(models.Model):
     name = models.CharField(max_length=50, help_text="Название тарифа")
@@ -17,3 +18,7 @@ class SurfingSite(models.Model):
     title = models.CharField(max_length=120)
     url = models.URLField()
     status = models.BooleanField()
+
+class SurfingHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    site = models.ForeignKey(SurfingSite, on_delete=models.CASCADE)

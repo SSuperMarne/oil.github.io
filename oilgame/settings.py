@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'moderation',
     'pm',
     'surfing',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

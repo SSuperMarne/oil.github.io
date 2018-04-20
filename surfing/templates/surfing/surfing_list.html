@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}{% load staticfiles %}{% load mathfilters %}{% block headers %}<title>Серфинг сайтов - OilGame - экономическая игра с выводом средств</title>{% endblock %}
+{% block titles %}
+      <h1>
+        Сайты для серфинга
+        <small>Зарабатывайте небольшие деньги</small>
+      </h1>
+{% endblock %}
+{% block content %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            <!-- OVERVIEW -->
+            <div class="row">
+                {% for s in sites %}
+                {% if not s.tariff.color %}
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                  <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-eye"></i></span>
+
+                    <div class="info-box-content">
+                      <span class="info-box-text">{{ s.title }}</span>
+                      <span class="info-box-number">{{ s.tariff.price|div:1000 }} руб. за просмотр</span>
+                      <span class="progress-description">
+                        <a href="{% url 'surfing' pk=s.id %}" {% if not s.tariff.blank %}target="_blank"{% endif %}><span class="label bg-green">ОТКРЫТЬ САЙТ</span></a>
+                      </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+                  <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                {% else %}
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                  <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="fa fa-eye"></i></span>
+
+                    <div class="info-box-content">
+                      <span class="info-box-text">{{ s.title }}</span>
+                      <span class="info-box-number">{{ s.tariff.price|div:1000 }} руб. за просмотр</span>
+                      <span class="progress-description">
+                        <a href="{% url 'surfing' pk=s.id %}" {% if not s.tariff.blank %}target="_blank"{% endif %}><span class="label bg-red">ОТКРЫТЬ САЙТ</span></a>
+                      </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+                  <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                {% endif %}
+                {% endfor %}
+            </div>
+            <!-- END OVERVIEW -->
+{% endblock %}
