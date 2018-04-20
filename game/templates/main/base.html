@@ -54,7 +54,7 @@
                 <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/user-profile.png' %}{% endif %}" class="img-circle" alt="User avatar">
                 <p>
                   {{ user.username }}
-                  <small>На балансе {{ user.profile.balance }} руб. и {{ user.profile.oil }} ед. нефти</small>
+                  <small>На балансе {{ user.profile.balance|floatformat:2 }} руб. и {{ user.profile.oil }} ед. нефти</small>
                 </p>
               </li>
               <li class="user-body">
@@ -93,7 +93,7 @@
         <div class="pull-left info">
           <p>{{ user.username }}</p>
           <a href="{% url 'exchange' %}"><i class="fa fa-ravelry"></i> {{ user.profile.oil }} нефти</a>
-          <a href="{% url 'payment_history' %}"><i class="fa fa-rub"></i> {{ user.profile.balance }} руб.</a>
+          <a href="{% url 'payment_history' %}"><i class="fa fa-rub"></i> {{ user.profile.balance|floatformat:2 }} руб.</a>
         </div>
       </div>
       <!-- /USER PANEL -->

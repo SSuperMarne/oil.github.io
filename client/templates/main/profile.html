@@ -27,7 +27,7 @@
                       <b>E-mail:</b> <a class="pull-right">{{ user.email }}</a>
                     </li>
                     <li class="list-group-item">
-                      <b>Баланс:</b> <a class="pull-right">{{ user.profile.balance }} руб.</a>
+                      <b>Баланс:</b> <a class="pull-right">{{ user.profile.balance|floatformat:2 }} руб.</a>
                     </li>
                     <li class="list-group-item">
                       <b>Запас нефти:</b> <a class="pull-right">{{ user.profile.oil }} ед.</a>

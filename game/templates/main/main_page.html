@@ -11,7 +11,7 @@
             <div class="col-lg-3 col-xs-6">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>{{ user.profile.balance }} руб.</h3>
+                  <h3>{{ user.profile.balance|floatformat:2 }} руб.</h3>
                   <p>Ваш баланс</p>
                 </div>
                 <div class="icon">

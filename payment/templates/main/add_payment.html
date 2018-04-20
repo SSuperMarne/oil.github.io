@@ -14,7 +14,7 @@
                     {% if promo != 0 %}
                     <p class="alert alert-{{ promo.color }}">{{ promo.description|safe }}</p>
                     {% endif %}
-                    <p>Пожалуйста, выберите удобную вам платежную систему.<br>Ваш текущий баланс: <b>{{ user.profile.balance }} <i class="fas fa-ruble-sign"></i> руб.</b></p>
+                    <p>Пожалуйста, выберите удобную вам платежную систему.<br>Ваш текущий баланс: <b>{{ user.profile.balance|floatformat:2 }} <i class="fas fa-ruble-sign"></i> руб.</b></p>
                     <div class="row">
                         <div class="col-md-5 col-lg-3 pay-form">
                             <form method="POST">
