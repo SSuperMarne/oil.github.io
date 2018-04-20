@@ -18,8 +18,8 @@ def surfing_add(request):
             title = form.cleaned_data.get('title')
             url = form.cleaned_data.get('url')
             tariff = form.cleaned_data.get('tariff')
-            if request.user.profile.stat_pay < 50:
-                messages.add_message(request, messages.WARNING, "Вам необходимо пополнить счет как минимум на 50 рублей для покупки рекламы.")
+            if request.user.profile.stat_pay < 1:
+                messages.add_message(request, messages.WARNING, "Вам необходимо пополнить счет как минимум на 1 рубль для покупки рекламы.")
                 return redirect('add_surfing')
             if request.user.profile.balance < tariff.price:
                 messages.add_message(request, messages.WARNING, "У вас недостаточно средств на балансе для оплаты услуги.")

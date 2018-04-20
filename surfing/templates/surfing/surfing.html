@@ -50,6 +50,7 @@
                         xhr.send(params);
                         if (xhr.status != 200) {
                           document.getElementById("check").innerHTML='<span style="color:#9e0707;">Возникла ошибка при обработке! ' + `${xhr.responseText}</span>`;
+                          setTimeout("window.location.href = '{% url 'list_surfing' %}';", 3000);
                         } else {
                           window.location.replace(url);
                         }

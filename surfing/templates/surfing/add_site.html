@@ -134,7 +134,7 @@
       var one_view = {{ t.price }} / 1000;
     }
     {% endfor %}
-    var vm = parseInt(balance[i].innerHTML) / one_view;
+    var vm = parseFloat(balance[i].innerHTML.replace(",", ".")) / one_view;
     views[i].innerHTML = Math.floor(vm);
   }
 </script>
