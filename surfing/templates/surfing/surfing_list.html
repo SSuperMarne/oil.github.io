@@ -11,6 +11,7 @@
             {% endfor %}
             <!-- OVERVIEW -->
             <div class="row">
+              {% if sites %}
                 {% for s in sites %}
                 {% if not s.tariff.color %}
                 <div class="col-md-3 col-sm-6 col-xs-12">
@@ -48,6 +49,14 @@
                 <!-- /.col -->
                 {% endif %}
                 {% endfor %}
+              {% else %}
+                <div class="box-body">
+                  <div class="alert alert-warning alert-dismissible">
+                    <h4><i class="icon fa fa-warning"></i> Сайты отсутствуют</h4>
+                    В данный момент нет новых сайтов для просмотра
+                  </div>
+                </div>
+              {% endif %}
             </div>
             <!-- END OVERVIEW -->
 {% endblock %}

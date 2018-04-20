@@ -66,7 +66,19 @@ def surfing_edit(request, pk):
 @login_required
 def surfing_list(request):
     sites = SurfingSite.objects.filter(status=True).order_by('-id')
-    return render(request, 'surfing/surfing_list.html', {'sites': sites})
+    d = []
+    for site in sites:
+        price_for_one = site.tariff.price / 1000
+        if price_for_one > site.balance:
+            continue
+        try:
+            hist = SurfingHistory.objects.get(user=request.user, site=site)
+        except ObjectDoesNotExist:
+            pass
+        else:
+            continue
+        d.append(site)
+    return render(request, 'surfing/surfing_list.html', {'sites': d})
 
 @login_required
 def surfing(request, pk):
