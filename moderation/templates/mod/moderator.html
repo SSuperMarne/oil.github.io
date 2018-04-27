@@ -64,6 +64,14 @@
                     <h3 class="panel-title">Панель управления игрой</h3>
                 </div>
                 <div class="panel-body">
+                    {% if user.is_staff %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Генерация e-mail адресов для рассылки</h4>
+                            <p class="text-info">Система создаст подготовленный текстовый файл для рассылки с электронными адресами пользователей: <button class="btn btn-primary" onclick="location.href='{% url 'mod_email' %}';">Создать файл</button><br>Данная функция видна только тем, кто имеет доступ в административную часть сайта.</p>
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="row">
                         <div class="col-md-6">
                             <h4>Список обращений в техническую поддержку</h4>

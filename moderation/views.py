@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -131,5 +132,20 @@ def transfer_auto(request, pk):
         else:
             messages.add_message(request, messages.ERROR, "В платеже указана недопустимая система для автовывода.")
         return redirect('moderation')
+    else:
+        raise PermissionDenied
+
+@login_required
+def get_emaillist(request):
+    if request.user.is_staff:
+        emails = User.objects.values_list('email', flat=True)
+        email_list = ''
+        for e in emails:
+            if e == "":
+                continue
+            email_list += '{}\n'.format(e)
+        response = HttpResponse(email_list, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename=email_list.txt'
+        return response
     else:
         raise PermissionDenied
