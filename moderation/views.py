@@ -30,7 +30,7 @@ Main functions
 """
 @login_required
 def moderation(request):
-    if request.user.is_staff:
+    if request.user.is_superuser:
         total_draws = Transfer.objects.all().order_by('-id')
         tickets = Ticket.objects.filter(status=3).order_by('-id')
         paginator = Paginator(total_draws, 10)
@@ -43,7 +43,7 @@ def moderation(request):
 @login_required
 def mod_actions(request, action):
     form_not_valid = lambda: messages.add_message(request, messages.ERROR, "ОШИБКА: В форме допущены ошибки. Убедитесь, что заполнены все поля.")
-    if request.user.is_staff and request.method == 'POST':
+    if request.user.is_superuser and request.method == 'POST':
         if action == "referrals":
             form = NicknameForm(request.POST)
             if form.is_valid():
@@ -99,7 +99,7 @@ def mod_actions(request, action):
 
 @login_required
 def transfer_change(request, status, pk):
-    if request.user.is_staff:
+    if request.user.is_superuser:
         transfer = get_object_or_404(Transfer, pk=pk)
         client = User.objects.get(id=transfer.user_id)
         if status == "accept":
@@ -118,7 +118,7 @@ def transfer_change(request, status, pk):
 
 @login_required
 def transfer_auto(request, pk):
-    if request.user.is_staff:
+    if request.user.is_superuser:
         transfer = get_object_or_404(Transfer, pk=pk)
         if transfer.system == "1":
             client = User.objects.get(id=transfer.user_id)

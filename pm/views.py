@@ -101,7 +101,7 @@ def pm_support_new(request):
 
 @login_required
 def pm_support_view(request, pk):
-    if request.user.is_staff:
+    if request.user.is_superuser:
         ticket = get_object_or_404(Ticket, pk=pk)
         pm = PersonalMessage.objects.filter(ticket=ticket)
         if request.method == 'POST':

@@ -113,9 +113,9 @@
         <li{% if "/surfing/add/" == request.path %} class="active"{% endif %}><a href="{% url 'add_surfing' %}"><i class="fa fa-plus-square"></i> <span>Добавить сайт в серфинг</span></a></li>
         <li{% if "/statistic/" == request.path %} class="active"{% endif %}><a href="{% url 'statistic' %}"><i class="fa fa-bar-chart"></i> <span>Статистика проекта</span></a></li>
         <li{% if "/support/" == request.path %} class="active"{% endif %}><a href="{% url 'pm_support_new' %}"><i class="fa fa-question-circle"></i> <span>Техническая поддержка</span></a></li>
-        {% if user.is_staff %}
+        {% if user.is_superuser %}
         <li class="header">АДМИНИСТРИРОВАНИЕ</li>
-        <li><a href="/admin/"><i class="fa fa-server"></i> <span>Панель администратора</span></a></li>
+        {% if user.is_staff %}<li><a href="/admin/"><i class="fa fa-server"></i> <span>Панель администратора</span></a></li>{% endif %}
         <li{% if "/moderation/" == request.path %} class="active"{% endif %}><a href="{% url 'moderation' %}"><i class="fa fa-lock"></i> <span>Панель модератора</span></a></li>
         {% endif %}
       </ul>
