@@ -1,5 +1,5 @@
 DEBUG = False
-ALLOWED_HOSTS = ['oil-game.win', 'www.oil-game.win']
+ALLOWED_HOSTS = ['2018-money.bid', 'www.2018-money.bid']
 ADMINS = [('Dmitry', 'd@dmitry.win')]
 MANAGERS = ADMINS
 
@@ -39,9 +39,9 @@ DATABASES = {
 #EMAIL_FILE_PATH = 'tmp/'
 
 # SMTP # 
-SERVER_EMAIL = 'robot@oil-game.win'
-DEFAULT_FROM_EMAIL = 'robot@oil-game.win'
-EMAIL_HOST_USER = 'robot@oil-game.win'
+SERVER_EMAIL = 'robot@2018-money.bid'
+DEFAULT_FROM_EMAIL = 'robot@2018-money.bid'
+EMAIL_HOST_USER = 'robot@2018-money.bid'
 EMAIL_HOST_PASSWORD = ''
 
 EMAIL_SUBJECT_PREFIX = ''
