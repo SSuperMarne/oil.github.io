@@ -1,5 +1,5 @@
 DEBUG = False
-ALLOWED_HOSTS = ['2018-money.bid', 'www.2018-money.bid']
+ALLOWED_HOSTS = ['freyt2002.siteme.org', 'www.freyt2002.siteme.org']
 ADMINS = [('Dmitry', 'd@dmitry.win')]
 MANAGERS = ADMINS
 
