@@ -1,5 +1,5 @@
 # Main project information
-- **Domain**: *oil-game.win*
+- **Domain**: *freyt2002.siteme.org*
 - **Language**: *Python 3.5.3 (server), JavaScript (client)*
 - **Framework**: *Django 2.0.3*
 - **Design**: *Bootstrap 3*
