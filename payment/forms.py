@@ -1,7 +1,7 @@
 from django import forms
 STATUS_CHOICES = (
     (1, ("FreeKassa")),
-    (2, ("Payeer"))
+    #(2, ("Payeer")) temporarily disabled
 )
 
 class ReplenishForm(forms.Form):
