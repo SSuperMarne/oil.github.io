@@ -16,7 +16,6 @@
     <![endif]-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="shortcut icon" href="{% static '/favicon.ico' %}">
-    <script charset="UTF-8" src="//cdn.sendpulse.com/9dae6d62c816560a842268bde2cd317d/js/push/75789eb0ab6627fbc531662d74cc3fc8_1.js" async></script>
 </head>
 <body class="hold-transition skin-black sidebar-mini">
     <!-- WRAPPER -->
@@ -156,19 +155,13 @@
 <script src="{% static 'components/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'components/bootstrap/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/core.min.js' %}"></script>
-<script id="chatBroEmbedCode">
-/* Chatbro Widget Embed Code Start */
-function ChatbroLoader(chats,async){async=!1!==async;var params={embedChatsParameters:chats instanceof Array?chats:[chats],lang:navigator.language||navigator.userLanguage,needLoadCode:'undefined'==typeof Chatbro,embedParamsVersion:localStorage.embedParamsVersion,chatbroScriptVersion:localStorage.chatbroScriptVersion},xhr=new XMLHttpRequest;xhr.withCredentials=!0,xhr.onload=function(){eval(xhr.responseText)},xhr.onerror=function(){console.error('Chatbro loading error')},xhr.open('GET','//www.chatbro.com/embed.js?'+btoa(unescape(encodeURIComponent(JSON.stringify(params)))),async),xhr.send()}
-/* Chatbro Widget Embed Code End */
-ChatbroLoader({encodedChatId: '7riv'});
-</script>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
     (function (d, w, c) {
         (w[c] = w[c] || []).push(function() {
             try {
-                w.yaCounter48083915 = new Ya.Metrika2({
-                    id:48083915,
+                w.yaCounter48929198 = new Ya.Metrika({
+                    id:48929198,
                     clickmap:true,
                     trackLinks:true,
                     accurateTrackBounce:true,
@@ -182,14 +175,14 @@ ChatbroLoader({encodedChatId: '7riv'});
             f = function () { n.parentNode.insertBefore(s, n); };
         s.type = "text/javascript";
         s.async = true;
-        s.src = "https://mc.yandex.ru/metrika/tag.js";
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
  
         if (w.opera == "[object Opera]") {
             d.addEventListener("DOMContentLoaded", f, false);
         } else { f(); }
-    })(document, window, "yandex_metrika_callbacks2");
+    })(document, window, "yandex_metrika_callbacks");
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/48083915" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript><div><img src="https://mc.yandex.ru/watch/48929198" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 {% block jsscript %}{% endblock %}
 </body>
